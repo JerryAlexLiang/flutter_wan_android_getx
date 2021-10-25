@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_wan_android_getx/http/base_response.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart' as get_x;
 
 /// 自定义拦截器
@@ -111,6 +112,9 @@ class DioInterceptors extends Interceptor {
   void onError(DioError err, ErrorInterceptorHandler handler) {
     ErrorEntity errorEntity = createErrorEntity(err);
     get_x.Get.snackbar('提示', '${errorEntity.errorMessage}');
+    Fluttertoast.showToast(msg: '提示  ${errorEntity.errorMessage}');
+
+    print('=======<>>>>>    提示  ${errorEntity.errorMessage}');
     // switch(errorEntity.code){
     //   case 401 :
     //     //没有权限，重新登陆
