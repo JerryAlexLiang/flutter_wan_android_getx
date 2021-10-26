@@ -1,15 +1,22 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan_android_getx/config/config.dart';
 import 'package:flutter_wan_android_getx/http/base_response.dart';
 import 'package:flutter_wan_android_getx/http/dio_method.dart';
 import 'package:flutter_wan_android_getx/http/dio_util.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
+import 'package:flutter_wan_android_getx/routes/app_pages.dart';
+import 'package:flutter_wan_android_getx/routes/app_routes.dart';
 import 'package:flutter_wan_android_getx/test/test_mxnzp_model.dart';
 import 'package:flutter_wan_android_getx/test/test_wan_project_tree_model.dart';
+import 'package:flutter_wan_android_getx/theme/app_theme.dart';
+import 'package:flutter_wan_android_getx/utils/keyboard_util.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:get/get.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 void main() async {
   await Config.init();
@@ -20,16 +27,50 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // return MaterialApp(
-    return GetMaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    // return GetMaterialApp(
+    //   title: 'Flutter Demo',
+    //   theme: ThemeData(
+    //     primarySwatch: Colors.blue,
+    //   ),
+    //   home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    // );
+
+    return RefreshConfiguration(
+      hideFooterWhenNotFull: false,
+      child: ScreenUtilInit(
+        designSize: const Size(360, 690),
+        builder: () {
+          return OKToast(
+            child: GetMaterialApp(
+              locale: Get.deviceLocale,
+              localizationsDelegates: const [
+                //这行是关键
+                RefreshLocalizations.delegate,
+              ],
+              debugShowCheckedModeBanner: false,
+              builder: (context, child) {
+                return Scaffold(
+                  body: GestureDetector(
+                    child: child,
+                    onTap: KeyboardUtils.hideKeyboard(context),
+                  ),
+                );
+              },
+              enableLog: true,
+              smartManagement: SmartManagement.keepFactory,
+              /// 主题颜色
+              theme: lightTheme,
+              darkTheme: darkTheme,
+              themeMode: ThemeMode.system,
+              defaultTransition: Transition.fade,
+              initialRoute: AppRoutes.main,
+              getPages: AppPages.routes,
+            ),
+          );
+        },
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
