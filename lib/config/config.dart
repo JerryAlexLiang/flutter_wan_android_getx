@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_wan_android_getx/http/dio_util.dart';
-import 'package:flutter_wan_android_getx/page/setting/setting_controller.dart';
+import 'package:flutter_wan_android_getx/page/setting/theme/theme_setting_controller.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:get/get.dart';
@@ -46,7 +46,7 @@ class Config {
     await Get.putAsync(() => SharedPreferences.getInstance());
     Get.lazyPut(() => DioUtil());
 
-    var settingController = Get.put<SettingController>(SettingController());
+    var themeSettingController = Get.put<ThemeSettingController>(ThemeSettingController());
 
     //初始化状态栏
     initStatusBar();
@@ -54,12 +54,12 @@ class Config {
     //初始化默认主题
     var themeData =
         Get.find<SharedPreferences>().getString(ThemeKey.keyAppThemeData);
-    settingController.changeThemeData(themeData ?? ThemeKey.lightTheme);
+    themeSettingController.changeThemeData(themeData ?? ThemeKey.lightTheme);
 
     //是否跟随系统自动切换暗色模式
     bool? themeMode =
         Get.find<SharedPreferences>().getBool(ThemeKey.keyAppThemeMode);
-    settingController.openSystemThemeMode(themeMode ?? false);
+    themeSettingController.openSystemThemeMode(themeMode ?? false);
 
 
     LoggerUtil.d("========> themeData:  $themeData");

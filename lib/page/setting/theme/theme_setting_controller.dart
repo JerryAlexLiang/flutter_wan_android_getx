@@ -3,22 +3,27 @@ import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:flutter_wan_android_getx/utils/sp_util.dart';
 import 'package:get/get.dart';
 
-class SettingController extends GetxController {
+class ThemeSettingController extends GetxController {
   /// 主题设置
   final _themeKeyObs = "".obs;
 
-  String get themeKey => _themeKeyObs.value;
+  get themeKeyValue => _themeKeyObs.value;
 
-  final _systemThemeMode = false.obs;
+  set themeKeyValue(string) => _themeKeyObs.value = string;
 
-  bool get systemThemeMode => _systemThemeMode.value;
+  final _systemThemeModeObs = false.obs;
+
+  bool get systemThemeModeValue => _systemThemeModeObs.value;
+
+  set systemThemeModeValue(value) => _systemThemeModeObs.value = value;
 
   ///保存当前选择的主题
   void changeThemeData(String themeKey) async {
     //改变主题
     Get.changeTheme(themeDataList![themeKey]!);
     //本地保存主题
-    _themeKeyObs.value = themeKey;
+    // _themeKeyObs.value = themeKey;
+    themeKeyValue = themeKey;
     //saveAppThemeData
     SpUtil.saveAppThemeData(themeKey);
   }
@@ -27,7 +32,8 @@ class SettingController extends GetxController {
     openSystemThemeMode
         ? Get.changeThemeMode(ThemeMode.system)
         : Get.changeThemeMode(ThemeMode.light);
-    _systemThemeMode.value = openSystemThemeMode;
+    // _systemThemeModeObs.value = openSystemThemeMode;
+    systemThemeModeValue = openSystemThemeMode;
     SpUtil.saveOpenAppSystemThemeMode(openSystemThemeMode);
   }
 }
