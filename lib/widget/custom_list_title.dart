@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:get/get.dart';
 
+/// 自定义组件 CustomListTitle，实现多种布局类型的ListTitle Widget
+
 class CustomListTitle extends StatelessWidget {
   const CustomListTitle({
     Key? key,
