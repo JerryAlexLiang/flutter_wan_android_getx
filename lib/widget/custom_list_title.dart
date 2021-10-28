@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
+import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:get/get.dart';
 
 /// 自定义组件 CustomListTitle，实现多种布局类型的ListTitle Widget
@@ -105,26 +106,27 @@ class CustomListTitle extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // 左侧Widget
-          buildLeftWidget(),
+          buildLeftWidget(context),
           isShowLeftWidget ? Gaps.hGap10 : Gaps.empty,
           // Title
-          buildTitleWidget(),
+          buildTitleWidget(context),
           Gaps.hGap32,
           // 右侧Widget
-          buildRightWidget(),
+          buildRightWidget(context),
         ],
       ),
     );
   }
 
   /// 左侧Widget
-  Widget buildLeftWidget() {
+  Widget buildLeftWidget(BuildContext context) {
     Widget widget = isShowLeftWidget
         ? (leftWidget ??
             Image.asset(leftImage!,
                 width: leftSize,
                 height: leftSize,
-                color: Get.textTheme.subtitle1?.color))
+                // color: Get.textTheme.subtitle1?.color))
+                color: leftColor ?? context.iconColor))
         : Gaps.empty;
     return Container(
       // color: Colors.yellow,
@@ -133,7 +135,7 @@ class CustomListTitle extends StatelessWidget {
   }
 
   /// Title
-  Widget buildTitleWidget() {
+  Widget buildTitleWidget(BuildContext context) {
     return Expanded(
       child: Container(
         // color: Colors.blue,
@@ -143,7 +145,8 @@ class CustomListTitle extends StatelessWidget {
           offstage: title.isEmpty ? true : false,
           child: Text(
             title,
-            style: Get.textTheme.bodyText1,
+            // style: Get.textTheme.bodyText1,
+            style: context.bodyText1Style,
             maxLines: maxLines,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.start,
@@ -154,9 +157,10 @@ class CustomListTitle extends StatelessWidget {
   }
 
   /// 右侧Widget
-  Widget buildRightWidget() {
+  Widget buildRightWidget(BuildContext context) {
     /// 可选类型Item : buildRightWidget2, 非可选类型Item : buildRightWidget1
-    Widget widget = !isSelectType ? buildRightWidget1() : buildRightWidget2();
+    Widget widget =
+        !isSelectType ? buildRightWidget1(context) : buildRightWidget2(context);
 
     if (!isSelectType) {
       //非选项类型Item
@@ -179,7 +183,7 @@ class CustomListTitle extends StatelessWidget {
   }
 
   /// 非可选类型Item
-  Widget buildRightWidget1() {
+  Widget buildRightWidget1(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -189,7 +193,8 @@ class CustomListTitle extends StatelessWidget {
             offstage: rightContent.isEmpty ? true : false,
             child: Text(
               rightContent,
-              style: Get.textTheme.bodyText2?.copyWith(fontSize: 12),
+              // style: Get.textTheme.bodyText2?.copyWith(fontSize: 12),
+              style: context.bodyText2Style?.copyWith(fontSize: 12),
               maxLines: maxLines,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.end,
@@ -202,7 +207,8 @@ class CustomListTitle extends StatelessWidget {
                 rightImage!,
                 width: endSize,
                 height: endSize,
-                color: Get.textTheme.bodyText2?.color,
+                // color: Get.textTheme.bodyText2?.color,
+                color: context.bodyText2Color,
               )
             : rightWidget,
       ],
@@ -210,13 +216,14 @@ class CustomListTitle extends StatelessWidget {
   }
 
   /// 可选类型Item
-  Widget buildRightWidget2() {
+  Widget buildRightWidget2(BuildContext context) {
     Widget selectWidget = rightImage != null
         ? Image.asset(
             rightImage!,
             width: endSize,
             height: endSize,
-            color: Get.textTheme.bodyText2?.color,
+            // color: Get.textTheme.bodyText2?.color,
+            color: context.bodyText2Color,
           )
         : rightWidget;
 

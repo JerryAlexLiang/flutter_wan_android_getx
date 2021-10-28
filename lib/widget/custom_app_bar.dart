@@ -56,11 +56,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: SafeArea(
           child: Row(
             children: [
-              backWidget(),
+              backWidget(context),
               Expanded(
-                child: titleWidget(),
+                child: titleWidget(context),
               ),
-              rightWidget(),
+              rightWidget(context),
             ],
           ),
         ),
@@ -72,7 +72,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   //AppBar需要实现PreferredSizeWidget
   Size get preferredSize => const Size.fromHeight(56);
 
-  Widget backWidget() {
+  Widget backWidget(BuildContext context) {
     final Widget widget = isBack
         ? IconButton(
             onPressed: () async {
@@ -88,8 +88,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             icon: backIcon ??
                 Image.asset(
                   backImg,
-                  color: backBackgroundColor ??
-                      Get.theme.appBarTheme.iconTheme?.color,
+                  color: backBackgroundColor ?? context.appIconColor,
+                  // Get.theme.appBarTheme.iconTheme?.color,
                 ),
           )
         : Gaps.empty;
@@ -97,26 +97,31 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return widget;
   }
 
-  Widget titleWidget() {
+  Widget titleWidget(BuildContext context) {
     return Container(
       alignment: centerTitle.isEmpty ? Alignment.centerLeft : Alignment.center,
       child: Text(
         title.isEmpty ? centerTitle : title,
-        style: Get.textTheme.subtitle1,
+        // style: Get.textTheme.subtitle1,
+        style: context.subtitle1Style,
       ),
     );
   }
 
-  Widget rightWidget() {
+  Widget rightWidget(BuildContext context) {
     TextStyle? textStyle;
     if (actionBackgroundColor != null) {
       textStyle = TextStyle(
           color: actionBackgroundColor,
-          fontSize: Get.textTheme.subtitle2?.fontSize);
+          // fontSize: Get.textTheme.subtitle2?.fontSize);
+          fontSize: context.subtitle2Style?.fontSize);
     } else {
+      // textStyle = TextStyle(
+      //     color: Get.textTheme.subtitle2?.color,
+      //     fontSize: Get.textTheme.subtitle2?.fontSize);
       textStyle = TextStyle(
-          color: Get.textTheme.subtitle2?.color,
-          fontSize: Get.textTheme.subtitle2?.fontSize);
+          color: context.subtitle2Color,
+          fontSize: context.subtitle2Style?.fontSize);
     }
 
     Widget widget = actionName.isNotEmpty

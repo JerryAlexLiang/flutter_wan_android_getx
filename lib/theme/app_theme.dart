@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/theme/app_color.dart';
-import 'package:get/get.dart';
 
 ///白天模式
 ThemeData lightTheme = ThemeData.light().copyWith(
@@ -19,23 +18,23 @@ ThemeData lightTheme = ThemeData.light().copyWith(
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     selectedItemColor: AppColors.iconLightColor,
   ),
-  textTheme: const TextTheme(
-    headline1: TextStyle(
-      color: Colors.black,
-    ),
-    subtitle1: TextStyle(
-      color: Colors.black,
-    ),
-    headline3: TextStyle(
-      color: Colors.black,
-    ),
-    bodyText1: TextStyle(
-      color: Colors.black,
-    ),
-    bodyText2: TextStyle(
-      color: Colors.black54,
-    ),
-  ),
+  // textTheme: const TextTheme(
+  //   headline1: TextStyle(
+  //     color: Colors.black,
+  //   ),
+  //   headline3: TextStyle(
+  //     color: Colors.black,
+  //   ),
+  //   subtitle1: TextStyle(
+  //     color: Colors.black,
+  //   ),
+  //   bodyText1: TextStyle(
+  //     color: Colors.black,
+  //   ),
+  //   bodyText2: TextStyle(
+  //     color: Colors.black54,
+  //   ),
+  // ),
 );
 
 ///夜间模式
@@ -55,9 +54,6 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
   ),
 );
 
-IconThemeData lightIconTheme = const IconThemeData(color: Colors.grey);
-IconThemeData darkIconTheme = const IconThemeData(color: Colors.grey);
-
 class ThemeKey {
   static const String keyAppThemeData = "app_theme_data";
   static const String keyAppThemeMode = "app_theme_mode";
@@ -74,5 +70,43 @@ Map<String, ThemeData>? themeDataList = {
 extension ThemeExtension on BuildContext {
   Color get backgroundColor => Theme.of(this).scaffoldBackgroundColor;
 
+  Color? get appBarBackgroundColor =>
+      Theme.of(this).appBarTheme.backgroundColor;
+
+  Color? get appIconColor => Theme.of(this).appBarTheme.iconTheme?.color;
+
   Color get dialogBackgroundColor => Theme.of(this).canvasColor;
+
+  Color? get headline1Color => Theme.of(this).textTheme.headline1?.color;
+
+  Color? get subtitle1Color => Theme.of(this).textTheme.subtitle1?.color;
+
+  Color? get subtitle2Color => Theme.of(this).textTheme.subtitle2?.color;
+
+  Color? get bodyText1Color => Theme.of(this).textTheme.bodyText1?.color;
+
+  Color? get bodyText2Color => Theme.of(this).textTheme.bodyText2?.color;
+
+  Color? get iconDataColor => Theme.of(this).iconTheme.color;
+
+  Color? get bottomNavigationBarBackgroundColor =>
+      Theme.of(this).bottomNavigationBarTheme.backgroundColor;
+
+  Color? get bottomNavigationBarSelectedItemColor =>
+      Theme.of(this).bottomNavigationBarTheme.selectedItemColor;
+
+  Color? get bottomNavigationBarUnSelectedItemColor =>
+      Theme.of(this).bottomNavigationBarTheme.unselectedItemColor;
+}
+
+extension StyleExtension on BuildContext {
+  TextStyle? get headline1Style => Theme.of(this).textTheme.headline1;
+
+  TextStyle? get subtitle1Style => Theme.of(this).textTheme.subtitle1;
+
+  TextStyle? get subtitle2Style => Theme.of(this).textTheme.subtitle2;
+
+  TextStyle? get bodyText1Style => Theme.of(this).textTheme.bodyText1;
+
+  TextStyle? get bodyText2Style => Theme.of(this).textTheme.bodyText2;
 }

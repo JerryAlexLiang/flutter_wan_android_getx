@@ -1,5 +1,6 @@
 import 'package:flutter_wan_android_getx/page/index/index_binding.dart';
 import 'package:flutter_wan_android_getx/page/index/index_page.dart';
+import 'package:flutter_wan_android_getx/page/setting/setting_binding.dart';
 import 'package:flutter_wan_android_getx/page/setting/setting_page.dart';
 import 'package:flutter_wan_android_getx/page/setting/theme/theme_setting_page.dart';
 import 'package:flutter_wan_android_getx/page/unknown_route_page.dart';
@@ -18,7 +19,11 @@ class AppPages {
       page: () => const IndexPage(),
       binding: IndexBinding(),
     ),
-    GetPage(name: AppRoutes.settingPage, page: () => SettingPage()),
+    GetPage(
+      name: AppRoutes.settingPage,
+      page: () => SettingPage(),
+      binding: SettingBinding(),
+    ),
     GetPage(
       name: AppRoutes.themeModePage,
       page: () => ThemeSettingPage(),

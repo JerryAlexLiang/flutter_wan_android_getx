@@ -9,35 +9,45 @@ import 'package:get/get.dart';
 import 'mine_controller.dart';
 
 class MinePage extends StatelessWidget {
+  const MinePage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<MineController>();
+    final themeSettingController = Get.find<ThemeSettingController>();
 
     LoggerUtil.d("=======> MinePage build");
     return Center(
       child: MaterialButton(
         onPressed: () {
-          // navigator!
-          //     .push(
-          //     MaterialPageRoute(builder: (context) => ThemeSettingPage()));
           Get.toNamed(AppRoutes.settingPage);
         },
-        // child: const Text('更改主题'),
         child: Row(
           children: [
-            GetX<ThemeSettingController>(
-              init: ThemeSettingController(),
-              initState: (_) {},
-              builder: (controller) {
-                return Icon(
-                  controller.themeKeyValue == ThemeKey.darkTheme
-                      ? Icons.nightlight_round
-                      : Icons.wb_sunny_rounded,
-                );
-              },
+            // GetX<ThemeSettingController>(
+            //   init: ThemeSettingController(),
+            //   initState: (_) {},
+            //   builder: (controller) {
+            //     return Icon(
+            //       controller.themeKeyValue == ThemeKey.darkTheme
+            //           ? Icons.nightlight_round
+            //           : Icons.wb_sunny_rounded,
+            //     );
+            //   },
+            // ),
+            Icon(
+              themeSettingController.themeKeyValue == ThemeKey.darkTheme
+                  ? Icons.nightlight_round
+                  : Icons.wb_sunny_rounded,
             ),
-            const Expanded(
-              child: Text('更改主题'),
+            Expanded(
+              child: Text(
+                '更改主题',
+                style: TextStyle(
+                  // color: Theme.of(context).textTheme.bodyText1?.color,
+                  color: context.bodyText1Color,
+                ),
+              ),
             ),
           ],
         ),
