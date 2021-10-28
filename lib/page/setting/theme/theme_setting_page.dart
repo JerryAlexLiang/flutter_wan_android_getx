@@ -16,13 +16,6 @@ class ThemeSettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(
-      //     '主题设置',
-      //     style: Get.textTheme.subtitle1,
-      //   ),
-      //   centerTitle: true,
-      // ),
       appBar: CustomAppBar(
         centerTitle: '主题设置',
         actionIcon: const Icon(Icons.star),
@@ -43,12 +36,15 @@ class ThemeSettingPage extends StatelessWidget {
             ListTile(
               leading: Text(
                 '跟随系统模式',
-                style: Get.textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
-              trailing: CupertinoSwitch(
-                value: controller.systemThemeModeValue,
-                onChanged: (toggles) => controller.openSystemThemeMode(toggles),
-              ),
+              trailing: Obx(() {
+                return CupertinoSwitch(
+                  value: controller.systemThemeModeValue,
+                  onChanged: (toggles) =>
+                      controller.openSystemThemeMode(toggles),
+                );
+              }),
               onTap: () => Fluttertoast.showToast(msg: "msg"),
             ),
             const SizedBox(

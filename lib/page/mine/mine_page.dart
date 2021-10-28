@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/page/setting/theme/theme_setting_controller.dart';
 import 'package:flutter_wan_android_getx/page/setting/theme/theme_setting_page.dart';
+import 'package:flutter_wan_android_getx/routes/app_routes.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:get/get.dart';
@@ -16,9 +17,10 @@ class MinePage extends StatelessWidget {
     return Center(
       child: MaterialButton(
         onPressed: () {
-          navigator!
-              .push(
-              MaterialPageRoute(builder: (context) => ThemeSettingPage()));
+          // navigator!
+          //     .push(
+          //     MaterialPageRoute(builder: (context) => ThemeSettingPage()));
+          Get.toNamed(AppRoutes.settingPage);
         },
         // child: const Text('更改主题'),
         child: Row(
@@ -34,7 +36,9 @@ class MinePage extends StatelessWidget {
                 );
               },
             ),
-            const Expanded(child: Text('更改主题'),),
+            const Expanded(
+              child: Text('更改主题'),
+            ),
           ],
         ),
       ),
