@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wan_android_getx/theme/app_theme.dart';
+import 'package:get/get.dart';
 
 class AppColors {
   AppColors._();

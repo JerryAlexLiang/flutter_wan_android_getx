@@ -29,14 +29,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return GetMaterialApp(
-    //   title: 'Flutter Demo',
-    //   theme: ThemeData(
-    //     primarySwatch: Colors.blue,
-    //   ),
-    //   home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    // );
-
     return RefreshConfiguration(
       hideFooterWhenNotFull: false,
       child: ScreenUtilInit(
@@ -60,6 +52,7 @@ class MyApp extends StatelessWidget {
               },
               enableLog: true,
               smartManagement: SmartManagement.keepFactory,
+
               /// 主题颜色
               theme: lightTheme,
               darkTheme: darkTheme,
