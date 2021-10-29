@@ -25,6 +25,8 @@ class CustomListTitle extends StatelessWidget {
     this.onTap,
     this.onLongPress,
     this.showBottomLine = false,
+    this.bottomLineHeight = 0.6,
+    this.bottomLineColor,
     this.isSelectType = false,
     this.isSelect = false,
   }) : super(key: key);
@@ -47,6 +49,8 @@ class CustomListTitle extends StatelessWidget {
 
   /// 是否显示下划线
   final bool showBottomLine;
+  final double bottomLineHeight;
+  final Color? bottomLineColor;
 
   ///左侧图标大小
   final double leftSize;
@@ -98,9 +102,16 @@ class CustomListTitle extends StatelessWidget {
         /// 使用装饰器设置是否显示下划线
         border: Border(
           bottom: showBottomLine
-              ? Divider.createBorderSide(context, width: 0.6)
-              : Divider.createBorderSide(context,
-                  width: 0.0, color: Colors.transparent),
+              ? Divider.createBorderSide(
+                  context,
+                  width: bottomLineHeight,
+                  color: bottomLineColor,
+                )
+              : Divider.createBorderSide(
+                  context,
+                  width: 0.0,
+                  color: Colors.transparent,
+                ),
         ),
       ),
       child: Row(

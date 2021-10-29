@@ -16,6 +16,7 @@ class ThemeSettingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
+        showBottomLine: true,
         centerTitle: '主题设置',
         actionIcon: context.isDarkMode
             ? Icon(Icons.nightlight_round, color: context.iconColor)

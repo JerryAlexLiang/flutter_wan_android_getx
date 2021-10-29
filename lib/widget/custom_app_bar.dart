@@ -25,6 +25,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actionImageColor,
     this.onRightPressed,
     this.isBack = true,
+    this.showBottomLine = false,
+    this.bottomLineHeight = 0.6,
+    this.bottomLineColor,
   }) : super(key: key);
 
   final Color? backgroundColor;
@@ -40,6 +43,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? actionImageColor;
   final VoidCallback? onRightPressed;
   final bool isBack;
+
+  /// 是否显示下划线
+  final bool showBottomLine;
+  final double bottomLineHeight;
+  final Color? bottomLineColor;
 
   @override
   Widget build(BuildContext context) {
@@ -64,14 +72,26 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: Material(
         color: _backgroundColor,
         child: SafeArea(
-          child: Row(
-            children: [
-              backWidget(context),
-              Expanded(
-                child: titleWidget(context),
+          child: Container(
+            decoration: BoxDecoration(
+              /// 使用装饰器设置是否显示下划线
+              border: Border(
+                bottom: showBottomLine
+                    ? Divider.createBorderSide(context,
+                        width: bottomLineHeight, color: bottomLineColor)
+                    : Divider.createBorderSide(context,
+                        width: 0.0, color: Colors.transparent),
               ),
-              rightWidget(context),
-            ],
+            ),
+            child: Row(
+              children: [
+                backWidget(context),
+                Expanded(
+                  child: titleWidget(context),
+                ),
+                rightWidget(context),
+              ],
+            ),
           ),
         ),
       ),
