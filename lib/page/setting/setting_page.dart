@@ -16,33 +16,24 @@ class SettingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
-        title: '设置',
+        centerTitle: '设置',
       ),
-      // body: Obx(() {
-      //   return ListView(
-      //     children: [
-      //       CustomListTitle(
-      //         title: '主题',
-      //         leftWidget: Icon(Icons.wb_sunny_rounded),
-      //         rightContent: themeSettingController.themeKeyValue,
-      //         rightImage: 'images/ic_arrow_right.png',
-      //         onTap: () => Get.toNamed(AppRoutes.themeModePage),
-      //       ),
-      //     ],
-      //   );
-      // }),
-      body: ListView(
-        children: [
-          CustomListTitle(
-            title: '主题',
-            isShowLeftWidget: true,
-            leftWidget: Icon(Icons.wb_sunny_rounded),
-            rightContent: themeSettingController.themeKeyValue,
-            rightImage: 'images/ic_arrow_right.png',
-            onTap: () => Get.toNamed(AppRoutes.themeModePage),
-          ),
-        ],
-      ),
+      body: Obx(() {
+        return ListView(
+          children: [
+            CustomListTitle(
+              title: '主题',
+              isShowLeftWidget: true,
+              leftWidget: context.isDarkMode
+                  ? const Icon(Icons.nightlight_round)
+                  : const Icon(Icons.wb_sunny_rounded),
+              rightContent: themeSettingController.themeKeyValue,
+              rightImage: 'images/ic_arrow_right.png',
+              onTap: () => Get.toNamed(AppRoutes.themeModePage),
+            ),
+          ],
+        );
+      }),
     );
   }
 }

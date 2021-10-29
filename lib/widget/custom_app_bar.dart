@@ -4,6 +4,11 @@ import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:get/get.dart';
 
+/// 自定义AppBar
+/// 说明：
+/// 1、Widget属性icon 优先于String类型的image生效，imageColor只对image生效
+/// 2、右侧Widget,actionName属性优先于actionIcon和actionImage生效；
+
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     Key? key,
@@ -12,10 +17,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.centerTitle = '',
     this.backImg = 'images/ic_back_black.png',
     this.backIcon,
-    this.backBackgroundColor,
+    this.backImageColor,
     this.actionName = '',
-    this.actionIcon = Gaps.empty,
-    this.actionBackgroundColor,
+    this.actionNameStyle,
+    this.actionIcon,
+    this.actionImage,
+    this.actionImageColor,
     this.onRightPressed,
     this.isBack = true,
   }) : super(key: key);
@@ -25,16 +32,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String centerTitle;
   final String backImg;
   final Widget? backIcon;
-  final Color? backBackgroundColor;
+  final Color? backImageColor;
   final String actionName;
-  final Widget actionIcon;
-  final Color? actionBackgroundColor;
+  final TextStyle? actionNameStyle;
+  final Widget? actionIcon;
+  final String? actionImage;
+  final Color? actionImageColor;
   final VoidCallback? onRightPressed;
   final bool isBack;
 
   @override
   Widget build(BuildContext context) {
-    final Color _backgroundColor = backgroundColor ?? context.backgroundColor;
+    final Color _backgroundColor =
+        backgroundColor ?? context.appBarBackgroundColor!;
 
     final SystemUiOverlayStyle _overlayStyle =
         ThemeData.estimateBrightnessForColor(_backgroundColor) ==
@@ -88,8 +98,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             icon: backIcon ??
                 Image.asset(
                   backImg,
-                  color: backBackgroundColor ?? context.appIconColor,
-                  // Get.theme.appBarTheme.iconTheme?.color,
+                  color: backImageColor ?? context.appBarIconColor,
                 ),
           )
         : Gaps.empty;
@@ -102,40 +111,34 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       alignment: centerTitle.isEmpty ? Alignment.centerLeft : Alignment.center,
       child: Text(
         title.isEmpty ? centerTitle : title,
-        // style: Get.textTheme.subtitle1,
         style: context.subtitle1Style,
       ),
     );
   }
 
   Widget rightWidget(BuildContext context) {
-    TextStyle? textStyle;
-    if (actionBackgroundColor != null) {
-      textStyle = TextStyle(
-          color: actionBackgroundColor,
-          // fontSize: Get.textTheme.subtitle2?.fontSize);
-          fontSize: context.subtitle2Style?.fontSize);
-    } else {
-      // textStyle = TextStyle(
-      //     color: Get.textTheme.subtitle2?.color,
-      //     fontSize: Get.textTheme.subtitle2?.fontSize);
-      textStyle = TextStyle(
-          color: context.subtitle2Color,
-          fontSize: context.subtitle2Style?.fontSize);
-    }
+    TextStyle? textStyle = TextStyle(
+        color: context.subtitle2Color,
+        fontSize: context.subtitle2Style?.fontSize);
 
     Widget widget = actionName.isNotEmpty
         ? TextButton(
             onPressed: onRightPressed,
             child: Text(
               actionName,
-              style: textStyle,
+              style: actionNameStyle ?? textStyle,
             ),
           )
         : IconButton(
             padding: const EdgeInsets.all(12.0),
             onPressed: onRightPressed,
-            icon: actionIcon,
+            icon: actionIcon ??
+                (actionImage != null
+                    ? Image.asset(
+                        actionImage!,
+                        color: actionImageColor,
+                      )
+                    : Gaps.empty),
           );
     return widget;
   }

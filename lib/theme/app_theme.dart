@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/theme/app_color.dart';
+import 'package:get/get.dart';
 
 ///白天模式
 ThemeData lightTheme = ThemeData.light().copyWith(
@@ -46,19 +47,20 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
   ),
   scaffoldBackgroundColor: ThemeData.dark().scaffoldBackgroundColor,
   // backgroundColor: ThemeData.dark().backgroundColor,
+  backgroundColor: Colors.red,
   iconTheme: const IconThemeData(
     color: AppColors.iconDarkColor,
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    selectedItemColor: AppColors.iconDarkColor,
+    selectedItemColor: AppColors.iconLightColor,
   ),
 );
 
 class ThemeKey {
-  static const String keyAppThemeData = "app_theme_data";
-  static const String keyAppThemeMode = "app_theme_mode";
+  static const String appThemeKey = "app_theme_data";
   static const String darkTheme = "夜间模式";
   static const String lightTheme = "日间模式";
+  static const String systemTheme = "跟随系统模式";
 }
 
 /// 主题列表
@@ -67,13 +69,19 @@ Map<String, ThemeData>? themeDataList = {
   ThemeKey.lightTheme: lightTheme,
 };
 
+bool isDarkMode(BuildContext context) {
+  return Theme.of(context).colorScheme.brightness == Brightness.dark;
+}
+
 extension ThemeExtension on BuildContext {
   Color get backgroundColor => Theme.of(this).scaffoldBackgroundColor;
 
   Color? get appBarBackgroundColor =>
       Theme.of(this).appBarTheme.backgroundColor;
 
-  Color? get appIconColor => Theme.of(this).appBarTheme.iconTheme?.color;
+  Color? get appIconColor => Theme.of(this).iconTheme.color;
+
+  Color? get appBarIconColor => Theme.of(this).appBarTheme.iconTheme?.color;
 
   Color get dialogBackgroundColor => Theme.of(this).canvasColor;
 

@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_wan_android_getx/http/dio_util.dart';
 import 'package:flutter_wan_android_getx/page/setting/theme/theme_setting_controller.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
-import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,32 +37,39 @@ class Config {
     //运行开始
     WidgetsFlutterBinding.ensureInitialized();
 
-    // await SharedPreferences.getInstance();
-
-    // DioUtil();
+    //初始化状态栏
+    initStatusBar();
 
     //初始化持久工具
     await Get.putAsync(() => SharedPreferences.getInstance());
     Get.lazyPut(() => DioUtil());
 
-    var themeSettingController = Get.put<ThemeSettingController>(ThemeSettingController());
-
-    //初始化状态栏
-    initStatusBar();
+    var themeSettingController =
+        Get.put<ThemeSettingController>(ThemeSettingController());
 
     //初始化默认主题
     var themeData =
-        Get.find<SharedPreferences>().getString(ThemeKey.keyAppThemeData);
-    themeSettingController.changeThemeData(themeData ?? ThemeKey.lightTheme);
+        Get.find<SharedPreferences>().getString(ThemeKey.appThemeKey);
 
-    //是否跟随系统自动切换暗色模式
-    bool? themeMode =
-        Get.find<SharedPreferences>().getBool(ThemeKey.keyAppThemeMode);
-    themeSettingController.openSystemThemeMode(themeMode ?? false);
+    if (themeData == null) {
+      themeSettingController.setLightThemeMode();
+    } else {
+      if (themeData == ThemeKey.lightTheme) {
+        //日间模式
+        themeSettingController.setLightThemeMode();
+      } else if (themeData == ThemeKey.darkTheme) {
+        //夜间模式
+        themeSettingController.setDarkThemeMode();
+      } else if (themeData == ThemeKey.systemTheme) {
+        //跟随系统模式
+        themeSettingController.setSystemThemeMode();
+      }
+    }
 
-
-    LoggerUtil.d("========> themeData:  $themeData");
-    LoggerUtil.d("========> themeMode:  $themeMode");
+    // //是否跟随系统自动切换暗色模式
+    // bool? themeMode =
+    //     Get.find<SharedPreferences>().getBool(ThemeKey.keyAppThemeMode);
+    // themeSettingController.openSystemThemeMode();
 
     //     // 读取设备第一次打开
 //     isFirstOpen = StorageUtil().getBool(STORAGE_DEVICE_FIRST_OPEN_KEY);

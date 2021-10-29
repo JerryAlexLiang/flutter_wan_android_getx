@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
-import 'package:get/get.dart';
 
 /// 自定义组件 CustomListTitle，实现多种布局类型的ListTitle Widget
+/// 说明：
+/// 1、Widget属性icon 优先于String类型的image生效，imageColor只对image生效
+/// 2、右侧Widget,actionName属性优先于actionIcon和actionImage生效；
 
 class CustomListTitle extends StatelessWidget {
   const CustomListTitle({
@@ -122,14 +124,13 @@ class CustomListTitle extends StatelessWidget {
   Widget buildLeftWidget(BuildContext context) {
     Widget widget = isShowLeftWidget
         ? (leftWidget ??
-            Image.asset(leftImage!,
-                width: leftSize,
-                height: leftSize,
-                // color: Get.textTheme.subtitle1?.color))
-                color: leftColor ?? context.iconColor))
+            (leftImage != null
+                ? Image.asset(leftImage!,
+                    width: leftSize, height: leftSize, color: leftColor)
+                : Gaps.empty))
         : Gaps.empty;
+
     return Container(
-      // color: Colors.yellow,
       child: widget,
     );
   }
@@ -145,7 +146,6 @@ class CustomListTitle extends StatelessWidget {
           offstage: title.isEmpty ? true : false,
           child: Text(
             title,
-            // style: Get.textTheme.bodyText1,
             style: context.bodyText1Style,
             maxLines: maxLines,
             overflow: TextOverflow.ellipsis,
@@ -175,7 +175,6 @@ class CustomListTitle extends StatelessWidget {
     } else {
       //可选项类型Item
       return Container(
-        // color: Colors.red,
         alignment: Alignment.centerRight,
         child: widget,
       );
@@ -193,7 +192,6 @@ class CustomListTitle extends StatelessWidget {
             offstage: rightContent.isEmpty ? true : false,
             child: Text(
               rightContent,
-              // style: Get.textTheme.bodyText2?.copyWith(fontSize: 12),
               style: context.bodyText2Style?.copyWith(fontSize: 12),
               maxLines: maxLines,
               overflow: TextOverflow.ellipsis,
@@ -207,7 +205,6 @@ class CustomListTitle extends StatelessWidget {
                 rightImage!,
                 width: endSize,
                 height: endSize,
-                // color: Get.textTheme.bodyText2?.color,
                 color: context.bodyText2Color,
               )
             : rightWidget,
@@ -222,8 +219,7 @@ class CustomListTitle extends StatelessWidget {
             rightImage!,
             width: endSize,
             height: endSize,
-            // color: Get.textTheme.bodyText2?.color,
-            color: context.bodyText2Color,
+            color: rightColor,
           )
         : rightWidget;
 

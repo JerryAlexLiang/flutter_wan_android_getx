@@ -24,22 +24,15 @@ class MinePage extends StatelessWidget {
         },
         child: Row(
           children: [
-            // GetX<ThemeSettingController>(
-            //   init: ThemeSettingController(),
-            //   initState: (_) {},
-            //   builder: (controller) {
-            //     return Icon(
-            //       controller.themeKeyValue == ThemeKey.darkTheme
-            //           ? Icons.nightlight_round
-            //           : Icons.wb_sunny_rounded,
-            //     );
-            //   },
-            // ),
-            Icon(
-              themeSettingController.themeKeyValue == ThemeKey.darkTheme
-                  ? Icons.nightlight_round
-                  : Icons.wb_sunny_rounded,
-            ),
+            context.isDarkMode
+                ? Icon(
+                    Icons.nightlight_round,
+                    color: context.appIconColor,
+                  )
+                : Icon(
+                    Icons.wb_sunny_rounded,
+                    color: context.appIconColor,
+                  ),
             Expanded(
               child: Text(
                 '更改主题',

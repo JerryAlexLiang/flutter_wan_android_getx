@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
               /// 主题颜色
               theme: lightTheme,
               darkTheme: darkTheme,
-              themeMode: ThemeMode.system,
+              themeMode: ThemeMode.light,
               defaultTransition: Transition.fade,
               initialRoute: AppRoutes.main,
               getPages: AppPages.routes,
