@@ -13,13 +13,14 @@ class CustomListTitle extends StatelessWidget {
     this.isShowLeftWidget = false,
     this.leftImage,
     this.leftWidget,
-    this.title = "",
+    this.title,
+    this.subTitle,
     this.rightContent = "",
     this.maxLines = 1,
     this.leftColor,
     this.rightColor,
-    this.rightImage,
-    this.rightWidget = Gaps.empty,
+    this.rightImage = "images/ic_arrow_right.png",
+    this.rightWidget,
     this.leftSize = 22,
     this.endSize = 16,
     this.onTap,
@@ -37,14 +38,15 @@ class CustomListTitle extends StatelessWidget {
   final Widget? leftWidget;
 
   /// 标题
-  final String title;
+  final String? title;
+  final String? subTitle;
 
   /// 内容
   final String rightContent;
 
   /// 右侧组件
   final String? rightImage;
-  final Widget rightWidget;
+  final Widget? rightWidget;
   final int maxLines;
 
   /// 是否显示下划线
@@ -74,7 +76,7 @@ class CustomListTitle extends StatelessWidget {
   final bool isSelectType;
 
   /// 是否选中
-  final bool isSelect;
+  final bool? isSelect;
 
   @override
   Widget build(BuildContext context) {
@@ -150,17 +152,38 @@ class CustomListTitle extends StatelessWidget {
   Widget buildTitleWidget(BuildContext context) {
     return Expanded(
       child: Container(
-        // color: Colors.blue,
         alignment: Alignment.centerLeft,
         child: Offstage(
           //offstage 为false 则显示，为true 则不显示
-          offstage: title.isEmpty ? true : false,
-          child: Text(
-            title,
-            style: context.bodyText1Style,
-            maxLines: maxLines,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.start,
+          offstage: title != null ? (title!.isEmpty ? true : false) : true,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title ?? "",
+                style: context.bodyText1Style,
+                maxLines: maxLines,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.start,
+              ),
+              (title!.isNotEmpty && subTitle != null && subTitle!.isNotEmpty)
+                  ? Gaps.vGap1
+                  : Gaps.empty,
+              Offstage(
+                //无subTitle的时候，offstage为true，代表不显示
+                offstage: subTitle != null
+                    ? (subTitle!.isEmpty ? true : false)
+                    : true,
+                child: Text(
+                  subTitle ?? "",
+                  style: context.bodyText2Style?.copyWith(fontSize: 12),
+                  maxLines: maxLines,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.start,
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -211,30 +234,52 @@ class CustomListTitle extends StatelessWidget {
           ),
         ),
         Gaps.hGap8,
-        rightImage != null
-            ? Image.asset(
-                rightImage!,
-                width: endSize,
-                height: endSize,
-                color: context.bodyText2Color,
-              )
-            : rightWidget,
+        // rightImage != null
+        //     ? Image.asset(
+        //         rightImage!,
+        //         width: endSize,
+        //         height: endSize,
+        //         color: context.bodyText2Color,
+        //       )
+        //     : rightWidget,
+        rightWidget ??
+            (rightImage != null
+                ? Image.asset(
+                    rightImage!,
+                    width: endSize,
+                    height: endSize,
+                    color: context.bodyText2Color,
+                  )
+                : Gaps.empty),
       ],
     );
   }
 
   /// 可选类型Item
   Widget buildRightWidget2(BuildContext context) {
-    Widget selectWidget = rightImage != null
-        ? Image.asset(
-            rightImage!,
-            width: endSize,
-            height: endSize,
-            color: rightColor,
-          )
-        : rightWidget;
+    // Widget selectWidget = rightImage != null
+    //     ? Image.asset(
+    //         rightImage!,
+    //         width: endSize,
+    //         height: endSize,
+    //         color: rightColor,
+    //       )
+    //     : rightWidget;
 
-    Widget widget = isSelect ? selectWidget : Gaps.hGap16;
+    Widget selectWidget = rightWidget ??
+        (rightImage != null
+            ? Image.asset(
+                rightImage!,
+                width: endSize,
+                height: endSize,
+                color: rightColor,
+              )
+            : Gaps.empty);
+
+    Widget widget = isSelect != null
+        ? (isSelect! ? selectWidget : Gaps.hGap16)
+        : Gaps.hGap16;
+
     return widget;
   }
 }

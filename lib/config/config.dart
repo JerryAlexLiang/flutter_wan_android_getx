@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_wan_android_getx/http/dio_util.dart';
 import 'package:flutter_wan_android_getx/page/setting/theme/theme_setting_controller.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
+import 'package:flutter_wan_android_getx/utils/logger_util.dart';
+import 'package:flutter_wan_android_getx/utils/sp_util.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -48,8 +50,10 @@ class Config {
         Get.put<ThemeSettingController>(ThemeSettingController());
 
     //初始化默认主题
-    var themeData =
-        Get.find<SharedPreferences>().getString(ThemeKey.appThemeKey);
+    // var themeData =
+    //     Get.find<SharedPreferences>().getString(ThemeKey.appThemeKey);
+    var themeData = SpUtil.getAppThemeData();
+    LoggerUtil.d('themeData : $themeData');
 
     if (themeData == null) {
       themeSettingController.setLightThemeMode();
@@ -65,11 +69,6 @@ class Config {
         themeSettingController.setSystemThemeMode();
       }
     }
-
-    // //是否跟随系统自动切换暗色模式
-    // bool? themeMode =
-    //     Get.find<SharedPreferences>().getBool(ThemeKey.keyAppThemeMode);
-    // themeSettingController.openSystemThemeMode();
 
     //     // 读取设备第一次打开
 //     isFirstOpen = StorageUtil().getBool(STORAGE_DEVICE_FIRST_OPEN_KEY);

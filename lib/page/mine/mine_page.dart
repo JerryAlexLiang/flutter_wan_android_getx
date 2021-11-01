@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/page/setting/theme/theme_setting_controller.dart';
-import 'package:flutter_wan_android_getx/page/setting/theme/theme_setting_page.dart';
+import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/routes/app_routes.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
@@ -35,7 +35,8 @@ class MinePage extends StatelessWidget {
                   ),
             Expanded(
               child: Text(
-                '更改主题',
+                // '更改主题',
+                StringsConstant.changeTheme.tr,
                 style: TextStyle(
                   // color: Theme.of(context).textTheme.bodyText1?.color,
                   color: context.bodyText1Color,

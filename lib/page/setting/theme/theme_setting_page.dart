@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:flutter_wan_android_getx/widget/custom_app_bar.dart';
 import 'package:flutter_wan_android_getx/widget/custom_list_title.dart';
@@ -17,7 +18,8 @@ class ThemeSettingPage extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         showBottomLine: true,
-        centerTitle: '主题设置',
+        // centerTitle: '主题设置',
+        centerTitle: StringsConstant.settingTheme.tr,
         actionIcon: context.isDarkMode
             ? Icon(Icons.nightlight_round, color: context.iconColor)
             : Icon(Icons.wb_sunny_rounded, color: context.iconColor),
@@ -38,8 +40,8 @@ class ThemeSettingPage extends StatelessWidget {
               //跟随系统模式
               CustomListTitle(
                 isSelectType: true,
-                title: '跟随系统模式',
-                rightContent: '系统模式',
+                // title: '跟随系统模式',
+                title: StringsConstant.systemMode.tr,
                 isShowLeftWidget: true,
                 leftWidget: const Icon(Icons.lightbulb_rounded),
                 rightWidget: const Icon(Icons.check),
@@ -51,7 +53,8 @@ class ThemeSettingPage extends StatelessWidget {
               //白色主题
               CustomListTitle(
                 isSelectType: true,
-                title: '日间模式',
+                // title: '日间模式',
+                title: StringsConstant.lightTheme.tr,
                 isShowLeftWidget: true,
                 leftWidget: const Icon(Icons.wb_sunny_rounded),
                 rightWidget: const Icon(Icons.check),
@@ -63,7 +66,8 @@ class ThemeSettingPage extends StatelessWidget {
               //夜间模式
               CustomListTitle(
                 isSelectType: true,
-                title: '夜间模式',
+                // title: '夜间模式',
+                title: StringsConstant.darkTheme.tr,
                 isShowLeftWidget: true,
                 leftWidget: const Icon(Icons.nightlight_round),
                 rightWidget: const Icon(Icons.check),

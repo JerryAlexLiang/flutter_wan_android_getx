@@ -60,7 +60,7 @@ class ThemeKey {
   static const String appThemeKey = "app_theme_data";
   static const String darkTheme = "夜间模式";
   static const String lightTheme = "日间模式";
-  static const String systemTheme = "跟随系统模式";
+  static const String systemTheme = "跟随系统";
 }
 
 /// 主题列表

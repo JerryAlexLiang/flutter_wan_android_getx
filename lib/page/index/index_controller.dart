@@ -5,7 +5,7 @@ import 'package:flutter_wan_android_getx/page/mine/mine_page.dart';
 import 'package:flutter_wan_android_getx/page/navigation_tree/navigation_tree_page.dart';
 import 'package:flutter_wan_android_getx/page/project/project_page.dart';
 import 'package:flutter_wan_android_getx/page/system_tree/system_tree_page.dart';
-import 'package:flutter_wan_android_getx/theme/app_color.dart';
+import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/widget/keep_alive_wrapper.dart';
 import 'package:get/get.dart';
 
@@ -47,60 +47,65 @@ class IndexController extends GetxController {
 
     /// 初始静态数据
     bottomTabs = <BottomNavigationBarItem>[
-      const BottomNavigationBarItem(
-        icon: Icon(
+      BottomNavigationBarItem(
+        icon: const Icon(
           Icons.home_outlined,
           size: 20,
         ),
-        activeIcon: Icon(
+        activeIcon: const Icon(
           Icons.home,
           size: 25,
         ),
-        label: '首页',
+        // label: '首页',
+        label: StringsConstant.homePage.tr,
       ),
-      const BottomNavigationBarItem(
-        icon: Icon(
+      BottomNavigationBarItem(
+        icon: const Icon(
           Icons.account_tree_outlined,
           size: 20,
         ),
-        activeIcon: Icon(
+        activeIcon: const Icon(
           Icons.account_tree,
           size: 25,
         ),
-        label: '体系',
+        // label: '体系',
+        label: StringsConstant.accountTreePage.tr,
       ),
-      const BottomNavigationBarItem(
-        icon: Icon(
+      BottomNavigationBarItem(
+        icon: const Icon(
           Icons.navigation_outlined,
           size: 20,
         ),
-        activeIcon: Icon(
+        activeIcon: const Icon(
           Icons.navigation,
           size: 25,
         ),
-        label: '导航',
+        // label: '导航',
+        label: StringsConstant.navigationPage.tr,
       ),
-      const BottomNavigationBarItem(
-        icon: Icon(
+      BottomNavigationBarItem(
+        icon: const Icon(
           Icons.apps_outlined,
           size: 20,
         ),
-        activeIcon: Icon(
+        activeIcon: const Icon(
           Icons.apps,
           size: 25,
         ),
-        label: '项目',
+        // label: '项目',
+        label: StringsConstant.projectPage.tr,
       ),
-      const BottomNavigationBarItem(
-        icon: Icon(
+      BottomNavigationBarItem(
+        icon: const Icon(
           Icons.person_outline,
           size: 20,
         ),
-        activeIcon: Icon(
+        activeIcon: const Icon(
           Icons.person,
           size: 25,
         ),
-        label: '我的',
+        // label: '我的',
+        label: StringsConstant.minePage.tr,
       ),
     ];
 
