@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:get/get.dart';
 
 import 'index_controller.dart';
@@ -11,6 +12,9 @@ class IndexPage extends GetView<IndexController> {
 
   @override
   Widget build(BuildContext context) {
+
+    LoggerUtil.d('IndexPage build',tag: 'IndexPage');
+
     return Scaffold(
       bottomNavigationBar: _buildBottomNavigationBar(),
       body: _buildPageView(),
@@ -35,7 +39,7 @@ class IndexPage extends GetView<IndexController> {
   Widget _buildPageView() {
     return PageView(
       //禁止滑动
-      physics: const NeverScrollableScrollPhysics(),
+      // physics: const NeverScrollableScrollPhysics(),
       children: controller.tabPageBodies,
       controller: controller.pageController,
       onPageChanged: (index) => controller.onPageChanged(index),

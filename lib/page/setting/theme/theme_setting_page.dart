@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
+import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/widget/custom_app_bar.dart';
 import 'package:flutter_wan_android_getx/widget/custom_list_title.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,8 @@ class ThemeSettingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LoggerUtil.d('ThemeSettingPage build', tag: 'ThemeSettingPage');
+
     return Scaffold(
       appBar: CustomAppBar(
         showBottomLine: true,

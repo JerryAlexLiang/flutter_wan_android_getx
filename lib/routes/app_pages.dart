@@ -1,6 +1,5 @@
 import 'package:flutter_wan_android_getx/page/index/index_binding.dart';
 import 'package:flutter_wan_android_getx/page/index/index_page.dart';
-import 'package:flutter_wan_android_getx/page/setting/language/language_binding.dart';
 import 'package:flutter_wan_android_getx/page/setting/language/language_page.dart';
 import 'package:flutter_wan_android_getx/page/setting/setting_binding.dart';
 import 'package:flutter_wan_android_getx/page/setting/setting_page.dart';
@@ -18,7 +17,7 @@ class AppPages {
   static final List<GetPage> routes = [
     GetPage(
       name: AppRoutes.main,
-      page: () => IndexPage(),
+      page: () => const IndexPage(),
       binding: IndexBinding(),
     ),
     GetPage(

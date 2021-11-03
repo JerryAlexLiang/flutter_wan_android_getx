@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/page/model/language.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
+import 'package:flutter_wan_android_getx/routes/app_routes.dart';
+import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/widget/custom_app_bar.dart';
 import 'package:flutter_wan_android_getx/widget/custom_list_title.dart';
 import 'package:get/get.dart';
@@ -14,6 +16,9 @@ class LanguagePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    LoggerUtil.d('LanguagePage build',tag: 'LanguagePage');
+
     return Scaffold(
       appBar: CustomAppBar(
         centerTitle: StringsConstant.language.tr,
@@ -37,7 +42,10 @@ class LanguagePage extends StatelessWidget {
             Icons.radio_button_checked,
             size: 20,
           ),
-          onTap: () => controller.onSelectLanguage(index),
+          onTap: () => {
+            controller.onSelectLanguage(index),
+            Get.offAllNamed(AppRoutes.main),
+          },
         );
       },
     );

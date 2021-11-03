@@ -6,6 +6,7 @@ import 'package:flutter_wan_android_getx/page/navigation_tree/navigation_tree_pa
 import 'package:flutter_wan_android_getx/page/project/project_page.dart';
 import 'package:flutter_wan_android_getx/page/system_tree/system_tree_page.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
+import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/widget/keep_alive_wrapper.dart';
 import 'package:get/get.dart';
 
@@ -42,6 +43,8 @@ class IndexController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
+    LoggerUtil.d('onInit()', tag: 'IndexController');
 
     pageController = PageController(initialPage: currentPage);
 
@@ -127,7 +130,7 @@ class IndexController extends GetxController {
       KeepAliveWrapper(
         child: ProjectPage(),
       ),
-      KeepAliveWrapper(
+      const KeepAliveWrapper(
         child: MinePage(),
       ),
     ];
@@ -139,6 +142,7 @@ class IndexController extends GetxController {
   void onReady() {
     super.onReady();
     // async 拉取数据
+    LoggerUtil.d('onReady()', tag: 'IndexController');
   }
 
   ///在 [onDelete] 方法之前调用。 [onClose] 可能用于
@@ -152,6 +156,7 @@ class IndexController extends GetxController {
     super.onClose();
     // 1 stop & close 关闭对象
     // 2 save 持久化数据
+    LoggerUtil.d('onClose()', tag: 'IndexController');
   }
 
   ///dispose 释放内存
@@ -160,5 +165,6 @@ class IndexController extends GetxController {
     // dispose释放对象
     pageController.dispose();
     super.dispose();
+    LoggerUtil.d('dispose()', tag: 'IndexController');
   }
 }
