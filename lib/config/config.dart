@@ -29,6 +29,9 @@ class Config {
   /// 是否第一次打开
   static bool? isFirstOpen;
 
+  /// App广告页显示时间（单位：秒）
+  static const int launchTime = 10;
+
   //// 保存用户已打开APP
 //   static saveAlreadyOpen() {
 //     StorageUtil().setBool(STORAGE_DEVICE_FIRST_OPEN_KEY, false);

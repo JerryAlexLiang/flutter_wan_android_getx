@@ -4,6 +4,8 @@ import 'package:flutter_wan_android_getx/page/setting/language/language_page.dar
 import 'package:flutter_wan_android_getx/page/setting/setting_binding.dart';
 import 'package:flutter_wan_android_getx/page/setting/setting_page.dart';
 import 'package:flutter_wan_android_getx/page/setting/theme/theme_setting_page.dart';
+import 'package:flutter_wan_android_getx/page/splash/splash_binding.dart';
+import 'package:flutter_wan_android_getx/page/splash/splash_page.dart';
 import 'package:flutter_wan_android_getx/page/unknown_route_page.dart';
 import 'package:flutter_wan_android_getx/routes/app_routes.dart';
 import 'package:get/get.dart';
@@ -15,6 +17,11 @@ class AppPages {
   );
 
   static final List<GetPage> routes = [
+    GetPage(
+      name: AppRoutes.splash,
+      page: () => SplashPage(),
+      binding: SplashBinding(),
+    ),
     GetPage(
       name: AppRoutes.main,
       page: () => const IndexPage(),

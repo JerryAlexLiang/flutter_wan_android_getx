@@ -17,7 +17,7 @@ class StringsConstant {
   static const String simplifiedChinese = "简体中文"; //简体中文
   static const String traditionalChineseHongKong = "繁体中文(香港)"; //繁体中文(香港)
   static const String usEnglish = "英语(US)"; //英语
-
+  static const String exitAppToast = "再次点击退出程序";
 }
 
 ///使用Get配置语言环境
@@ -43,6 +43,7 @@ class Messages extends Translations {
           StringsConstant.simplifiedChinese: '简体中文',
           StringsConstant.traditionalChineseHongKong: '繁体中文(香港)',
           StringsConstant.usEnglish: '英语(US)',
+          StringsConstant.exitAppToast: '再次点击退出程序',
         },
         //繁体中文（香港）
         'zh_HK': {
@@ -62,6 +63,7 @@ class Messages extends Translations {
           StringsConstant.simplifiedChinese: '简体中文',
           StringsConstant.traditionalChineseHongKong: '繁体中文(香港)',
           StringsConstant.usEnglish: '英語(US)',
+          StringsConstant.exitAppToast: '再按一次退出程序',
         },
         //English
         'en_US': {
@@ -82,6 +84,7 @@ class Messages extends Translations {
           StringsConstant.traditionalChineseHongKong:
               'Traditional Chinese(HongKong)',
           StringsConstant.usEnglish: 'English(US)',
+          StringsConstant.exitAppToast: 'Click Again ToExit The Program',
         },
       };
 }

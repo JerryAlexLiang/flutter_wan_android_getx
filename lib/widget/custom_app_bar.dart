@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     Key? key,
+    this.appBarHeight = 56.0,
     this.backgroundColor,
     this.title = '',
     this.centerTitle = '',
@@ -30,6 +31,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.bottomLineColor,
   }) : super(key: key);
 
+  final double appBarHeight;
   final Color? backgroundColor;
   final String title;
   final String centerTitle;
@@ -73,6 +75,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         color: _backgroundColor,
         child: SafeArea(
           child: Container(
+            height: appBarHeight,
             decoration: BoxDecoration(
               /// 使用装饰器设置是否显示下划线
               border: Border(
@@ -85,11 +88,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             child: Row(
               children: [
-                backWidget(context),
                 Expanded(
+                  flex: 1,
+                  child: backWidget(context),
+                ),
+                Expanded(
+                  flex: 5,
                   child: titleWidget(context),
                 ),
-                rightWidget(context),
+                Expanded(
+                  flex: 1,
+                  child: rightWidget(context),
+                ),
               ],
             ),
           ),
@@ -100,7 +110,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   //AppBar需要实现PreferredSizeWidget
-  Size get preferredSize => const Size.fromHeight(56);
+  Size get preferredSize => Size.fromHeight(appBarHeight);
 
   Widget backWidget(BuildContext context) {
     final Widget widget = isBack
@@ -123,7 +133,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           )
         : Gaps.empty;
 
-    return widget;
+    return Container(
+      alignment: Alignment.centerLeft,
+      child: widget,
+    );
   }
 
   Widget titleWidget(BuildContext context) {
@@ -132,6 +145,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: Text(
         title.isEmpty ? centerTitle : title,
         style: context.subtitle1Style,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }
@@ -160,6 +175,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       )
                     : Gaps.empty),
           );
-    return widget;
+
+    return Container(
+      alignment: Alignment.centerRight,
+      child: widget,
+    );
   }
 }

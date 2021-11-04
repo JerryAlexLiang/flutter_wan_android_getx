@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import 'index_controller.dart';
@@ -12,12 +14,25 @@ class IndexPage extends GetView<IndexController> {
 
   @override
   Widget build(BuildContext context) {
+    LoggerUtil.d('IndexPage build', tag: 'IndexPage');
 
-    LoggerUtil.d('IndexPage build',tag: 'IndexPage');
+    DateTime? _lastDateTime;
 
     return Scaffold(
       bottomNavigationBar: _buildBottomNavigationBar(),
-      body: _buildPageView(),
+      body: WillPopScope(
+        child: _buildPageView(),
+        onWillPop: () {
+          if (_lastDateTime == null ||
+              DateTime.now().difference(_lastDateTime!) >
+                  const Duration(seconds: 1)) {
+            _lastDateTime = DateTime.now();
+            Fluttertoast.showToast(msg: StringsConstant.exitAppToast.tr);
+            return Future.value(false);
+          }
+          return Future.value(true);
+        },
+      ),
     );
   }
 

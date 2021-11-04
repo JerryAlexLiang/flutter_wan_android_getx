@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
                 RefreshLocalizations.delegate,
               ],
               defaultTransition: Transition.fade,
-              initialRoute: AppRoutes.main,
+              initialRoute: AppRoutes.splash,
               getPages: AppPages.routes,
             ),
           );
