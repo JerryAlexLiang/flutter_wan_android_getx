@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -29,6 +30,7 @@ class MineController extends GetxController {
         scrollerPercent = 1.0;
       }
       percent = scrollerPercent;
+      LoggerUtil.d('=======> 滑动监听: $percent');
     });
   }
 

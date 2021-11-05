@@ -6,13 +6,13 @@ import 'package:get/get.dart';
 ThemeData lightTheme = ThemeData.light().copyWith(
   primaryColor: Colors.blue,
   splashColor: Colors.white12,
-  appBarTheme: const AppBarTheme(
+  appBarTheme: AppBarTheme(
     elevation: 0,
-    backgroundColor: Colors.white,
-    iconTheme: IconThemeData(color: Colors.black),
+    backgroundColor: ThemeData.light().scaffoldBackgroundColor,
+    iconTheme: const IconThemeData(color: Colors.black),
   ),
-  scaffoldBackgroundColor: Colors.white,
-  backgroundColor: Colors.grey[200]?.withOpacity(0.7),
+  scaffoldBackgroundColor: ThemeData.light().scaffoldBackgroundColor,
+  backgroundColor: Colors.white,
   iconTheme: const IconThemeData(
     color: AppColors.iconLightColor,
   ),
@@ -46,8 +46,7 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
     iconTheme: const IconThemeData(color: Colors.white),
   ),
   scaffoldBackgroundColor: ThemeData.dark().scaffoldBackgroundColor,
-  // backgroundColor: ThemeData.dark().backgroundColor,
-  backgroundColor: Colors.red,
+  backgroundColor: Colors.black,
   iconTheme: const IconThemeData(
     color: AppColors.iconDarkColor,
   ),
@@ -74,7 +73,9 @@ bool isDarkMode(BuildContext context) {
 }
 
 extension ThemeExtension on BuildContext {
-  Color get backgroundColor => Theme.of(this).scaffoldBackgroundColor;
+  Color get scaffoldBackgroundColor => Theme.of(this).scaffoldBackgroundColor;
+
+  Color get backgroundColor => Theme.of(this).backgroundColor;
 
   Color? get appBarBackgroundColor =>
       Theme.of(this).appBarTheme.backgroundColor;

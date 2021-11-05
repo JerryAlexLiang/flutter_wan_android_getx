@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     Key? key,
+    this.opacity = 1.0,
     this.appBarHeight = 56.0,
     this.backgroundColor,
     this.title = '',
@@ -31,6 +32,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.bottomLineColor,
   }) : super(key: key);
 
+  final double opacity;
   final double appBarHeight;
   final Color? backgroundColor;
   final String title;
@@ -69,38 +71,41 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     /// AnnotatedRegion应该只包裹顶部状态栏处的控件，比如AppBar的写法就不会导致底部导航栏变黑
     /// 将Header抽取出来，AnnotatedRegion只包裹顶部的Header，这样写既能实现修改状态栏字体，也没有影响到底部导航栏。
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: _overlayStyle,
-      child: Material(
-        color: _backgroundColor,
-        child: SafeArea(
-          child: Container(
-            height: appBarHeight,
-            decoration: BoxDecoration(
-              /// 使用装饰器设置是否显示下划线
-              border: Border(
-                bottom: showBottomLine
-                    ? Divider.createBorderSide(context,
-                        width: bottomLineHeight, color: bottomLineColor)
-                    : Divider.createBorderSide(context,
-                        width: 0.0, color: Colors.transparent),
+    return Opacity(
+      opacity: opacity,
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: _overlayStyle,
+        child: Material(
+          color: _backgroundColor,
+          child: SafeArea(
+            child: Container(
+              height: appBarHeight,
+              decoration: BoxDecoration(
+                /// 使用装饰器设置是否显示下划线
+                border: Border(
+                  bottom: showBottomLine
+                      ? Divider.createBorderSide(context,
+                          width: bottomLineHeight, color: bottomLineColor)
+                      : Divider.createBorderSide(context,
+                          width: 0.0, color: Colors.transparent),
+                ),
               ),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: backWidget(context),
-                ),
-                Expanded(
-                  flex: 5,
-                  child: titleWidget(context),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: rightWidget(context),
-                ),
-              ],
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: backWidget(context),
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: titleWidget(context),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: rightWidget(context),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
