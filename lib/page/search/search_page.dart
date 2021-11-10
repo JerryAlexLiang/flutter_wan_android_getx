@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wan_android_getx/utils/keyboard_util.dart';
+import 'package:flutter_wan_android_getx/page/search/component/normal_search_page.dart';
+import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/widget/search_app_bar.dart';
 import 'package:flutter_wan_android_getx/widget/search_view.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import 'search_controller.dart';
@@ -11,6 +11,8 @@ import 'search_controller.dart';
 
 class SearchPage extends StatelessWidget {
   final controller = Get.find<SearchController>();
+
+  SearchPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class SearchPage extends StatelessWidget {
           onSuffixPressed: () => controller.clearSearchView(),
           onChange: (String value) {
             controller.keyword = value;
+            controller.onChange(value);
           },
           onSubmit: (value) => {
             controller.keyword = value,
@@ -40,35 +43,22 @@ class SearchPage extends StatelessWidget {
           },
         ),
       ),
-      body: Container(
-        child: Obx(() {
-          return IndexedStack(
-            index: controller.indexed,
-            children: [
-              Container(
-                child: Center(
-                  child: Text(
-                    '1',
-                    style: TextStyle(
-                      fontSize: 22,
-                    ),
-                  ),
+      body: Obx(() {
+        return IndexedStack(
+          index: controller.indexed,
+          children: [
+            NormalSearchPage(),
+            Center(
+              child: Text(
+                controller.searchResult,
+                style: const TextStyle(
+                  fontSize: 22,
                 ),
               ),
-              Container(
-                child: Center(
-                  child: Text(
-                    controller.keyword,
-                    style: TextStyle(
-                      fontSize: 22,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-        }),
-      ),
+            ),
+          ],
+        );
+      }),
     );
   }
 }

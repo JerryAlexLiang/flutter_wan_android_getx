@@ -1,4 +1,6 @@
 import 'package:flutter_wan_android_getx/page/model/language.dart';
+import 'package:flutter_wan_android_getx/res/strings.dart';
+import 'package:get/get.dart';
 
 languageFromJson(Language data, Map<String, dynamic> json) {
 	if (json['name'] != null) {
