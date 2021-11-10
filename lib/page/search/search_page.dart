@@ -43,12 +43,28 @@ class SearchPage extends StatelessWidget {
           },
         ),
       ),
-      body: Obx(() {
-        return IndexedStack(
-          index: controller.indexed,
-          children: [
-            NormalSearchPage(),
-            Center(
+      body: _buildSearchView(),
+
+      // body: WillPopScope(
+      //   child: _buildSearchView(),
+      //   onWillPop: (){
+      //
+      //   },
+      // ),
+    );
+  }
+
+  Obx _buildSearchView() {
+    return Obx(() {
+      return IndexedStack(
+        index: controller.indexed,
+        children: [
+          const NormalSearchPage(),
+          Container(
+            color: Colors.red,
+            height: Get.height,
+            width: Get.width,
+            child: Center(
               child: Text(
                 controller.searchResult,
                 style: const TextStyle(
@@ -56,9 +72,23 @@ class SearchPage extends StatelessWidget {
                 ),
               ),
             ),
-          ],
-        );
-      }),
-    );
+          ),
+        ],
+      );
+    });
   }
 }
+
+//body: WillPopScope(
+//         child: _buildPageView(),
+//         onWillPop: () {
+//           if (_lastDateTime == null ||
+//               DateTime.now().difference(_lastDateTime!) >
+//                   const Duration(seconds: 1)) {
+//             _lastDateTime = DateTime.now();
+//             Fluttertoast.showToast(msg: StringsConstant.exitAppToast.tr);
+//             return Future.value(false);
+//           }
+//           return Future.value(true);
+//         },
+//       ),

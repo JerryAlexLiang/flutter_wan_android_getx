@@ -27,9 +27,8 @@ class HotSearchList extends StatelessWidget {
         var hotKeys = controller.hotKeys;
         if (hotKeys.isNotEmpty) {
           var hotNameList = hotKeys.map((e) => e.name).toList();
-          LoggerUtil.d("======>  @@@@2  ${hotKeys.map((e) => e.toString())}");
           LoggerUtil.d(
-              "======>  @@@@3  ${hotNameList.map((e) => e.toString())}");
+              "======> HotSearchList  ${hotNameList.map((e) => e.toString()).toList()}");
 
           return ChipSearchWrap(
             isShow: controller.showHotKeys,
@@ -40,9 +39,11 @@ class HotSearchList extends StatelessWidget {
               // 点击Chip热词或者搜索历史某一项词条进行搜索
               controller.keyword = value;
               controller.loadSearchKeys();
+              //将点击的热词填充输入框
+              controller.textEditingController.text = value;
             },
           );
-        }else{
+        } else {
           return Gaps.empty;
         }
       }),

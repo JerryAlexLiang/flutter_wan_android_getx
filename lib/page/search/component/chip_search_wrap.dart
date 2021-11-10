@@ -73,14 +73,17 @@ class ChipSearchWrap extends StatelessWidget {
 
   /// 流布局列表
   Widget _chipWrap(BuildContext context) {
-    if (chipNameList == null) return Gaps.empty;
-
     if (chipNameList != null) {
-      var _wrapList = chipNameList!
+      LoggerUtil.d("======> ChipSearchWrap1  ${chipNameList!.toList()}");
+      List<Widget> _wrapList = chipNameList!
           .map((e) => _chipWidget(context, e!, chipNameList!.indexOf(e)))
           .toList();
 
+      LoggerUtil.d("======> ChipSearchWrap3  ${_wrapList.toList()}");
+
       return Wrap(
+        // spacing: 5,
+        // runSpacing: 5,
         children: _wrapList,
       );
     } else {
@@ -90,35 +93,43 @@ class ChipSearchWrap extends StatelessWidget {
 
   /// chip内容组件
   Widget _chipWidget(BuildContext context, String content, int index) {
-    LoggerUtil.d("======>  @@@@1  $content");
+    LoggerUtil.d("======> ChipSearchWrap2  $content");
 
     ///使用DecoratedBox+InkWell看不到点击效果，需要使用Ink组件
-    return Ink(
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(20),
-        onTap: onTap(content),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Offstage(
-                offstage: index == 0 ? false : true,
-                child: const Icon(
-                  Icons.local_fire_department_rounded,
-                  color: Colors.red,
+    return Container(
+      padding: const EdgeInsets.all(5),
+      child: Ink(
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: InkWell(
+          splashColor: Colors.transparent.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(20),
+          onTap: () => onTap(content),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Offstage(
+                    offstage: index == 0 ? false : true,
+                    child: Container(
+                      padding: const EdgeInsets.only(right: 5),
+                      child: const Icon(
+                        Icons.local_fire_department_rounded,
+                        size: 15,
+                        color: Colors.red,
+                      ),
+                    )),
+                Text(
+                  content,
+                  style: context.bodyText2Style,
                 ),
-              ),
-              Text(
-                content,
-                style: context.bodyText2Style,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

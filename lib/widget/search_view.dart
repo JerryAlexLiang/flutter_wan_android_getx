@@ -15,7 +15,6 @@ class SearchView extends StatelessWidget {
     this.onSuffixPressed,
     this.onTap,
     this.hintTextStyle,
-    this.labelStyle,
     this.onSubmit,
     this.onChange,
   }) : super(key: key);
@@ -23,7 +22,6 @@ class SearchView extends StatelessWidget {
   //input内容
   final String hintText;
   final TextStyle? hintTextStyle;
-  final TextStyle? labelStyle;
 
   //是否可输入
   final bool enabled;
@@ -65,7 +63,6 @@ class SearchView extends StatelessWidget {
             filled: true,
             hintText: hintText,
             hintStyle: hintTextStyle,
-            labelStyle: labelStyle,
             enabledBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Color(0x00000000)),
               borderRadius: BorderRadius.all(Radius.circular(100)),
@@ -97,19 +94,32 @@ class SearchView extends StatelessWidget {
       return null;
     } else {
       //SearchView可用时启用SearchController
+
+      final controller = Get.find<SearchController>();
+
       return enabled
-          ? GetX(
-              init: Get.find<SearchController>(),
-              builder: (SearchController controller) {
-                //监控TextEditingController的输入值，更改Suffix图标
-                return IconButton(
-                  onPressed: onSuffixPressed,
-                  icon: controller.keyword.isEmpty
-                      ? setSuffixIcon(Icons.search)
-                      : setSuffixIcon(Icons.clear),
-                );
-              },
-            )
+          // ? GetX(
+          //     init: Get.find<SearchController>(),
+          //     builder: (SearchController controller) {
+          //       //监控TextEditingController的输入值，更改Suffix图标
+          //       return IconButton(
+          //         onPressed: onSuffixPressed,
+          //         icon: controller.keyword.isEmpty
+          //             ? setSuffixIcon(Icons.search)
+          //             : setSuffixIcon(Icons.clear),
+          //       );
+          //     },
+          //   )
+
+          ? Obx(() {
+              //监控TextEditingController的输入值，更改Suffix图标
+              return IconButton(
+                onPressed: onSuffixPressed,
+                icon: controller.keyword.isEmpty
+                    ? setSuffixIcon(Icons.search)
+                    : setSuffixIcon(Icons.clear),
+              );
+            })
           : IconButton(
               onPressed: onSuffixPressed,
               icon: setSuffixIcon(Icons.search),
