@@ -5,4 +5,5 @@ abstract class AppRoutes {
   static const settingPage = '/settingPage';
   static const themeModePage = '/themeModePage';
   static const languageModePage = '/languageModePage';
+  static const searchPage = '/searchPage';
 }

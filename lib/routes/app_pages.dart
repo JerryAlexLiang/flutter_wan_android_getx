@@ -1,5 +1,7 @@
 import 'package:flutter_wan_android_getx/page/index/index_binding.dart';
 import 'package:flutter_wan_android_getx/page/index/index_page.dart';
+import 'package:flutter_wan_android_getx/page/search/search_binding.dart';
+import 'package:flutter_wan_android_getx/page/search/search_page.dart';
 import 'package:flutter_wan_android_getx/page/setting/language/language_page.dart';
 import 'package:flutter_wan_android_getx/page/setting/setting_binding.dart';
 import 'package:flutter_wan_android_getx/page/setting/setting_page.dart';
@@ -40,6 +42,11 @@ class AppPages {
       name: AppRoutes.languageModePage,
       page: () => LanguagePage(),
       // binding: LanguageBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.searchPage,
+      page: () => SearchPage(),
+      binding: SearchBinding(),
     ),
   ];
 }

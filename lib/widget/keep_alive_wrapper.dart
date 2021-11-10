@@ -44,6 +44,7 @@ class _KeepAliveWrapperState extends State<KeepAliveWrapper>
     super.didUpdateWidget(oldWidget);
   }
 
+  /// 重写此方法，返回true时，保存页面数据状态，防止切换页面后数据重新加载，另外需要配合PageView使用
   @override
   bool get wantKeepAlive => widget.keepAlive;
 }

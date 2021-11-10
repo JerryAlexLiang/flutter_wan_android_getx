@@ -15,7 +15,10 @@ class CustomListTitle extends StatelessWidget {
     this.leftWidget,
     this.title,
     this.subTitle,
+    this.titleStyle,
+    this.subTitleStyle,
     this.rightContent = "",
+    this.rightContentStyle,
     this.maxLines = 1,
     this.leftColor,
     this.rightColor,
@@ -40,9 +43,12 @@ class CustomListTitle extends StatelessWidget {
   /// 标题
   final String? title;
   final String? subTitle;
+  final TextStyle? titleStyle;
+  final TextStyle? subTitleStyle;
 
   /// 内容
   final String rightContent;
+  final TextStyle? rightContentStyle;
 
   /// 右侧组件
   final String? rightImage;
@@ -162,7 +168,7 @@ class CustomListTitle extends StatelessWidget {
             children: [
               Text(
                 title ?? "",
-                style: context.bodyText1Style,
+                style: titleStyle ?? context.bodyText1Style,
                 maxLines: maxLines,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.start,
@@ -177,7 +183,8 @@ class CustomListTitle extends StatelessWidget {
                     : true,
                 child: Text(
                   subTitle ?? "",
-                  style: context.bodyText2Style?.copyWith(fontSize: 12),
+                  style: subTitleStyle ??
+                      context.bodyText2Style?.copyWith(fontSize: 12),
                   maxLines: maxLines,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.start,
@@ -226,7 +233,8 @@ class CustomListTitle extends StatelessWidget {
             offstage: rightContent.isEmpty ? true : false,
             child: Text(
               rightContent,
-              style: context.bodyText2Style?.copyWith(fontSize: 12),
+              style: rightContentStyle ??
+                  context.bodyText2Style?.copyWith(fontSize: 12),
               maxLines: maxLines,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.end,

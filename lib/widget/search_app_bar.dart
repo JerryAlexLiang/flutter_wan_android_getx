@@ -4,22 +4,27 @@ import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:get/get.dart';
 
-/// 自定义AppBar
+/// 自定义搜索栏 - AppBar
 /// 说明：
 /// 1、Widget属性icon 优先于String类型的image生效，imageColor只对image生效
 /// 2、右侧Widget,actionName属性优先于actionIcon和actionImage生效；
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({
+class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const SearchAppBar({
     Key? key,
-    this.opacity = 1.0,
     this.appBarHeight = 56.0,
     this.backgroundColor,
-    this.title = '',
-    this.centerTitle = '',
-    this.titleStyle,
+    this.opacity = 1.0,
+    this.showBottomLine = false,
+    this.bottomLineHeight = 0.6,
+    this.bottomLineColor,
+    this.showLeft = false,
     this.backImg = 'images/ic_back_black.png',
     this.backIcon,
+    this.leftName = '',
+    this.leftPadding,
+    this.leftNameStyle,
+    this.onLeftPressed,
     this.backImageColor,
     this.actionName = '',
     this.actionNameStyle,
@@ -27,33 +32,39 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actionImage,
     this.actionBgColor,
     this.onRightPressed,
-    this.isBack = true,
-    this.showBottomLine = false,
-    this.bottomLineHeight = 0.6,
-    this.bottomLineColor,
+    required this.searchInput,
+    this.showRight = false,
+    this.rightPadding,
   }) : super(key: key);
 
-  final double opacity;
   final double appBarHeight;
   final Color? backgroundColor;
-  final String title;
-  final String centerTitle;
-  final TextStyle? titleStyle;
-  final String backImg;
-  final Widget? backIcon;
-  final Color? backImageColor;
-  final String actionName;
-  final TextStyle? actionNameStyle;
-  final Widget? actionIcon;
-  final String? actionImage;
-  final Color? actionBgColor;
-  final VoidCallback? onRightPressed;
-  final bool isBack;
+  final double opacity;
 
   /// 是否显示下划线
   final bool showBottomLine;
   final double bottomLineHeight;
   final Color? bottomLineColor;
+
+  final bool showLeft;
+  final String backImg;
+  final Widget? backIcon;
+  final Color? backImageColor;
+  final String leftName;
+  final EdgeInsetsGeometry? leftPadding;
+  final TextStyle? leftNameStyle;
+  final VoidCallback? onLeftPressed;
+
+  final Widget searchInput;
+
+  final bool showRight;
+  final String actionName;
+  final TextStyle? actionNameStyle;
+  final EdgeInsetsGeometry? rightPadding;
+  final Widget? actionIcon;
+  final String? actionImage;
+  final Color? actionBgColor;
+  final VoidCallback? onRightPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -66,13 +77,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ? SystemUiOverlayStyle.light
             : SystemUiOverlayStyle.dark;
 
-    /// 这里没有直接用SafeArea，而是用Container包装了一层
-    /// 因为直接用SafeArea，会把顶部的statusBar区域留出空白
-    /// 外层Container会填充SafeArea，指定外层Container背景色也会覆盖原来SafeArea的颜色
-    /// var statusheight = MediaQuery.of(context).padding.top;  获取状态栏高度
-
-    /// AnnotatedRegion应该只包裹顶部状态栏处的控件，比如AppBar的写法就不会导致底部导航栏变黑
-    /// 将Header抽取出来，AnnotatedRegion只包裹顶部的Header，这样写既能实现修改状态栏字体，也没有影响到底部导航栏。
     return Opacity(
       opacity: opacity,
       child: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -94,18 +98,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               child: Row(
                 children: [
+                  backWidget(context),
                   Expanded(
-                    flex: 1,
-                    child: backWidget(context),
+                    child: searchInput,
                   ),
-                  Expanded(
-                    flex: 5,
-                    child: titleWidget(context),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: rightWidget(context),
-                  ),
+                  rightWidget(context)
                 ],
               ),
             ),
@@ -120,15 +117,27 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(appBarHeight);
 
   Widget backWidget(BuildContext context) {
-    final Widget widget = isBack
-        ? IconButton(
+    Widget leftWidget = leftName.isNotEmpty
+        ? Container(
+            alignment: Alignment.center,
+            padding: leftPadding ?? const EdgeInsets.symmetric(horizontal: 5),
+            child: Text(
+              leftName,
+              style: leftNameStyle,
+            ),
+          )
+        : IconButton(
             onPressed: () async {
-              FocusManager.instance.primaryFocus?.unfocus();
-              // bool isBack = await navigator!.maybePop();
-              // if (isBack) {
-              //   Get.back();
-              // }
-              Get.back(canPop: true);
+              // FocusManager.instance.primaryFocus?.unfocus();
+              // // bool isBack = await navigator!.maybePop();
+              // // if (isBack) {
+              // //   Get.back();
+              // // }
+              // Get.back(canPop: true);
+
+              if (onLeftPressed != null) {
+                onLeftPressed!();
+              }
             },
             tooltip: 'Back',
             padding: const EdgeInsets.all(12.0),
@@ -137,24 +146,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   backImg,
                   color: backImageColor ?? context.appBarIconColor,
                 ),
-          )
-        : Gaps.empty;
+          );
+
+    final Widget widget = showLeft ? leftWidget : Gaps.hGap16;
 
     return Container(
       alignment: Alignment.centerLeft,
       child: widget,
-    );
-  }
-
-  Widget titleWidget(BuildContext context) {
-    return Container(
-      alignment: centerTitle.isEmpty ? Alignment.centerLeft : Alignment.center,
-      child: Text(
-        title.isEmpty ? centerTitle : title,
-        style: titleStyle ?? context.subtitle1Style,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
     );
   }
 
@@ -163,7 +161,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         color: actionBgColor ?? context.subtitle2Color,
         fontSize: context.subtitle2Style?.fontSize);
 
-    Widget widget = actionName.isNotEmpty
+    Widget rightWidget = actionName.isNotEmpty
         ? TextButton(
             onPressed: onRightPressed,
             child: Text(
@@ -183,7 +181,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     : Gaps.empty),
           );
 
+    Widget widget = showRight ? rightWidget : Gaps.hGap16;
+
     return Container(
+      padding: rightPadding,
       alignment: Alignment.centerRight,
       child: widget,
     );

@@ -41,9 +41,11 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               builder: (context, child) {
                 return Scaffold(
+                  //Global GestureDetector that will dismiss the keyboard
+                  //关闭键盘的全局手势检测器
                   body: GestureDetector(
                     child: child,
-                    onTap: KeyboardUtils.hideKeyboard(context),
+                    onTap: () => KeyboardUtils.hideKeyboard(context),
                   ),
                 );
               },
