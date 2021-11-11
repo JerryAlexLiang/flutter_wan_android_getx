@@ -4,7 +4,9 @@ import 'package:flutter_wan_android_getx/http/dio_method.dart';
 import 'package:flutter_wan_android_getx/http/dio_util.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
 import 'package:flutter_wan_android_getx/model/hot_search_model.dart';
+import 'package:flutter_wan_android_getx/utils/connectivity_utils.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
+import 'package:flutter_wan_android_getx/widget/load_state.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
@@ -49,6 +51,8 @@ class SearchController extends GetxController {
 
   set showResult(value) => _showResult.value = value;
 
+  var loadState = LoadState.loading.obs;
+
   //两种模式 0： 默认界面 1： 搜索结果界面
   int get indexed {
     if (showResult) {
@@ -59,7 +63,7 @@ class SearchController extends GetxController {
   }
 
   @override
-  void onInit() {
+  void onInit() async {
     textEditingController = TextEditingController();
     clearSearchView();
     LoggerUtil.d('============> onInit()');
@@ -67,9 +71,19 @@ class SearchController extends GetxController {
   }
 
   @override
-  void onReady() {
+  void onReady() async {
     super.onReady();
-    initHotKeysList();
+    var checkConnectivity = await ConnectivityUtils.checkConnectivity();
+
+    LoggerUtil.d('============> checkConnectivity $checkConnectivity');
+
+    if(checkConnectivity!=ConnectivityState.none){
+      initHotKeysList();
+    }else{
+      Get.snackbar('提示', '网络异常，请检查你的网络!');
+    }
+
+
     LoggerUtil.d('============> onReady()');
   }
 
@@ -127,8 +141,9 @@ class SearchController extends GetxController {
 
   /// 请求热门关键词
   Future<void> initHotKeysList() async {
-
     LoggerUtil.d('============> onReady*****()');
+
+    loadState(LoadState.loading);
 
     BaseResponse response =
         await DioUtil().request(RequestApi.hotSearch, method: DioMethod.get);
@@ -136,6 +151,7 @@ class SearchController extends GetxController {
     //拿到res.data就可以进行Json解析了，这里一般用来构造实体类
     var success = response.success;
     if (success != null) {
+      loadState(LoadState.success);
       if (success) {
         ///列表转换的时候一定要加一下强转List<dynamic>，否则会报错
         List<HotSearchModel> hotSearchList = (response.data as List<dynamic>)

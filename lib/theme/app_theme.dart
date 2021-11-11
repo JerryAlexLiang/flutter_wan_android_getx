@@ -73,6 +73,11 @@ bool isDarkMode(BuildContext context) {
 }
 
 extension ThemeExtension on BuildContext {
+  //WrapChip背景填充色
+  Color? get chipBackgroundColor {
+    return Get.isDarkMode ? Colors.grey.withOpacity(0.2) : Colors.grey[200];
+  }
+
   Color get scaffoldBackgroundColor => Theme.of(this).scaffoldBackgroundColor;
 
   Color get backgroundColor => Theme.of(this).backgroundColor;

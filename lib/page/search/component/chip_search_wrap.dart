@@ -100,7 +100,8 @@ class ChipSearchWrap extends StatelessWidget {
       padding: const EdgeInsets.all(5),
       child: Ink(
         decoration: BoxDecoration(
-          color: Colors.grey[200],
+          // color: Colors.grey[200],
+          color: context.chipBackgroundColor,
           borderRadius: BorderRadius.circular(20),
         ),
         child: InkWell(

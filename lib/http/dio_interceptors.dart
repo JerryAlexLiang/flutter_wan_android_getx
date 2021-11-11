@@ -1,8 +1,8 @@
+
 import 'package:dio/dio.dart';
 import 'package:flutter_wan_android_getx/http/base_response.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart' as get_x;
 
 /// 自定义拦截器
@@ -110,11 +110,14 @@ class DioInterceptors extends Interceptor {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    ErrorEntity errorEntity = createErrorEntity(err);
-    get_x.Get.snackbar('提示', '${errorEntity.errorMessage}');
-    Fluttertoast.showToast(msg: '提示  ${errorEntity.errorMessage}');
+    ErrorEntity? errorEntity = createErrorEntity(err);
+    if (errorEntity != null) {
+      get_x.Get.snackbar(
+          '提示', '${errorEntity.code}  ${errorEntity.errorMessage}');
+      LoggerUtil.e(
+          'Dio Request onError ====> errCode: ${errorEntity.code} errMsg: ${errorEntity.errorMessage}');
+    }
 
-    print('=======<>>>>>    提示  ${errorEntity.errorMessage}');
     // switch(errorEntity.code){
     //   case 401 :
     //     //没有权限，重新登陆
@@ -128,7 +131,7 @@ class DioInterceptors extends Interceptor {
   }
 
   /// 错误信息 Error统一处理
-  ErrorEntity createErrorEntity(DioError error) {
+  ErrorEntity? createErrorEntity(DioError error) {
     switch (error.type) {
       case DioErrorType.cancel:
         return ErrorEntity(code: -1, errorMessage: "请求取消");
@@ -145,8 +148,9 @@ class DioInterceptors extends Interceptor {
       case DioErrorType.response:
         try {
           int? errCode = error.response?.statusCode;
-          // String errMsg = error.response.statusMessage;
-          // return ErrorEntity(code: errCode, message: errMsg);
+          var errMsg = error.message;
+          LoggerUtil.e(
+              'Dio Request onError DioErrorType.response : errCode: $errCode  errMsg: $errMsg');
           switch (errCode) {
             case 400:
               return ErrorEntity(code: errCode, errorMessage: "请求语法错误");
@@ -167,7 +171,7 @@ class DioInterceptors extends Interceptor {
             case 505:
               return ErrorEntity(code: errCode, errorMessage: "不支持HTTP协议请求");
             default:
-              // return ErrorEntity(code: errCode, message: "未知错误");
+              // return ErrorEntity(code: errCode, errorMessage: "未知错误");
               return ErrorEntity(
                 code: errCode,
                 errorMessage: error.response?.statusMessage,
@@ -176,6 +180,27 @@ class DioInterceptors extends Interceptor {
         } on Exception catch (_) {
           return ErrorEntity(code: -1, errorMessage: "未知错误");
         }
+
+      case DioErrorType.other:
+        //other 其他错误类型
+        var errMsg = error.message;
+        var response = error.response;
+        int? errCode;
+        if (response != null) {
+          errCode = error.response!.statusCode;
+        }
+
+        ErrorEntity? errorEntity;
+        if (errMsg.contains('SocketException')) {
+          errorEntity =
+              ErrorEntity(code: errCode ?? -1, errorMessage: "网络异常，请检查你的网络!");
+        } else if (errMsg.contains('HttpException')) {
+          errorEntity = ErrorEntity(code: errCode ?? -1, errorMessage: "服务器异常");
+        } else if (errMsg.contains('FormatException')) {
+          errorEntity =
+              ErrorEntity(code: errCode ?? -1, errorMessage: "数据解析错误!");
+        }
+        return errorEntity;
 
       default:
         return ErrorEntity(code: -1, errorMessage: error.message);
