@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
+import 'package:flutter_wan_android_getx/widget/ripple_view.dart';
 
 /// 类名: chip_search_wrap.dart
 /// 创建日期: 11/10/21 on 3:44 PM
@@ -11,15 +12,16 @@ import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 enum SearchChipType { hot, history }
 
 class ChipSearchWrap extends StatelessWidget {
-  const ChipSearchWrap(
-      {Key? key,
-      this.isShow = true,
-      this.isShowTitle = true,
-      this.title = '',
-      this.chipNameList,
-      required this.onTap,
-      this.searchChipType})
-      : super(key: key);
+  const ChipSearchWrap({
+    Key? key,
+    this.isShow = true,
+    this.isShowTitle = true,
+    this.title = '',
+    this.chipNameList,
+    required this.onTap,
+    this.searchChipType,
+    this.onRightTap,
+  }) : super(key: key);
 
   // 是否显示流式布局
   final bool isShow;
@@ -34,6 +36,7 @@ class ChipSearchWrap extends StatelessWidget {
   //流布局数据列表
   final List<String?>? chipNameList;
   final Function(String value) onTap;
+  final VoidCallback? onRightTap;
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +69,18 @@ class ChipSearchWrap extends StatelessWidget {
             title,
             style: context.bodyText1Style,
           ),
+          const Spacer(),
+          //右侧图标
+          searchChipType == SearchChipType.hot
+              ? Gaps.empty
+              : RippleView(
+                  radius: 20,
+                  onTap: onRightTap!,
+                  child: const Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Icon(Icons.delete),
+                  ),
+                ),
         ],
       ),
     );

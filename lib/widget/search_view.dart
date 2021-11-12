@@ -15,6 +15,8 @@ class SearchView extends StatelessWidget {
     this.onSuffixPressed,
     this.onTap,
     this.hintTextStyle,
+    this.labelStyle,
+    this.textStyle,
     this.onSubmit,
     this.onChange,
   }) : super(key: key);
@@ -22,6 +24,8 @@ class SearchView extends StatelessWidget {
   //input内容
   final String hintText;
   final TextStyle? hintTextStyle;
+  final TextStyle? labelStyle;
+  final TextStyle? textStyle;
 
   //是否可输入
   final bool enabled;
@@ -55,6 +59,7 @@ class SearchView extends StatelessWidget {
           onSubmitted: onSubmit,
           onChanged: onChange,
           textInputAction: TextInputAction.search,
+          style: textStyle ?? const TextStyle(fontSize: 13),
           decoration: InputDecoration(
             //后缀图标
             suffixIcon: _buildSuffixIcon(),
@@ -62,7 +67,8 @@ class SearchView extends StatelessWidget {
             fillColor: context.theme.secondaryHeaderColor,
             filled: true,
             hintText: hintText,
-            hintStyle: hintTextStyle,
+            hintStyle: hintTextStyle ?? const TextStyle(fontSize: 13),
+            labelStyle: labelStyle ?? const TextStyle(fontSize: 13),
             enabledBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Color(0x00000000)),
               borderRadius: BorderRadius.all(Radius.circular(100)),

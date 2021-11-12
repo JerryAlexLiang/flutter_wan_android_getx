@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/page/search/component/normal_search_page.dart';
-import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/widget/search_app_bar.dart';
 import 'package:flutter_wan_android_getx/widget/search_view.dart';
+import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
+import 'package:flutter_wan_android_getx/widget/state/shimmer_loading_page.dart';
 import 'package:get/get.dart';
 
 import 'search_controller.dart';
@@ -23,72 +24,53 @@ class SearchPage extends StatelessWidget {
         showRight: true,
         actionName: '搜索',
         onRightPressed: () {
-          controller.keyword = controller.textEditingController.text;
           controller.loadSearchKeys();
-          FocusManager.instance.primaryFocus?.unfocus();
         },
         searchInput: SearchView(
           enabled: true,
           hintText: '致一科技',
-          hintTextStyle: const TextStyle(fontSize: 13),
           editingController: controller.textEditingController,
           onSuffixPressed: () => controller.clearSearchView(),
           onChange: (String value) {
+            // 输入时监听赋值
             controller.keyword = value;
             controller.onChange(value);
           },
           onSubmit: (value) => {
-            controller.keyword = value,
             controller.loadSearchKeys(),
           },
         ),
       ),
       body: _buildSearchView(),
-
-      // body: WillPopScope(
-      //   child: _buildSearchView(),
-      //   onWillPop: (){
-      //
-      //   },
-      // ),
     );
   }
 
   Obx _buildSearchView() {
     return Obx(() {
-      return IndexedStack(
-        index: controller.indexed,
-        children: [
-          const NormalSearchPage(),
-          Container(
-            color: Colors.red,
-            height: Get.height,
-            width: Get.width,
-            child: Center(
-              child: Text(
-                controller.searchResult,
-                style: const TextStyle(
-                  fontSize: 22,
+      return WillPopScope(
+        child: IndexedStack(
+          index: controller.indexed,
+          children: [
+            controller.loadState == LoadState.loading
+                ? const ShimmerLoadingPage()
+                : const NormalSearchPage(),
+            Container(
+              color: Colors.red,
+              height: Get.height,
+              width: Get.width,
+              child: Center(
+                child: Text(
+                  controller.searchResult,
+                  style: const TextStyle(
+                    fontSize: 22,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
+        onWillPop: () => controller.onWillPopListener(),
       );
     });
   }
 }
-
-//body: WillPopScope(
-//         child: _buildPageView(),
-//         onWillPop: () {
-//           if (_lastDateTime == null ||
-//               DateTime.now().difference(_lastDateTime!) >
-//                   const Duration(seconds: 1)) {
-//             _lastDateTime = DateTime.now();
-//             Fluttertoast.showToast(msg: StringsConstant.exitAppToast.tr);
-//             return Future.value(false);
-//           }
-//           return Future.value(true);
-//         },
-//       ),

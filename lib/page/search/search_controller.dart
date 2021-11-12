@@ -6,7 +6,7 @@ import 'package:flutter_wan_android_getx/http/request_api.dart';
 import 'package:flutter_wan_android_getx/model/hot_search_model.dart';
 import 'package:flutter_wan_android_getx/utils/connectivity_utils.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
-import 'package:flutter_wan_android_getx/widget/load_state.dart';
+import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
@@ -51,7 +51,12 @@ class SearchController extends GetxController {
 
   set showResult(value) => _showResult.value = value;
 
-  var loadState = LoadState.loading.obs;
+  /// 加载状态
+  final _loadState = LoadState.loading.obs;
+
+  get loadState => _loadState.value;
+
+  set loadState(value) => _loadState.value = value;
 
   //两种模式 0： 默认界面 1： 搜索结果界面
   int get indexed {
@@ -77,12 +82,11 @@ class SearchController extends GetxController {
 
     LoggerUtil.d('============> checkConnectivity $checkConnectivity');
 
-    if(checkConnectivity!=ConnectivityState.none){
+    if (checkConnectivity != ConnectivityState.none) {
       initHotKeysList();
-    }else{
+    } else {
       Get.snackbar('提示', '网络异常，请检查你的网络!');
     }
-
 
     LoggerUtil.d('============> onReady()');
   }
@@ -121,6 +125,20 @@ class SearchController extends GetxController {
     }
   }
 
+  /// 拦截系统返回键 退出搜索框
+  Future<bool> onWillPopListener() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    if (showResult == true) {
+      showResult = false;
+      return Future.value(false);
+    } else {
+      clearSearchView();
+      Get.back(canPop: true);
+      showResult = true;
+      return Future.value(true);
+    }
+  }
+
   /// 输入框监听
   void onChange(String value) {
     if (value.isEmpty) {
@@ -130,6 +148,9 @@ class SearchController extends GetxController {
 
   /// 根据关键词搜索内容
   Future<void> loadSearchKeys() async {
+    //收起软键盘
+    FocusManager.instance.primaryFocus?.unfocus();
+
     if (keyword.toString().isNotEmpty) {
       Fluttertoast.showToast(msg: keyword);
       searchResult = keyword;
@@ -139,11 +160,22 @@ class SearchController extends GetxController {
     }
   }
 
+  /// 点击热词进行搜索
+  void hotSearchChipSearch(String value) {
+    // 点击Chip热词或者搜索历史某一项词条进行搜索
+    keyword = value;
+    loadSearchKeys();
+    //将点击的热词填充输入框
+    textEditingController.text = value;
+    //关闭键盘
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
   /// 请求热门关键词
   Future<void> initHotKeysList() async {
     LoggerUtil.d('============> onReady*****()');
 
-    loadState(LoadState.loading);
+    loadState = LoadState.loading;
 
     BaseResponse response =
         await DioUtil().request(RequestApi.hotSearch, method: DioMethod.get);
@@ -151,7 +183,8 @@ class SearchController extends GetxController {
     //拿到res.data就可以进行Json解析了，这里一般用来构造实体类
     var success = response.success;
     if (success != null) {
-      loadState(LoadState.success);
+      loadState = LoadState.success;
+
       if (success) {
         ///列表转换的时候一定要加一下强转List<dynamic>，否则会报错
         List<HotSearchModel> hotSearchList = (response.data as List<dynamic>)
@@ -174,6 +207,8 @@ class SearchController extends GetxController {
         showHotKeys = false;
         LoggerUtil.d('=====> fail : ${hotKeys.map((e) => e.name).toList()}');
       }
+    } else {
+      loadState = LoadState.success;
     }
   }
 }

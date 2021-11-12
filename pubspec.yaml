@@ -78,6 +78,10 @@ dependencies:
 #  connectivity: ^3.0.6  已弃用 此插件已被Flutter Community Plus插件版本connectivity_plus取代
   connectivity_plus: ^2.0.2
 
+  # 11、骨架屏
+#  pk_skeleton: ^0.0.2 不支持Null safety 废弃
+  shimmer: ^2.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

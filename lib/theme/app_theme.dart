@@ -116,6 +116,16 @@ extension ThemeExtension on BuildContext {
 extension StyleExtension on BuildContext {
   TextStyle? get headline1Style => Theme.of(this).textTheme.headline1;
 
+  TextStyle? get headline2Style => Theme.of(this).textTheme.headline2;
+
+  TextStyle? get headline3Style => Theme.of(this).textTheme.headline3;
+
+  TextStyle? get headline4Style => Theme.of(this).textTheme.headline4;
+
+  TextStyle? get headline5Style => Theme.of(this).textTheme.headline5;
+
+  TextStyle? get headline6Style => Theme.of(this).textTheme.headline6;
+
   TextStyle? get subtitle1Style => Theme.of(this).textTheme.subtitle1;
 
   TextStyle? get subtitle2Style => Theme.of(this).textTheme.subtitle2;

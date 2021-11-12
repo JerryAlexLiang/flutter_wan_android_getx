@@ -37,10 +37,7 @@ class HotSearchList extends StatelessWidget {
             chipNameList: hotNameList,
             onTap: (String value) {
               // 点击Chip热词或者搜索历史某一项词条进行搜索
-              controller.keyword = value;
-              controller.loadSearchKeys();
-              //将点击的热词填充输入框
-              controller.textEditingController.text = value;
+              controller.hotSearchChipSearch(value);
             },
           );
         } else {

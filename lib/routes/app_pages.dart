@@ -47,6 +47,7 @@ class AppPages {
       name: AppRoutes.searchPage,
       page: () => SearchPage(),
       binding: SearchBinding(),
+      transition: Transition.fadeIn,
     ),
   ];
 }
