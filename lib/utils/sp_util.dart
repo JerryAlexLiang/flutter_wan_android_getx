@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_wan_android_getx/constant/constant.dart';
 import 'package:flutter_wan_android_getx/page/model/language.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:flutter_wan_android_getx/utils/locale_util.dart';
@@ -8,17 +9,44 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SpUtil {
-  //存储设置的主题
+  /// 存储搜索记录
+  static saveSearchHistory(String keyword) {
+    List<String> list = [];
+    var searchHistory = getSearchHistory();
+    if (searchHistory != null) {
+      if (searchHistory.contains(keyword)) {
+        //去重
+        return;
+      }
+      searchHistory.insert(0, keyword);
+      list.addAll(searchHistory);
+    } else {
+      list.insert(0, keyword);
+    }
+    Get.find<SharedPreferences>().setStringList(Constant.searchHistory, list);
+  }
+
+  /// 获取本地存储历史搜索记录
+  static List<String>? getSearchHistory() {
+    return Get.find<SharedPreferences>().getStringList(Constant.searchHistory);
+  }
+
+  /// 清除本地存储历史搜索记录
+  static void deleteSearchHistory() {
+    Get.find<SharedPreferences>().remove(Constant.searchHistory);
+  }
+
+  /// 存储设置的主题
   static saveAppThemeData(String themeKey) {
     Get.find<SharedPreferences>().setString(ThemeKey.appThemeKey, themeKey);
   }
 
-  //获取存储的主题
+  /// 获取存储的主题
   static String? getAppThemeData() {
     return Get.find<SharedPreferences>().getString(ThemeKey.appThemeKey);
   }
 
-  //存储-更新语言格式
+  /// 存储-更新语言格式
   static saveUpdateLanguage(Language language) {
     // Get.find<SharedPreferences>()
     //     .setString(LocaleUtil.appLanguageKey, json.encode(language.toJson()));
@@ -26,7 +54,7 @@ class SpUtil {
         .setString(LocaleUtil.appLanguageKey, jsonEncode(language.toJson()));
   }
 
-  //获取存储的语言格式
+  /// 获取存储的语言格式
   static Language? getLanguage() {
     try {
       var languageJson =

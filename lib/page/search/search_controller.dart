@@ -6,11 +6,15 @@ import 'package:flutter_wan_android_getx/http/request_api.dart';
 import 'package:flutter_wan_android_getx/model/hot_search_model.dart';
 import 'package:flutter_wan_android_getx/utils/connectivity_utils.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
+import 'package:flutter_wan_android_getx/utils/sp_util.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
-/// 搜索界面
+/// 类名: search_controller.dart
+/// 创建日期: 11/15/21 on 4:58 PM
+/// 描述: 搜索界面
+/// 作者: 杨亮
 
 class SearchController extends GetxController {
   /// 搜索输入框孔控制器
@@ -44,6 +48,21 @@ class SearchController extends GetxController {
 
   set showHotKeys(value) => _showHotKeys.value = value;
 
+  /// 本地存储搜索历史记录
+  final RxList<String> _historyKeys = <String>[].obs;
+
+  // ignore: invalid_use_of_protected_member
+  List<String> get historyKeys => _historyKeys.value;
+
+  set historyKeys(value) => _historyKeys.value = value;
+
+  /// 是否显示搜索历史列表流布局
+  final _showHistoryKeys = true.obs;
+
+  bool get showHistoryKeys => _showHistoryKeys.value;
+
+  set showHistoryKeys(value) => _showHistoryKeys.value = value;
+
   /// 是否显示搜索结果界面
   final _showResult = false.obs;
 
@@ -71,6 +90,8 @@ class SearchController extends GetxController {
   void onInit() async {
     textEditingController = TextEditingController();
     clearSearchView();
+    // 查找本地搜索记录
+    notifySearchHistory(1);
     LoggerUtil.d('============> onInit()');
     super.onInit();
   }
@@ -155,13 +176,18 @@ class SearchController extends GetxController {
       Fluttertoast.showToast(msg: keyword);
       searchResult = keyword;
       showResult = true;
+
+      // 本地持久化搜索记录
+      SpUtil.saveSearchHistory(keyword);
+      // 历史搜索数据更新及业务逻辑
+      notifySearchHistory(2);
     } else {
       Fluttertoast.showToast(msg: '请输入搜索内容~');
     }
   }
 
   /// 点击热词进行搜索
-  void hotSearchChipSearch(String value) {
+  void tagSearchChipSearch(String value) {
     // 点击Chip热词或者搜索历史某一项词条进行搜索
     keyword = value;
     loadSearchKeys();
@@ -210,5 +236,30 @@ class SearchController extends GetxController {
     } else {
       loadState = LoadState.success;
     }
+  }
+
+  /// 历史搜索数据更新及业务逻辑
+  void notifySearchHistory(int index) {
+    var searchHistory = SpUtil.getSearchHistory();
+    if (searchHistory != null) {
+      // 显示历史搜索记录
+      showHistoryKeys = true;
+      if (searchHistory.length >= 20) {
+        //仅显示最近搜索的20条记录
+        searchHistory = searchHistory.sublist(0, 20);
+      }
+      historyKeys = searchHistory;
+    } else {
+      // 不显示历史搜索记录
+      showHistoryKeys = false;
+      // historyKeys = [''];
+    }
+    LoggerUtil.d('=====> notifySearchHistory $index : ${historyKeys.toList()}');
+  }
+
+  /// 清除本地存储历史搜索记录
+  void clearSearchHistory() {
+    SpUtil.deleteSearchHistory();
+    notifySearchHistory(0);
   }
 }

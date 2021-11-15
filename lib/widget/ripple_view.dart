@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 
 /// 类名: ripple_view.dart
 /// 创建日期: 11/12/21 on 5:37 PM
@@ -23,17 +24,20 @@ class RippleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Ink(
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(radius),
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(radius),
-        splashColor: splashColor ?? Theme.of(context).splashColor,
-        highlightColor: highlightColor ?? Theme.of(context).highlightColor,
-        child: child,
-        onTap: onTap,
+    return Material(
+      color: Colors.transparent,
+      child: Ink(
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(radius),
+        ),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(radius),
+          splashColor: splashColor ?? Colors.transparent.withOpacity(0.1),
+          highlightColor: highlightColor ?? context.highlightColor,
+          child: child,
+          onTap: onTap,
+        ),
       ),
     );
   }

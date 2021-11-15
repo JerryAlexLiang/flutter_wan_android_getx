@@ -20,7 +20,7 @@ class ChipSearchWrap extends StatelessWidget {
     this.chipNameList,
     required this.onTap,
     this.searchChipType,
-    this.onRightTap,
+    required this.onRightTap,
   }) : super(key: key);
 
   // 是否显示流式布局
@@ -36,12 +36,12 @@ class ChipSearchWrap extends StatelessWidget {
   //流布局数据列表
   final List<String?>? chipNameList;
   final Function(String value) onTap;
-  final VoidCallback? onRightTap;
+  final VoidCallback onRightTap;
 
   @override
   Widget build(BuildContext context) {
-    return Offstage(
-      offstage: isShow ? false : true,
+    return Visibility(
+      visible: isShow,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -55,8 +55,8 @@ class ChipSearchWrap extends StatelessWidget {
 
   /// 标题栏
   Widget _parentTitle(BuildContext context) {
-    return Offstage(
-      offstage: isShowTitle ? false : true,
+    return Visibility(
+      visible: isShowTitle,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -72,13 +72,27 @@ class ChipSearchWrap extends StatelessWidget {
           const Spacer(),
           //右侧图标
           searchChipType == SearchChipType.hot
-              ? Gaps.empty
-              : RippleView(
+              // ? Gaps.empty
+              ? RippleView(
                   radius: 20,
-                  onTap: onRightTap!,
+                  onTap: onRightTap,
                   child: const Padding(
                     padding: EdgeInsets.all(5),
-                    child: Icon(Icons.delete),
+                    child: Icon(
+                      Icons.visibility_off_rounded,
+                      size: 18,
+                    ),
+                  ),
+                )
+              : RippleView(
+                  radius: 20,
+                  onTap: onRightTap,
+                  child: const Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Icon(
+                      Icons.delete_rounded,
+                      size: 18,
+                    ),
                   ),
                 ),
         ],
@@ -130,8 +144,9 @@ class ChipSearchWrap extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Offstage(
-                    offstage: index == 0 ? false : true,
+                Visibility(
+                  // 类型为热词推荐且只显示第一个chip
+                  visible: searchChipType == SearchChipType.hot && (index == 0 ? true : false),
                     child: Container(
                       padding: const EdgeInsets.only(right: 5),
                       child: const Icon(

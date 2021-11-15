@@ -111,6 +111,10 @@ extension ThemeExtension on BuildContext {
 
   Color? get bottomNavigationBarUnSelectedItemColor =>
       Theme.of(this).bottomNavigationBarTheme.unselectedItemColor;
+
+  Color? get splashColor => Theme.of(this).splashColor;
+
+  Color? get highlightColor => Theme.of(this).highlightColor;
 }
 
 extension StyleExtension on BuildContext {

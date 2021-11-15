@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wan_android_getx/page/search/component/history_search_list.dart';
 import 'package:flutter_wan_android_getx/page/search/component/hot_search_list.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
 
@@ -13,8 +14,12 @@ class NormalSearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      children:  [
-        Gaps.vGap10,
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+      shrinkWrap: true,
+      children: [
+        Gaps.vGap5,
+        HistorySearchList(),
+        Gaps.vGap5,
         HotSearchList(),
       ],
     );
