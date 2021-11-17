@@ -82,6 +82,9 @@ dependencies:
 #  pk_skeleton: ^0.0.2 不支持Null safety 废弃
   shimmer: ^2.0.0
 
+  # 12、Lottie动画
+  lottie: ^1.2.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -111,6 +114,9 @@ flutter:
 
   assets:
     - images/
+    - assets/
+    - assets/lottie/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

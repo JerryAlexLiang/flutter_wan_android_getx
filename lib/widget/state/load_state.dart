@@ -1,5 +1,6 @@
 enum LoadState {
-  loading,
+  simpleLoading,
+  multipleLoading,
   fail,
   success,
   empty,

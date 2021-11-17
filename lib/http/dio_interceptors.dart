@@ -1,6 +1,6 @@
-
 import 'package:dio/dio.dart';
 import 'package:flutter_wan_android_getx/http/base_response.dart';
+import 'package:flutter_wan_android_getx/http/handle_dio_error.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:get/get.dart' as get_x;
@@ -59,6 +59,8 @@ class DioInterceptors extends Interceptor {
             success: false,
             data: null,
           );
+          throw ResultException(
+              response.data['errorCode'], response.data['errorMsg']);
         }
       } else {
         LoggerUtil.d("=======> wan error");
@@ -68,6 +70,8 @@ class DioInterceptors extends Interceptor {
           success: false,
           data: null,
         );
+        throw ResultException(
+            response.data['errorCode'], response.data['errorMsg']);
       }
     }
 
@@ -91,6 +95,7 @@ class DioInterceptors extends Interceptor {
             success: false,
             data: null,
           );
+          throw ResultException(response.data['code'], response.data['msg']);
         }
       } else {
         LoggerUtil.d("=======> mxnzp error");
@@ -100,6 +105,7 @@ class DioInterceptors extends Interceptor {
           success: false,
           data: null,
         );
+        throw ResultException(response.data['code'], response.data['msg']);
       }
     }
 
@@ -125,13 +131,14 @@ class DioInterceptors extends Interceptor {
     //
     //   default:
     // }
-    return handler.next(err); //continue
 
-    // super.onError(err, handler);
+    handler.next(err); //continue
+
+    super.onError(err, handler);
   }
 
   /// 错误信息 Error统一处理
-  ErrorEntity? createErrorEntity(DioError error) {
+  static ErrorEntity? createErrorEntity(DioError error) {
     switch (error.type) {
       case DioErrorType.cancel:
         return ErrorEntity(code: -1, errorMessage: "请求取消");
@@ -190,15 +197,19 @@ class DioInterceptors extends Interceptor {
           errCode = error.response!.statusCode;
         }
 
+        LoggerUtil.e(
+            'Dio Request onError DioErrorType.response :  errMsg: $errMsg  errCode: $errCode');
+
         ErrorEntity? errorEntity;
         if (errMsg.contains('SocketException')) {
           errorEntity =
-              ErrorEntity(code: errCode ?? -1, errorMessage: "网络异常，请检查你的网络!");
+              ErrorEntity(code: errCode ?? 404, errorMessage: "网络异常，请检查你的网络!");
         } else if (errMsg.contains('HttpException')) {
-          errorEntity = ErrorEntity(code: errCode ?? -1, errorMessage: "服务器异常");
+          errorEntity =
+              ErrorEntity(code: errCode ?? 404, errorMessage: "服务器异常");
         } else if (errMsg.contains('FormatException')) {
           errorEntity =
-              ErrorEntity(code: errCode ?? -1, errorMessage: "数据解析错误!");
+              ErrorEntity(code: errCode ?? 404, errorMessage: "数据解析错误!");
         }
         return errorEntity;
 

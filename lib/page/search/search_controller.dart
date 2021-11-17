@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wan_android_getx/base/base_getx_controller.dart';
 import 'package:flutter_wan_android_getx/http/base_response.dart';
 import 'package:flutter_wan_android_getx/http/dio_method.dart';
 import 'package:flutter_wan_android_getx/http/dio_util.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
 import 'package:flutter_wan_android_getx/model/hot_search_model.dart';
-import 'package:flutter_wan_android_getx/utils/connectivity_utils.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/utils/sp_util.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
@@ -16,7 +16,8 @@ import 'package:get/get.dart';
 /// 描述: 搜索界面
 /// 作者: 杨亮
 
-class SearchController extends GetxController {
+// class SearchController extends GetxController {
+class SearchController extends BaseGetXController {
   /// 搜索输入框孔控制器
   late TextEditingController textEditingController;
 
@@ -70,12 +71,12 @@ class SearchController extends GetxController {
 
   set showResult(value) => _showResult.value = value;
 
-  /// 加载状态
-  final _loadState = LoadState.loading.obs;
-
-  get loadState => _loadState.value;
-
-  set loadState(value) => _loadState.value = value;
+  // /// 加载状态
+  // final _loadState = LoadState.loading.obs;
+  //
+  // get loadState => _loadState.value;
+  //
+  // set loadState(value) => _loadState.value = value;
 
   //两种模式 0： 默认界面 1： 搜索结果界面
   int get indexed {
@@ -96,20 +97,26 @@ class SearchController extends GetxController {
     super.onInit();
   }
 
+  // @override
+  // void onReady() async {
+  //   super.onReady();
+  //   var checkConnectivity = await ConnectivityUtils.checkConnectivity();
+  //
+  //   LoggerUtil.d('============> checkConnectivity $checkConnectivity');
+  //
+  //   if (checkConnectivity != ConnectivityState.none) {
+  //     initHotKeysList();
+  //   } else {
+  //     Get.snackbar('提示', '网络异常，请检查你的网络!');
+  //   }
+  //
+  //   LoggerUtil.d('============> onReady()');
+  // }
+
   @override
-  void onReady() async {
-    super.onReady();
-    var checkConnectivity = await ConnectivityUtils.checkConnectivity();
-
-    LoggerUtil.d('============> checkConnectivity $checkConnectivity');
-
-    if (checkConnectivity != ConnectivityState.none) {
-      initHotKeysList();
-    } else {
-      Get.snackbar('提示', '网络异常，请检查你的网络!');
-    }
-
-    LoggerUtil.d('============> onReady()');
+  void onReadyInitData() {
+    super.onReadyInitData();
+    initHotKeysList();
   }
 
   @override
@@ -198,44 +205,54 @@ class SearchController extends GetxController {
   }
 
   /// 请求热门关键词
-  Future<void> initHotKeysList() async {
+  void initHotKeysList() async {
     LoggerUtil.d('============> onReady*****()');
 
-    loadState = LoadState.loading;
+    handleRequest(
+      isLoading: true,
+      isSimpleLoading: true,
+      future: DioUtil().request(RequestApi.hotSearch, method: DioMethod.get),
+      success: (value) {
+        BaseResponse response = value;
+        //拿到res.data就可以进行Json解析了，这里一般用来构造实体类
+        var success = response.success;
+        if (success != null) {
+          if (success) {
+            loadState = LoadState.success;
 
-    BaseResponse response =
-        await DioUtil().request(RequestApi.hotSearch, method: DioMethod.get);
+            ///列表转换的时候一定要加一下强转List<dynamic>，否则会报错
+            List<HotSearchModel> hotSearchList =
+                (response.data as List<dynamic>)
+                    .map((e) => HotSearchModel().fromJson(e))
+                    .toList();
 
-    //拿到res.data就可以进行Json解析了，这里一般用来构造实体类
-    var success = response.success;
-    if (success != null) {
-      loadState = LoadState.success;
+            hotKeys = hotSearchList;
 
-      if (success) {
-        ///列表转换的时候一定要加一下强转List<dynamic>，否则会报错
-        List<HotSearchModel> hotSearchList = (response.data as List<dynamic>)
-            .map((e) => HotSearchModel().fromJson(e))
-            .toList();
+            if (hotKeys.isNotEmpty) {
+              showHotKeys = true;
+            } else {
+              showHotKeys = false;
+            }
+            LoggerUtil.d(
+                '=====> success1 : ${hotSearchList.map((e) => e.name).toList()}');
 
-        hotKeys = hotSearchList;
+            LoggerUtil.d(
+                '=====> success2 : ${hotKeys.map((e) => e.name).toList()}');
 
-        if (hotKeys.isNotEmpty) {
-          showHotKeys = true;
+            LoggerUtil.d('======> initHotKeysList : load success');
+          } else {
+            showHotKeys = false;
+            loadState = LoadState.fail;
+            LoggerUtil.d('======> initHotKeysList : load fail1');
+            LoggerUtil.d(
+                '=====> fail : ${hotKeys.map((e) => e.name).toList()}');
+          }
         } else {
-          showHotKeys = false;
+          loadState = LoadState.fail;
+          LoggerUtil.d('======> initHotKeysList : load fail2');
         }
-        LoggerUtil.d(
-            '=====> success1 : ${hotSearchList.map((e) => e.name).toList()}');
-
-        LoggerUtil.d(
-            '=====> success2 : ${hotKeys.map((e) => e.name).toList()}');
-      } else {
-        showHotKeys = false;
-        LoggerUtil.d('=====> fail : ${hotKeys.map((e) => e.name).toList()}');
-      }
-    } else {
-      loadState = LoadState.success;
-    }
+      },
+    );
   }
 
   /// 历史搜索数据更新及业务逻辑

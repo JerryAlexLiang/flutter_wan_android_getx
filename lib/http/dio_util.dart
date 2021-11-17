@@ -3,12 +3,19 @@ import 'dart:io';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_wan_android_getx/config/config.dart';
+import 'package:flutter_wan_android_getx/http/base_response.dart';
 import 'package:flutter_wan_android_getx/http/base_url_reuqest_interceptors.dart';
 import 'package:flutter_wan_android_getx/http/dio_interceptors.dart';
 import 'package:flutter_wan_android_getx/http/dio_method.dart';
+import 'package:flutter_wan_android_getx/http/handle_dio_error.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 /// 封装网络请求
+
+/// 类型定义
+typedef Success<T> = Function(T data);
+typedef Fail = Function(int? code, String? msg);
 
 class DioUtil {
   /// 1、设置常量变量
@@ -130,7 +137,7 @@ class DioUtil {
       };
     }
 
-    if(Config.isDebug){
+    if (Config.isDebug) {
       openLog();
     }
   }
@@ -142,7 +149,6 @@ class DioUtil {
   /// 对Restful APi风格进行统一封装
   /// 不管是get()还是post()请求，Dio内部最终都会调用request方法，只是传入的method不一样，所以我们这里定义一个枚举类型在一个方法中进行处理;
 
-  ///请求类
   Future<T> request<T>(
     String path, {
     DioMethod method = DioMethod.get,
@@ -179,15 +185,72 @@ class DioUtil {
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
       );
-      // //还原BaseUrL
-      // _dio.options.baseUrl = baseUrl;
       return response.data;
     } on DioError catch (e) {
+      // rethrow;
+      throw HandleDioError.handleError(e);
+
+    } finally {
       //还原BaseUrL
       _dio.options.baseUrl = baseUrl;
-      rethrow;
     }
   }
+
+  // ///请求类
+  // Future request<T>(
+  //   String path, {
+  //   DioMethod method = DioMethod.get,
+  //   Map<String, dynamic>? params,
+  //   data,
+  //   Options? options,
+  //   ProgressCallback? onSendProgress,
+  //   ProgressCallback? onReceiveProgress,
+  //   String? newBaseUrl,
+  //   required Success? success,
+  //   required Fail? fail,
+  // }) async {
+  //   const _methodValues = {
+  //     DioMethod.get: 'get',
+  //     DioMethod.post: 'post',
+  //     DioMethod.put: 'put',
+  //     DioMethod.delete: 'delete',
+  //     DioMethod.patch: 'patch',
+  //     DioMethod.head: 'head',
+  //   };
+  //
+  //   options ??= Options(
+  //     method: _methodValues[method],
+  //     extra: {
+  //       'newBaseUrl': newBaseUrl,
+  //     },
+  //   );
+  //
+  //   try {
+  //     Response response;
+  //     response = await _dio.request(
+  //       path,
+  //       data: data,
+  //       queryParameters: params,
+  //       options: options,
+  //       onSendProgress: onSendProgress,
+  //       onReceiveProgress: onReceiveProgress,
+  //     );
+  //
+  //     if (success != null) {
+  //       success(response.data);
+  //     }
+  //   } on DioError catch (e) {
+  //     ErrorEntity? errorEntity = DioInterceptors.createErrorEntity(e);
+  //     if (fail != null) {
+  //       if (errorEntity != null) {
+  //         fail(errorEntity.code, errorEntity.errorMessage);
+  //       }
+  //     }
+  //   } finally {
+  //     //还原BaseUrL
+  //     _dio.options.baseUrl = baseUrl;
+  //   }
+  // }
 
   /// 取消网络请求
   /// 为什么我们需要有取消请求的功能，如果当我们的页面在发送请求时，

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/page/search/component/normal_search_page.dart';
+import 'package:flutter_wan_android_getx/res/gaps.dart';
+import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/widget/search_app_bar.dart';
 import 'package:flutter_wan_android_getx/widget/search_view.dart';
+import 'package:flutter_wan_android_getx/widget/state/load_error_page.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
 import 'package:flutter_wan_android_getx/widget/state/shimmer_loading_page.dart';
 import 'package:get/get.dart';
@@ -24,7 +27,8 @@ class SearchPage extends StatelessWidget {
         showRight: true,
         actionName: '搜索',
         onRightPressed: () {
-          controller.loadSearchKeys();
+          // controller.loadSearchKeys();
+          controller.initHotKeysList();
         },
         searchInput: SearchView(
           enabled: true,
@@ -51,9 +55,12 @@ class SearchPage extends StatelessWidget {
         child: IndexedStack(
           index: controller.indexed,
           children: [
-            controller.loadState == LoadState.loading
-                ? const ShimmerLoadingPage()
-                : const NormalSearchPage(),
+            // controller.loadState == LoadState.loading
+            //     ? const ShimmerLoadingPage()
+            //     : const NormalSearchPage(),
+
+            hotHistoryView(),
+
             Container(
               color: Colors.red,
               height: Get.height,
@@ -72,5 +79,23 @@ class SearchPage extends StatelessWidget {
         onWillPop: () => controller.onWillPopListener(),
       );
     });
+  }
+
+  Widget hotHistoryView() {
+
+    // LoggerUtil.d('======> initHotKeysList : ${controller.loadState}');
+
+    if (controller.loadState == LoadState.simpleLoading) {
+      return const ShimmerLoadingPage();
+    } else if (controller.loadState == LoadState.fail) {
+      return LoadErrorPage(
+        onTap: () => controller.initHotKeysList(),
+        errMsg: controller.httpErrorMsg,
+      );
+    } else if (controller.loadState == LoadState.success) {
+      return const NormalSearchPage();
+    }
+
+    return Gaps.empty;
   }
 }

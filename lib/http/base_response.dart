@@ -62,7 +62,7 @@ class BaseResponseCode {
   static const int success = 0;
 
   /// 错误
-  static const int error = 0;
+  static const int error = 1;
 
   /// 更多
 }
