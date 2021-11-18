@@ -5,6 +5,11 @@
 
 class R {
   /// Lottie
+  // 错误页面
   static const String assetsLottieRefreshError =
       'assets/lottie/refresh_error.json';
+
+  // 空页面
+  static const String assetsLottieRefreshEmpty =
+      'assets/lottie/refresh_empty.json';
 }

@@ -28,6 +28,7 @@ class HistorySearchList extends StatelessWidget {
       searchChipType: SearchChipType.history,
       chipNameList: controller.historyKeys,
       title: '搜索历史',
+      subTitle: '最近20条搜索记录',
       onTap: (value) {
         // 点击Chip热词或者搜索历史某一项词条进行搜索
         controller.tagSearchChipSearch(value);

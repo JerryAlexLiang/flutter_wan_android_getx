@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/base/base_getx_controller.dart';
-import 'package:flutter_wan_android_getx/http/base_response.dart';
 import 'package:flutter_wan_android_getx/http/dio_method.dart';
 import 'package:flutter_wan_android_getx/http/dio_util.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
@@ -212,47 +211,81 @@ class SearchController extends BaseGetXController {
       isLoading: true,
       isSimpleLoading: true,
       future: DioUtil().request(RequestApi.hotSearch, method: DioMethod.get),
-      success: (value) {
-        BaseResponse response = value;
-        //拿到res.data就可以进行Json解析了，这里一般用来构造实体类
-        var success = response.success;
-        if (success != null) {
-          if (success) {
-            loadState = LoadState.success;
+      onSuccess: (response) {
+        ///列表转换的时候一定要加一下强转List<dynamic>，否则会报错
+        List<HotSearchModel> hotSearchList = (response.data as List<dynamic>)
+            .map((e) => HotSearchModel().fromJson(e))
+            .toList();
 
-            ///列表转换的时候一定要加一下强转List<dynamic>，否则会报错
-            List<HotSearchModel> hotSearchList =
-                (response.data as List<dynamic>)
-                    .map((e) => HotSearchModel().fromJson(e))
-                    .toList();
+        hotKeys = hotSearchList;
 
-            hotKeys = hotSearchList;
-
-            if (hotKeys.isNotEmpty) {
-              showHotKeys = true;
-            } else {
-              showHotKeys = false;
-            }
-            LoggerUtil.d(
-                '=====> success1 : ${hotSearchList.map((e) => e.name).toList()}');
-
-            LoggerUtil.d(
-                '=====> success2 : ${hotKeys.map((e) => e.name).toList()}');
-
-            LoggerUtil.d('======> initHotKeysList : load success');
-          } else {
-            showHotKeys = false;
-            loadState = LoadState.fail;
-            LoggerUtil.d('======> initHotKeysList : load fail1');
-            LoggerUtil.d(
-                '=====> fail : ${hotKeys.map((e) => e.name).toList()}');
-          }
+        if (hotKeys.isNotEmpty) {
+          showHotKeys = true;
+          loadState = LoadState.success;
         } else {
-          loadState = LoadState.fail;
-          LoggerUtil.d('======> initHotKeysList : load fail2');
+          showHotKeys = false;
+          loadState = LoadState.empty;
         }
+        LoggerUtil.d(
+            '=====> success1 : ${hotSearchList.map((e) => e.name).toList()}');
+
+        LoggerUtil.d(
+            '=====> success2 : ${hotKeys.map((e) => e.name).toList()}');
+
+        LoggerUtil.d('======> initHotKeysList : load success');
+      },
+      onFail: (value) {
+        showHotKeys = false;
+        LoggerUtil.d('======> initHotKeysList : load fail1');
+        LoggerUtil.d('=====> fail : ${hotKeys.map((e) => e.name).toList()}');
       },
     );
+
+    // handleRequest(
+    //   isLoading: true,
+    //   isSimpleLoading: true,
+    //   future: DioUtil().request(RequestApi.hotSearch, method: DioMethod.get),
+    //   onSuccess: (value) {
+    //     BaseResponse response = value;
+    //     //拿到res.data就可以进行Json解析了，这里一般用来构造实体类
+    //     var success = response.success;
+    //     if (success != null) {
+    //       if (success) {
+    //         ///列表转换的时候一定要加一下强转List<dynamic>，否则会报错
+    //         List<HotSearchModel> hotSearchList =
+    //             (response.data as List<dynamic>)
+    //                 .map((e) => HotSearchModel().fromJson(e))
+    //                 .toList();
+    //
+    //         hotKeys = hotSearchList;
+    //
+    //         if (hotKeys.isNotEmpty) {
+    //           showHotKeys = true;
+    //           loadState = LoadState.success;
+    //         } else {
+    //           showHotKeys = false;
+    //           loadState = LoadState.empty;
+    //         }
+    //         LoggerUtil.d(
+    //             '=====> success1 : ${hotSearchList.map((e) => e.name).toList()}');
+    //
+    //         LoggerUtil.d(
+    //             '=====> success2 : ${hotKeys.map((e) => e.name).toList()}');
+    //
+    //         LoggerUtil.d('======> initHotKeysList : load success');
+    //       } else {
+    //         showHotKeys = false;
+    //         loadState = LoadState.fail;
+    //         LoggerUtil.d('======> initHotKeysList : load fail1');
+    //         LoggerUtil.d(
+    //             '=====> fail : ${hotKeys.map((e) => e.name).toList()}');
+    //       }
+    //     } else {
+    //       loadState = LoadState.fail;
+    //       LoggerUtil.d('======> initHotKeysList : load fail2');
+    //     }
+    //   },
+    // );
   }
 
   /// 历史搜索数据更新及业务逻辑

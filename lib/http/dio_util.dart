@@ -3,19 +3,16 @@ import 'dart:io';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_wan_android_getx/config/config.dart';
-import 'package:flutter_wan_android_getx/http/base_response.dart';
 import 'package:flutter_wan_android_getx/http/base_url_reuqest_interceptors.dart';
 import 'package:flutter_wan_android_getx/http/dio_interceptors.dart';
 import 'package:flutter_wan_android_getx/http/dio_method.dart';
 import 'package:flutter_wan_android_getx/http/handle_dio_error.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_wan_android_getx/utils/connectivity_utils.dart';
+import 'package:flutter_wan_android_getx/utils/logger_util.dart';
+import 'package:get/get.dart' as get_x;
 
 /// 封装网络请求
-
-/// 类型定义
-typedef Success<T> = Function(T data);
-typedef Fail = Function(int? code, String? msg);
 
 class DioUtil {
   /// 1、设置常量变量
@@ -176,6 +173,16 @@ class DioUtil {
     );
 
     try {
+      /// 请求前先检查网络连接
+      var connectivityState = await ConnectivityUtils.checkConnectivity();
+      LoggerUtil.d('DioUtil ==> checkConnectivity $connectivityState');
+      if (connectivityState == ConnectivityState.none) {
+        // 延迟1秒 显示加载loading
+        await Future.delayed(const Duration(seconds: 1));
+        get_x.Get.snackbar('提示', '90005 网络异常，请检查你的网络');
+        throw ResultException(90005, '网络异常，请检查你的网络');
+      }
+
       Response response;
       response = await _dio.request(
         path,
@@ -189,7 +196,6 @@ class DioUtil {
     } on DioError catch (e) {
       // rethrow;
       throw HandleDioError.handleError(e);
-
     } finally {
       //还原BaseUrL
       _dio.options.baseUrl = baseUrl;

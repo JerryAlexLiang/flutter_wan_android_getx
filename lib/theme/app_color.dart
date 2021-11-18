@@ -22,6 +22,8 @@ class AppColors {
 // 按钮投影颜色
   static const Color btnShadowColor = Color(0x33D83131);
 
+  static const colorB8C0D4 = Color(0xFFB8C0D4);
+
 // 输入框边框颜色
   static const Color inputBorderColor = Color(0xFFECECEC);
   static const Color iconLightColor = Colors.blue;

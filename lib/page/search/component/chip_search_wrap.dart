@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
+import 'package:flutter_wan_android_getx/theme/app_color.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/widget/ripple_view.dart';
@@ -17,6 +18,7 @@ class ChipSearchWrap extends StatelessWidget {
     this.isShow = true,
     this.isShowTitle = true,
     this.title = '',
+    this.subTitle = '',
     this.chipNameList,
     required this.onTap,
     this.searchChipType,
@@ -29,6 +31,7 @@ class ChipSearchWrap extends StatelessWidget {
   // 是否显示标题栏
   final bool isShowTitle;
   final String title;
+  final String subTitle;
 
   // 类型：hot 热词 history：搜索历史关键词
   final SearchChipType? searchChipType;
@@ -65,9 +68,27 @@ class ChipSearchWrap extends StatelessWidget {
               ? const Icon(Icons.local_fire_department)
               : const Icon(Icons.history),
           Gaps.hGap8,
-          Text(
-            title,
-            style: context.bodyText1Style,
+          // Text(
+          //   title,
+          //   style: context.bodyText1Style,
+          // ),
+          RichText(
+            text: TextSpan(
+              text: title,
+              style: context.bodyText1Style,
+              children: [
+                const WidgetSpan(
+                  child: Gaps.hGap16,
+                ),
+                TextSpan(
+                  text: subTitle,
+                  style: context.bodyText2Style!.copyWith(
+                    color: AppColors.colorB8C0D4,
+                    fontSize: 10,
+                  ),
+                ),
+              ],
+            ),
           ),
           const Spacer(),
           //右侧图标
@@ -145,8 +166,9 @@ class ChipSearchWrap extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Visibility(
-                  // 类型为热词推荐且只显示第一个chip
-                  visible: searchChipType == SearchChipType.hot && (index == 0 ? true : false),
+                    // 类型为热词推荐且只显示第一个chip
+                    visible: searchChipType == SearchChipType.hot &&
+                        (index == 0 ? true : false),
                     child: Container(
                       padding: const EdgeInsets.only(right: 5),
                       child: const Icon(

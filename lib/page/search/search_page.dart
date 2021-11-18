@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wan_android_getx/base/common_state_page.dart';
 import 'package:flutter_wan_android_getx/page/search/component/normal_search_page.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
@@ -22,6 +23,7 @@ class SearchPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SearchAppBar(
+        showBottomLine: true,
         showLeft: true,
         onLeftPressed: () => controller.finishSearchPage(),
         showRight: true,
@@ -55,10 +57,7 @@ class SearchPage extends StatelessWidget {
         child: IndexedStack(
           index: controller.indexed,
           children: [
-            // controller.loadState == LoadState.loading
-            //     ? const ShimmerLoadingPage()
-            //     : const NormalSearchPage(),
-
+            // 历史搜索和热词标签tag页面
             hotHistoryView(),
 
             Container(
@@ -81,21 +80,12 @@ class SearchPage extends StatelessWidget {
     });
   }
 
+  /// 历史搜索和热词标签tag页面
   Widget hotHistoryView() {
-
-    // LoggerUtil.d('======> initHotKeysList : ${controller.loadState}');
-
-    if (controller.loadState == LoadState.simpleLoading) {
-      return const ShimmerLoadingPage();
-    } else if (controller.loadState == LoadState.fail) {
-      return LoadErrorPage(
-        onTap: () => controller.initHotKeysList(),
-        errMsg: controller.httpErrorMsg,
-      );
-    } else if (controller.loadState == LoadState.success) {
-      return const NormalSearchPage();
-    }
-
-    return Gaps.empty;
+    return CommonStatePage(
+      controller: controller,
+      onPressed: () => controller.initHotKeysList(),
+      child: const NormalSearchPage(),
+    );
   }
 }

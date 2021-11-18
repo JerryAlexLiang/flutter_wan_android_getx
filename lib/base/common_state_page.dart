@@ -3,6 +3,7 @@ import 'package:flutter_wan_android_getx/base/base_getx_controller.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_error_page.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
+import 'package:flutter_wan_android_getx/widget/state/shimmer_loading_page.dart';
 import 'package:get/get.dart';
 
 /// 类名: common_state_page.dart
@@ -11,24 +12,29 @@ import 'package:get/get.dart';
 /// 作者: 杨亮
 
 class CommonStatePage<T extends BaseGetXController> extends StatefulWidget {
-  const CommonStatePage(
-      {Key? key,
-      required this.controller,
-      required this.onPressed,
-      required this.onRefresh,
-      required this.onLoading,
-      required this.child,
-      this.errorPage,
-      this.emptyPage})
-      : super(key: key);
+  const CommonStatePage({
+    Key? key,
+    required this.controller,
+    required this.onPressed,
+    this.errorPage,
+    this.emptyPage,
+    required this.child,
+  }) : super(key: key);
 
+  // 业务GetXController
   final T controller;
+
+  // 点击事件
   final VoidCallback onPressed;
-  final VoidCallback onRefresh;
-  final VoidCallback onLoading;
-  final Widget child;
+
+  // 自定义设置错误页面
   final Widget? errorPage;
+
+  // 自定义设置空页面
   final Widget? emptyPage;
+
+  //组件
+  final Widget child;
 
   @override
   _CommonStatePageState<T> createState() {
@@ -42,14 +48,25 @@ class _CommonStatePageState<T extends BaseGetXController>
   Widget build(BuildContext context) {
     return Obx(() {
       if (widget.controller.loadState == LoadState.simpleLoading) {
-        return Container();
-      } else if (widget.controller.loadState == LoadState.fail) {
-        return LoadErrorPage(
-          onTap: widget.onPressed,
-          errMsg: 'errMsg',
+        return const ShimmerLoadingPage();
+      } else if (widget.controller.loadState == LoadState.multipleLoading) {
+        return const ShimmerLoadingPage(
+          simpleLoading: false,
         );
+      } else if (widget.controller.loadState == LoadState.fail) {
+        return widget.errorPage ??
+            EmptyErrorStatePage(
+              loadState: LoadState.fail,
+              onTap: widget.onPressed,
+              errMsg: widget.controller.httpErrorMsg,
+            );
       } else if (widget.controller.loadState == LoadState.empty) {
-        return Container();
+        return widget.emptyPage ??
+            EmptyErrorStatePage(
+              loadState: LoadState.empty,
+              onTap: widget.onPressed,
+              errMsg: '暂无数据哦',
+            );
       } else if (widget.controller.loadState == LoadState.success) {
         return widget.child;
       }

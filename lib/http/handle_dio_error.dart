@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:dio/dio.dart';
 
 class HandleDioError {
@@ -28,7 +27,7 @@ class HandleDioError {
         break;
       case DioErrorType.other:
         code = 90005;
-        message = "网络异常，请稍后重试";
+        message = "网络异常，请检查你的网络";
         break;
     }
     return ResultException(code, message);
