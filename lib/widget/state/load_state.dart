@@ -5,3 +5,9 @@ enum LoadState {
   success,
   empty,
 }
+
+enum RefreshState{
+  firstLoad,
+  refresh,
+  loadMore,
+}

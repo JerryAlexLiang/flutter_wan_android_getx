@@ -52,8 +52,6 @@ class BaseGetXController extends GetxController {
   /// onReady() 时期请求数据
   void onReadyInitData() {}
 
-  void refreshData() {}
-
   void handleRequest({
     required bool isLoading,
     required bool isSimpleLoading,
@@ -81,7 +79,14 @@ class BaseGetXController extends GetxController {
       if (success != null) {
         if (success) {
           /// 请求成功
-          onSuccess(value);
+          var data = response.data;
+          if (data != null) {
+            loadState = LoadState.success;
+            /// 在onSuccess()中也要判断具体的业务数据是否为空
+            onSuccess(data);
+          } else {
+            loadState = LoadState.empty;
+          }
           LoggerUtil.e(
               'BaseGetController handleRequest success ====> code: ${response.code}  message: ${response.message}');
         } else {
@@ -93,6 +98,7 @@ class BaseGetXController extends GetxController {
         }
       } else {
         /// 请求失败
+        onFail(value);
         loadState = LoadState.fail;
         LoggerUtil.e(
             'BaseGetController handleRequest fail 2 ====> code: ${response.code} message: ${response.message}');

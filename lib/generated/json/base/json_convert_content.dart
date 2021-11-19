@@ -7,6 +7,8 @@ import 'package:flutter_wan_android_getx/test/test_wan_project_tree_model.dart';
 import 'package:flutter_wan_android_getx/generated/json/test_wan_project_tree_model_helper.dart';
 import 'package:flutter_wan_android_getx/page/model/language.dart';
 import 'package:flutter_wan_android_getx/generated/json/language_helper.dart';
+import 'package:flutter_wan_android_getx/model/article_data_model.dart';
+import 'package:flutter_wan_android_getx/generated/json/article_data_model_helper.dart';
 import 'package:flutter_wan_android_getx/test/test_mxnzp_model.dart';
 import 'package:flutter_wan_android_getx/generated/json/test_mxnzp_model_helper.dart';
 import 'package:flutter_wan_android_getx/model/hot_search_model.dart';
@@ -27,6 +29,12 @@ class JsonConvert<T> {
 				return testWanProjectTreeModelFromJson(data as TestWanProjectTreeModel, json) as T;
 			case Language:
 				return languageFromJson(data as Language, json) as T;
+			case ArticleDataModel:
+				return articleDataModelFromJson(data as ArticleDataModel, json) as T;
+			case ArticleDataModelDatas:
+				return articleDataModelDatasFromJson(data as ArticleDataModelDatas, json) as T;
+			case ArticleDataModelDatasTags:
+				return articleDataModelDatasTagsFromJson(data as ArticleDataModelDatasTags, json) as T;
 			case TestMxnzpModel:
 				return testMxnzpModelFromJson(data as TestMxnzpModel, json) as T;
 			case HotSearchModel:
@@ -40,6 +48,12 @@ class JsonConvert<T> {
 				return testWanProjectTreeModelToJson(data as TestWanProjectTreeModel);
 			case Language:
 				return languageToJson(data as Language);
+			case ArticleDataModel:
+				return articleDataModelToJson(data as ArticleDataModel);
+			case ArticleDataModelDatas:
+				return articleDataModelDatasToJson(data as ArticleDataModelDatas);
+			case ArticleDataModelDatasTags:
+				return articleDataModelDatasTagsToJson(data as ArticleDataModelDatasTags);
 			case TestMxnzpModel:
 				return testMxnzpModelToJson(data as TestMxnzpModel);
 			case HotSearchModel:
@@ -55,6 +69,15 @@ class JsonConvert<T> {
 		}
 		if(type == (Language).toString()){
 			return Language().fromJson(json);
+		}
+		if(type == (ArticleDataModel).toString()){
+			return ArticleDataModel().fromJson(json);
+		}
+		if(type == (ArticleDataModelDatas).toString()){
+			return ArticleDataModelDatas().fromJson(json);
+		}
+		if(type == (ArticleDataModelDatasTags).toString()){
+			return ArticleDataModelDatasTags().fromJson(json);
 		}
 		if(type == (TestMxnzpModel).toString()){
 			return TestMxnzpModel().fromJson(json);
@@ -73,6 +96,15 @@ class JsonConvert<T> {
 		}
 		if(<Language>[] is M){
 			return data.map<Language>((e) => Language().fromJson(e)).toList() as M;
+		}
+		if(<ArticleDataModel>[] is M){
+			return data.map<ArticleDataModel>((e) => ArticleDataModel().fromJson(e)).toList() as M;
+		}
+		if(<ArticleDataModelDatas>[] is M){
+			return data.map<ArticleDataModelDatas>((e) => ArticleDataModelDatas().fromJson(e)).toList() as M;
+		}
+		if(<ArticleDataModelDatasTags>[] is M){
+			return data.map<ArticleDataModelDatasTags>((e) => ArticleDataModelDatasTags().fromJson(e)).toList() as M;
 		}
 		if(<TestMxnzpModel>[] is M){
 			return data.map<TestMxnzpModel>((e) => TestMxnzpModel().fromJson(e)).toList() as M;

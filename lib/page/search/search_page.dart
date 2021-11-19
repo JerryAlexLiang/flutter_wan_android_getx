@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/base/common_state_page.dart';
+import 'package:flutter_wan_android_getx/base/refresh_paging_state_page.dart';
 import 'package:flutter_wan_android_getx/page/search/component/normal_search_page.dart';
-import 'package:flutter_wan_android_getx/res/gaps.dart';
-import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/widget/search_app_bar.dart';
 import 'package:flutter_wan_android_getx/widget/search_view.dart';
-import 'package:flutter_wan_android_getx/widget/state/load_error_page.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
-import 'package:flutter_wan_android_getx/widget/state/shimmer_loading_page.dart';
 import 'package:get/get.dart';
 
 import 'search_controller.dart';
@@ -54,24 +51,26 @@ class SearchPage extends StatelessWidget {
   Obx _buildSearchView() {
     return Obx(() {
       return WillPopScope(
-        child: IndexedStack(
-          index: controller.indexed,
-          children: [
-            // 历史搜索和热词标签tag页面
-            hotHistoryView(),
+        // child: IndexedStack(
+        //   index: controller.indexed,
+        //   children: [
+        //     // 历史搜索和热词标签tag页面
+        //     hotHistoryView(),
+        //     searchResultView(),
+        //   ],
+        // ),
 
-            Container(
-              color: Colors.red,
-              height: Get.height,
-              width: Get.width,
-              child: Center(
-                child: Text(
-                  controller.searchResult,
-                  style: const TextStyle(
-                    fontSize: 22,
-                  ),
-                ),
-              ),
+        // child: controller.indexed == 0 ? hotHistoryView() : searchResultView(),
+
+        child: Stack(
+          children: [
+            Visibility(
+              visible: controller.showResult == false,
+              child: hotHistoryView(),
+            ),
+            Visibility(
+              visible: controller.showResult == true,
+              child: searchResultView(),
             ),
           ],
         ),
@@ -86,6 +85,47 @@ class SearchPage extends StatelessWidget {
       controller: controller,
       onPressed: () => controller.initHotKeysList(),
       child: const NormalSearchPage(),
+    );
+  }
+
+  Widget searchResultView() {
+    return RefreshPagingStatePage(
+      controller: controller,
+      onPressed: () {
+        /// 错误页面 点击重新加载数据
+        controller.searchByKeyword(
+          // isLoading: true,
+          refreshState: controller.refreshState = RefreshState.firstLoad,
+          isSimpleLoading: false,
+          keyword: controller.keyword,
+        );
+      },
+      refreshController: controller.refreshController,
+      onRefresh: () {
+        /// isRefresh: true 下拉刷新
+        controller.searchByKeyword(
+            // isLoading: false,
+            isSimpleLoading: false,
+            refreshState: controller.refreshState =RefreshState.refresh,
+            keyword: controller.keyword);
+      },
+      onLoadMore: () {
+        /// isLoadMore: true 上滑加载更多
+        controller.searchByKeyword(
+            // isLoading: false,
+            isSimpleLoading: false,
+            refreshState: controller.refreshState =RefreshState.loadMore,
+            keyword: controller.keyword);
+      },
+      child: ListView.builder(
+        itemCount: controller.searchResult.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(controller.searchResult[index].title ?? ""),
+            subtitle: Text(controller.searchResult[index].chapterName ?? ''),
+          );
+        },
+      ),
     );
   }
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wan_android_getx/base/base_getx_controller.dart';
+import 'package:flutter_wan_android_getx/base/base_getx_with_page_refresh_controller.dart';
 import 'package:flutter_wan_android_getx/http/dio_method.dart';
 import 'package:flutter_wan_android_getx/http/dio_util.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
+import 'package:flutter_wan_android_getx/model/article_data_model.dart';
 import 'package:flutter_wan_android_getx/model/hot_search_model.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/utils/sp_util.dart';
@@ -15,8 +16,7 @@ import 'package:get/get.dart';
 /// 描述: 搜索界面
 /// 作者: 杨亮
 
-// class SearchController extends GetxController {
-class SearchController extends BaseGetXController {
+class SearchController extends BaseGetXWithPageRefreshController {
   /// 搜索输入框孔控制器
   late TextEditingController textEditingController;
 
@@ -28,9 +28,9 @@ class SearchController extends BaseGetXController {
   set keyword(value) => _keyword.value = value;
 
   /// 搜索结果
-  final _searchResult = ''.obs;
+  final _searchResult = <ArticleDataModelDatas>[].obs;
 
-  get searchResult => _searchResult.value;
+  List<ArticleDataModelDatas> get searchResult => _searchResult;
 
   set searchResult(value) => _searchResult.value = value;
 
@@ -70,13 +70,6 @@ class SearchController extends BaseGetXController {
 
   set showResult(value) => _showResult.value = value;
 
-  // /// 加载状态
-  // final _loadState = LoadState.loading.obs;
-  //
-  // get loadState => _loadState.value;
-  //
-  // set loadState(value) => _loadState.value = value;
-
   //两种模式 0： 默认界面 1： 搜索结果界面
   int get indexed {
     if (showResult) {
@@ -95,22 +88,6 @@ class SearchController extends BaseGetXController {
     LoggerUtil.d('============> onInit()');
     super.onInit();
   }
-
-  // @override
-  // void onReady() async {
-  //   super.onReady();
-  //   var checkConnectivity = await ConnectivityUtils.checkConnectivity();
-  //
-  //   LoggerUtil.d('============> checkConnectivity $checkConnectivity');
-  //
-  //   if (checkConnectivity != ConnectivityState.none) {
-  //     initHotKeysList();
-  //   } else {
-  //     Get.snackbar('提示', '网络异常，请检查你的网络!');
-  //   }
-  //
-  //   LoggerUtil.d('============> onReady()');
-  // }
 
   @override
   void onReadyInitData() {
@@ -180,19 +157,28 @@ class SearchController extends BaseGetXController {
 
     if (keyword.toString().isNotEmpty) {
       Fluttertoast.showToast(msg: keyword);
-      searchResult = keyword;
-      showResult = true;
-
       // 本地持久化搜索记录
       SpUtil.saveSearchHistory(keyword);
       // 历史搜索数据更新及业务逻辑
       notifySearchHistory(2);
+
+      LoggerUtil.d('articleDataModel=====>  start load');
+
+      /// 重置页码
+      currentPage = 0;
+      // searchByKeyword(
+      //     isLoading: true, isSimpleLoading: false, keyword: keyword);
+
+      searchByKeyword(
+          refreshState: refreshState = RefreshState.firstLoad,
+          isSimpleLoading: false,
+          keyword: keyword);
     } else {
       Fluttertoast.showToast(msg: '请输入搜索内容~');
     }
   }
 
-  /// 点击热词进行搜索
+  /// 点击热词、搜索历史进行搜索
   void tagSearchChipSearch(String value) {
     // 点击Chip热词或者搜索历史某一项词条进行搜索
     keyword = value;
@@ -201,6 +187,52 @@ class SearchController extends BaseGetXController {
     textEditingController.text = value;
     //关闭键盘
     FocusManager.instance.primaryFocus?.unfocus();
+  }
+
+  /// 搜索
+  void searchByKeyword({
+    // required bool isLoading,
+    required bool isSimpleLoading,
+    required String keyword,
+    required RefreshState refreshState,
+  }) {
+    handleRequestWithRefreshPaging(
+      // isLoading: isLoading,
+      isSimpleLoading: isSimpleLoading,
+      // refreshState: refreshState,
+      future: DioUtil().request(
+        RequestApi.articleSearch.replaceFirst(RegExp('page'), '$currentPage'),
+        method: DioMethod.post,
+        params: {
+          "k": keyword,
+        },
+      ),
+      onSuccess: (response) {
+        var articleDataModel = ArticleDataModel().fromJson(response);
+        List<ArticleDataModelDatas>? dataList = articleDataModel.datas;
+
+        if (dataList != null && dataList.isNotEmpty) {
+          loadState = LoadState.success;
+          //显示搜索结果页面
+          showResult = true;
+          if (refreshState == RefreshState.refresh) {
+            searchResult.assignAll(dataList);
+          } else if (refreshState == RefreshState.loadMore) {
+            searchResult.addAll(dataList);
+          }
+          LoggerUtil.d('articleDataModel=====>  ${dataList[0].toJson()}');
+        } else {
+          if (refreshState == RefreshState.firstLoad) {
+            loadState = LoadState.empty;
+          } else {
+            loadNoData();
+          }
+        }
+      },
+      onFail: (error) {
+        Fluttertoast.showToast(msg: '数据请求失败 ${error.code}  ${error.message}');
+      },
+    );
   }
 
   /// 请求热门关键词
@@ -213,7 +245,7 @@ class SearchController extends BaseGetXController {
       future: DioUtil().request(RequestApi.hotSearch, method: DioMethod.get),
       onSuccess: (response) {
         ///列表转换的时候一定要加一下强转List<dynamic>，否则会报错
-        List<HotSearchModel> hotSearchList = (response.data as List<dynamic>)
+        List<HotSearchModel> hotSearchList = (response as List<dynamic>)
             .map((e) => HotSearchModel().fromJson(e))
             .toList();
 
@@ -240,52 +272,6 @@ class SearchController extends BaseGetXController {
         LoggerUtil.d('=====> fail : ${hotKeys.map((e) => e.name).toList()}');
       },
     );
-
-    // handleRequest(
-    //   isLoading: true,
-    //   isSimpleLoading: true,
-    //   future: DioUtil().request(RequestApi.hotSearch, method: DioMethod.get),
-    //   onSuccess: (value) {
-    //     BaseResponse response = value;
-    //     //拿到res.data就可以进行Json解析了，这里一般用来构造实体类
-    //     var success = response.success;
-    //     if (success != null) {
-    //       if (success) {
-    //         ///列表转换的时候一定要加一下强转List<dynamic>，否则会报错
-    //         List<HotSearchModel> hotSearchList =
-    //             (response.data as List<dynamic>)
-    //                 .map((e) => HotSearchModel().fromJson(e))
-    //                 .toList();
-    //
-    //         hotKeys = hotSearchList;
-    //
-    //         if (hotKeys.isNotEmpty) {
-    //           showHotKeys = true;
-    //           loadState = LoadState.success;
-    //         } else {
-    //           showHotKeys = false;
-    //           loadState = LoadState.empty;
-    //         }
-    //         LoggerUtil.d(
-    //             '=====> success1 : ${hotSearchList.map((e) => e.name).toList()}');
-    //
-    //         LoggerUtil.d(
-    //             '=====> success2 : ${hotKeys.map((e) => e.name).toList()}');
-    //
-    //         LoggerUtil.d('======> initHotKeysList : load success');
-    //       } else {
-    //         showHotKeys = false;
-    //         loadState = LoadState.fail;
-    //         LoggerUtil.d('======> initHotKeysList : load fail1');
-    //         LoggerUtil.d(
-    //             '=====> fail : ${hotKeys.map((e) => e.name).toList()}');
-    //       }
-    //     } else {
-    //       loadState = LoadState.fail;
-    //       LoggerUtil.d('======> initHotKeysList : load fail2');
-    //     }
-    //   },
-    // );
   }
 
   /// 历史搜索数据更新及业务逻辑
