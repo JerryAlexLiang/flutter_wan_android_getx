@@ -46,31 +46,33 @@ class _CommonStatePageState<T extends BaseGetXController>
     extends State<CommonStatePage<T>> {
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      if (widget.controller.loadState == LoadState.simpleLoading) {
-        return const ShimmerLoadingPage();
-      } else if (widget.controller.loadState == LoadState.multipleLoading) {
-        return const ShimmerLoadingPage(
-          simpleLoading: false,
-        );
-      } else if (widget.controller.loadState == LoadState.fail) {
-        return widget.errorPage ??
-            EmptyErrorStatePage(
-              loadState: LoadState.fail,
-              onTap: widget.onPressed,
-              errMsg: widget.controller.httpErrorMsg,
-            );
-      } else if (widget.controller.loadState == LoadState.empty) {
-        return widget.emptyPage ??
-            EmptyErrorStatePage(
-              loadState: LoadState.empty,
-              onTap: widget.onPressed,
-              errMsg: '暂无数据哦',
-            );
-      } else if (widget.controller.loadState == LoadState.success) {
-        return widget.child;
-      }
-      return Gaps.empty;
-    });
+    return Scaffold(
+      body: Obx(() {
+        if (widget.controller.loadState == LoadState.simpleLoading) {
+          return const ShimmerLoadingPage();
+        } else if (widget.controller.loadState == LoadState.multipleLoading) {
+          return const ShimmerLoadingPage(
+            simpleLoading: false,
+          );
+        } else if (widget.controller.loadState == LoadState.fail) {
+          return widget.errorPage ??
+              EmptyErrorStatePage(
+                loadState: LoadState.fail,
+                onTap: widget.onPressed,
+                errMsg: widget.controller.httpErrorMsg,
+              );
+        } else if (widget.controller.loadState == LoadState.empty) {
+          return widget.emptyPage ??
+              EmptyErrorStatePage(
+                loadState: LoadState.empty,
+                onTap: widget.onPressed,
+                errMsg: '暂无数据哦',
+              );
+        } else if (widget.controller.loadState == LoadState.success) {
+          return widget.child;
+        }
+        return Gaps.empty;
+      }),
+    );
   }
 }

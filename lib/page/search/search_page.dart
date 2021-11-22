@@ -26,8 +26,7 @@ class SearchPage extends StatelessWidget {
         showRight: true,
         actionName: '搜索',
         onRightPressed: () {
-          // controller.loadSearchKeys();
-          controller.initHotKeysList();
+          controller.loadSearchKeys();
         },
         searchInput: SearchView(
           enabled: true,
@@ -51,27 +50,12 @@ class SearchPage extends StatelessWidget {
   Obx _buildSearchView() {
     return Obx(() {
       return WillPopScope(
-        // child: IndexedStack(
-        //   index: controller.indexed,
-        //   children: [
-        //     // 历史搜索和热词标签tag页面
-        //     hotHistoryView(),
-        //     searchResultView(),
-        //   ],
-        // ),
-
-        // child: controller.indexed == 0 ? hotHistoryView() : searchResultView(),
-
-        child: Stack(
+        child: IndexedStack(
+          index: controller.indexed,
           children: [
-            Visibility(
-              visible: controller.showResult == false,
-              child: hotHistoryView(),
-            ),
-            Visibility(
-              visible: controller.showResult == true,
-              child: searchResultView(),
-            ),
+            // 历史搜索和热词标签tag页面
+            hotHistoryView(),
+            searchResultView(),
           ],
         ),
         onWillPop: () => controller.onWillPopListener(),
@@ -81,7 +65,7 @@ class SearchPage extends StatelessWidget {
 
   /// 历史搜索和热词标签tag页面
   Widget hotHistoryView() {
-    return CommonStatePage(
+    return CommonStatePage<SearchController>(
       controller: controller,
       onPressed: () => controller.initHotKeysList(),
       child: const NormalSearchPage(),
@@ -89,32 +73,25 @@ class SearchPage extends StatelessWidget {
   }
 
   Widget searchResultView() {
-    return RefreshPagingStatePage(
+    return RefreshPagingStatePage<SearchController>(
       controller: controller,
       onPressed: () {
         /// 错误页面 点击重新加载数据
-        controller.searchByKeyword(
-          // isLoading: true,
-          refreshState: controller.refreshState = RefreshState.firstLoad,
-          isSimpleLoading: false,
-          keyword: controller.keyword,
-        );
+        controller.loadSearchKeys();
       },
       refreshController: controller.refreshController,
       onRefresh: () {
         /// isRefresh: true 下拉刷新
         controller.searchByKeyword(
-            // isLoading: false,
-            isSimpleLoading: false,
-            refreshState: controller.refreshState =RefreshState.refresh,
+            isLoading: false,
+            refreshState: RefreshState.refresh,
             keyword: controller.keyword);
       },
       onLoadMore: () {
         /// isLoadMore: true 上滑加载更多
         controller.searchByKeyword(
-            // isLoading: false,
-            isSimpleLoading: false,
-            refreshState: controller.refreshState =RefreshState.loadMore,
+            isLoading: false,
+            refreshState: RefreshState.loadMore,
             keyword: controller.keyword);
       },
       child: ListView.builder(

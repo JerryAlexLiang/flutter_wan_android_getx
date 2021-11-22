@@ -16,7 +16,7 @@ import 'package:get/get.dart';
 
 class BaseGetXController extends GetxController {
   /// 加载状态
-  final _loadState = LoadState.simpleLoading.obs;
+  final _loadState = LoadState.normal.obs;
 
   get loadState => _loadState.value;
 

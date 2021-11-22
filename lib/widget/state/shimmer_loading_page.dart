@@ -23,7 +23,10 @@ class ShimmerLoadingPage extends StatelessWidget {
         ? widget = simpleShimmerLoading(context)
         : widget = listShimmerLoading(context);
 
-    return widget;
+    return SafeArea(
+        child: Scaffold(
+      body: widget,
+    ));
   }
 
   Shimmer simpleShimmerLoading(BuildContext context) {

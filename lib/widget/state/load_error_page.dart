@@ -28,32 +28,36 @@ class EmptyErrorStatePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Gaps.vGap150,
-            Container(
-              child: Lottie.asset(
-                loadState == LoadState.empty
-                    ? R.assetsLottieRefreshEmpty
-                    : R.assetsLottieRefreshError,
-                width: 200,
-                fit: BoxFit.cover,
-                animate: true,
-              ),
+      child: SafeArea(
+        child: Scaffold(
+          body: Container(
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Gaps.vGap150,
+                Container(
+                  child: Lottie.asset(
+                    loadState == LoadState.empty
+                        ? R.assetsLottieRefreshEmpty
+                        : R.assetsLottieRefreshError,
+                    width: 200,
+                    fit: BoxFit.cover,
+                    animate: true,
+                  ),
+                ),
+                loadState == LoadState.empty ? Gaps.empty : Gaps.vGap26,
+                Text(
+                  '$errMsg，点击重试',
+                  style: context.bodyText2Style!.copyWith(
+                    color: AppColors.colorB8C0D4,
+                  ),
+                ),
+              ],
             ),
-            loadState == LoadState.empty ? Gaps.empty : Gaps.vGap26,
-            Text(
-              '$errMsg，点击重试',
-              style: context.bodyText2Style!.copyWith(
-                color: AppColors.colorB8C0D4,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

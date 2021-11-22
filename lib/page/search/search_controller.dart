@@ -156,7 +156,6 @@ class SearchController extends BaseGetXWithPageRefreshController {
     FocusManager.instance.primaryFocus?.unfocus();
 
     if (keyword.toString().isNotEmpty) {
-      Fluttertoast.showToast(msg: keyword);
       // 本地持久化搜索记录
       SpUtil.saveSearchHistory(keyword);
       // 历史搜索数据更新及业务逻辑
@@ -164,14 +163,10 @@ class SearchController extends BaseGetXWithPageRefreshController {
 
       LoggerUtil.d('articleDataModel=====>  start load');
 
-      /// 重置页码
-      currentPage = 0;
-      // searchByKeyword(
-      //     isLoading: true, isSimpleLoading: false, keyword: keyword);
-
       searchByKeyword(
-          refreshState: refreshState = RefreshState.firstLoad,
+          isLoading: true,
           isSimpleLoading: false,
+          refreshState: RefreshState.refresh,
           keyword: keyword);
     } else {
       Fluttertoast.showToast(msg: '请输入搜索内容~');
@@ -182,24 +177,38 @@ class SearchController extends BaseGetXWithPageRefreshController {
   void tagSearchChipSearch(String value) {
     // 点击Chip热词或者搜索历史某一项词条进行搜索
     keyword = value;
-    loadSearchKeys();
     //将点击的热词填充输入框
     textEditingController.text = value;
-    //关闭键盘
+    // 关闭键盘
     FocusManager.instance.primaryFocus?.unfocus();
+    // 搜索
+    loadSearchKeys();
   }
 
   /// 搜索
   void searchByKeyword({
-    // required bool isLoading,
-    required bool isSimpleLoading,
+    required isLoading,
+    bool isSimpleLoading = false,
     required String keyword,
     required RefreshState refreshState,
-  }) {
+  }) async {
+
+    //显示搜索结果页面
+    showResult = true;
+
+    if (refreshState == RefreshState.refresh) {
+      /// 下拉刷新
+      currentPage = 0;
+    }
+    if (refreshState == RefreshState.loadMore) {
+      /// 上滑加载更多
+      currentPage++;
+    }
+
     handleRequestWithRefreshPaging(
-      // isLoading: isLoading,
+      isLoading: isLoading,
       isSimpleLoading: isSimpleLoading,
-      // refreshState: refreshState,
+      refreshState: refreshState,
       future: DioUtil().request(
         RequestApi.articleSearch.replaceFirst(RegExp('page'), '$currentPage'),
         method: DioMethod.post,
@@ -211,18 +220,24 @@ class SearchController extends BaseGetXWithPageRefreshController {
         var articleDataModel = ArticleDataModel().fromJson(response);
         List<ArticleDataModelDatas>? dataList = articleDataModel.datas;
 
+        // 加载到底部判断
+        var over = articleDataModel.over;
+        if (over != null) {
+          if (over) {
+            loadNoData();
+          }
+        }
+
         if (dataList != null && dataList.isNotEmpty) {
           loadState = LoadState.success;
-          //显示搜索结果页面
-          showResult = true;
           if (refreshState == RefreshState.refresh) {
             searchResult.assignAll(dataList);
           } else if (refreshState == RefreshState.loadMore) {
             searchResult.addAll(dataList);
           }
-          LoggerUtil.d('articleDataModel=====>  ${dataList[0].toJson()}');
         } else {
-          if (refreshState == RefreshState.firstLoad) {
+          if (isLoading) {
+            Fluttertoast.showToast(msg: 'empty');
             loadState = LoadState.empty;
           } else {
             loadNoData();
@@ -230,6 +245,8 @@ class SearchController extends BaseGetXWithPageRefreshController {
         }
       },
       onFail: (error) {
+        //显示搜索结果页面
+        showResult = true;
         Fluttertoast.showToast(msg: '数据请求失败 ${error.code}  ${error.message}');
       },
     );
