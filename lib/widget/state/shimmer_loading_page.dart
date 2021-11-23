@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wan_android_getx/res/gaps.dart';
+import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:flutter_wan_android_getx/widget/state/list_skeleton_shimmer_loading.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:shimmer/shimmer.dart';
 
 /// 类名: shimmer_loading_page.dart
@@ -34,9 +37,23 @@ class ShimmerLoadingPage extends StatelessWidget {
       baseColor: Colors.grey,
       highlightColor: Colors.white,
       child: Center(
-        child: Text(
-          'Loading...',
-          style: context.headline3Style,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Opacity(
+              opacity: 0.6,
+              child: Image.asset(
+                'images/launch_image.png',
+                width: 70,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Gaps.vGap10,
+            Text(
+              StringsConstant.loading.tr,
+              style: context.headline6Style,
+            ),
+          ],
         ),
       ),
     );

@@ -5,6 +5,7 @@ import 'package:flutter_wan_android_getx/http/dio_util.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
 import 'package:flutter_wan_android_getx/model/article_data_model.dart';
 import 'package:flutter_wan_android_getx/model/hot_search_model.dart';
+import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/utils/sp_util.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
@@ -40,6 +41,13 @@ class SearchController extends BaseGetXWithPageRefreshController {
   List<HotSearchModel> get hotKeys => _hotKeys;
 
   set hotKeys(value) => _hotKeys.assignAll(value);
+
+  /// 搜索hint
+  final _hotHint = '热搜'.obs;
+
+  get hotHint => _hotHint.value;
+
+  set hotHint(value) => _hotHint.value = value;
 
   /// 是否显示热词流布局
   final _showHotKeys = true.obs;
@@ -125,7 +133,7 @@ class SearchController extends BaseGetXWithPageRefreshController {
     } else {
       clearSearchView();
       Get.back(canPop: true);
-      showResult = true;
+      // showResult = true;
     }
   }
 
@@ -138,7 +146,7 @@ class SearchController extends BaseGetXWithPageRefreshController {
     } else {
       clearSearchView();
       Get.back(canPop: true);
-      showResult = true;
+      // showResult = true;
       return Future.value(true);
     }
   }
@@ -160,17 +168,17 @@ class SearchController extends BaseGetXWithPageRefreshController {
       SpUtil.saveSearchHistory(keyword);
       // 历史搜索数据更新及业务逻辑
       notifySearchHistory(2);
-
-      LoggerUtil.d('articleDataModel=====>  start load');
-
-      searchByKeyword(
-          isLoading: true,
-          isSimpleLoading: false,
-          refreshState: RefreshState.refresh,
-          keyword: keyword);
     } else {
-      Fluttertoast.showToast(msg: '请输入搜索内容~');
+      if (hotKeys.isNotEmpty) {
+        keyword = hotKeys[0].name;
+        textEditingController.text = keyword;
+      }
     }
+    searchByKeyword(
+        isLoading: true,
+        isSimpleLoading: false,
+        refreshState: RefreshState.first,
+        keyword: keyword);
   }
 
   /// 点击热词、搜索历史进行搜索
@@ -192,11 +200,11 @@ class SearchController extends BaseGetXWithPageRefreshController {
     required String keyword,
     required RefreshState refreshState,
   }) async {
-
     //显示搜索结果页面
     showResult = true;
 
-    if (refreshState == RefreshState.refresh) {
+    if (refreshState == RefreshState.refresh ||
+        refreshState == RefreshState.first) {
       /// 下拉刷新
       currentPage = 0;
     }
@@ -229,16 +237,18 @@ class SearchController extends BaseGetXWithPageRefreshController {
         }
 
         if (dataList != null && dataList.isNotEmpty) {
-          loadState = LoadState.success;
-          if (refreshState == RefreshState.refresh) {
+          refreshLoadState = LoadState.success;
+          if (refreshState == RefreshState.first) {
             searchResult.assignAll(dataList);
+          } else if (refreshState == RefreshState.refresh) {
+            searchResult.assignAll(dataList);
+            Fluttertoast.showToast(msg: StringsConstant.refreshSuccess.tr);
           } else if (refreshState == RefreshState.loadMore) {
             searchResult.addAll(dataList);
           }
         } else {
           if (isLoading) {
-            Fluttertoast.showToast(msg: 'empty');
-            loadState = LoadState.empty;
+            refreshLoadState = LoadState.empty;
           } else {
             loadNoData();
           }
@@ -271,6 +281,9 @@ class SearchController extends BaseGetXWithPageRefreshController {
         if (hotKeys.isNotEmpty) {
           showHotKeys = true;
           loadState = LoadState.success;
+
+          /// 热词hint
+          hotHint = '${hotKeys[0].name} | ${hotKeys[1].name}';
         } else {
           showHotKeys = false;
           loadState = LoadState.empty;

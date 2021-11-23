@@ -1,5 +1,4 @@
 enum LoadState {
-  normal,
   simpleLoading,
   multipleLoading,
   fail,
@@ -8,6 +7,7 @@ enum LoadState {
 }
 
 enum RefreshState{
+  first,
   refresh,
   loadMore,
 }

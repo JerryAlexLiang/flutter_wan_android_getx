@@ -85,6 +85,9 @@ dependencies:
   # 12、Lottie动画
   lottie: ^1.2.1
 
+  # 13、加载SVG图片 https://pub.flutter-io.cn/packages/flutter_svg
+  flutter_svg: ^0.23.0+1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

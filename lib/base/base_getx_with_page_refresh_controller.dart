@@ -26,6 +26,13 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
   /// 当前页数
   int currentPage = 0;
 
+  /// 刷新列表加载状态
+  final _refreshLoadState = LoadState.simpleLoading.obs;
+
+  get refreshLoadState => _refreshLoadState.value;
+
+  set refreshLoadState(value) => _refreshLoadState.value = value;
+
   @override
   void onInit() {
     super.onInit();
@@ -47,12 +54,16 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
     required Function(dynamic value) onSuccess,
     required Function(dynamic value) onFail,
   }) async {
+
+    // 重置无数据状态刷新器
+    _refreshController.resetNoData();
+
     /// 第一次加载数据，则显示加载进度页面
     if (isLoading) {
       if (isSimpleLoading) {
-        loadState = LoadState.simpleLoading;
+        refreshLoadState = LoadState.simpleLoading;
       } else {
-        loadState = LoadState.multipleLoading;
+        refreshLoadState = LoadState.multipleLoading;
       }
     }
 
@@ -73,9 +84,9 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
           } else {
             /// 第一次加载，返回数据为空，则显示空页面
             if (isLoading) {
-              loadState = LoadState.empty;
+              refreshLoadState = LoadState.empty;
             } else {
-              loadState  = LoadState.success;
+              refreshLoadState = LoadState.success;
               /// 非第一次加载，返回数据为空，则不显示空页面
               refreshLoadingSuccess(refreshState);
             }
@@ -86,11 +97,11 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
           /// 请求失败
           /// 第一次加载，请求失败，则显示错误页面
           if (isLoading) {
-            loadState = LoadState.fail;
+            refreshLoadState = LoadState.fail;
           } else {
             /// 非第一次加载，请求失败，则不显示错误页面
             refreshLoadingFailed(refreshState);
-            loadState = LoadState.success;
+            refreshLoadState = LoadState.success;
 
           }
           onFail(value);
@@ -100,7 +111,7 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
       } else {
         /// 第一次加载，请求失败，则显示错误页面
         if (isLoading) {
-          loadState = LoadState.fail;
+          refreshLoadState = LoadState.fail;
         } else {
           /// 非第一次加载，请求失败，则不显示错误页面
           refreshLoadingFailed(refreshState);
@@ -113,13 +124,13 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
       /// 网络请求失败 第一次加载，请求失败，则显示错误页面
       if (isLoading) {
         // 加载状态设置为fail
-        loadState = LoadState.fail;
+        refreshLoadState = LoadState.fail;
         // LoadErrorMsg 文字内容
         httpErrorMsg = '${error.code}  ${error.message}';
       } else {
         /// 网络请求失败 非第一次加载，请求失败，则不显示错误页面
         refreshLoadingFailed(refreshState);
-        loadState = LoadState.success;
+        refreshLoadState = LoadState.success;
       }
       onFail(error);
       LoggerUtil.e(
@@ -147,7 +158,7 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
 
   /// 没有更多了
   void loadNoData() {
-    loadState = LoadState.success;
+    refreshLoadState = LoadState.success;
     _refreshController.loadNoData();
   }
 }

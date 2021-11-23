@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
               //备用语言
               fallbackLocale: const Locale('en', 'US'),
               localizationsDelegates: const [
-                //这行是关键
+                // Refresh国际化 这行是关键
                 RefreshLocalizations.delegate,
               ],
               defaultTransition: Transition.fade,

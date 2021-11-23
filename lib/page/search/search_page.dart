@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/base/common_state_page.dart';
 import 'package:flutter_wan_android_getx/base/refresh_paging_state_page.dart';
 import 'package:flutter_wan_android_getx/page/search/component/normal_search_page.dart';
+import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/widget/search_app_bar.dart';
 import 'package:flutter_wan_android_getx/widget/search_view.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
@@ -20,28 +21,29 @@ class SearchPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SearchAppBar(
-        showBottomLine: true,
         showLeft: true,
         onLeftPressed: () => controller.finishSearchPage(),
         showRight: true,
-        actionName: '搜索',
+        actionName: StringsConstant.search.tr,
         onRightPressed: () {
           controller.loadSearchKeys();
         },
-        searchInput: SearchView(
-          enabled: true,
-          hintText: '致一科技',
-          editingController: controller.textEditingController,
-          onSuffixPressed: () => controller.clearSearchView(),
-          onChange: (String value) {
-            // 输入时监听赋值
-            controller.keyword = value;
-            controller.onChange(value);
-          },
-          onSubmit: (value) => {
-            controller.loadSearchKeys(),
-          },
-        ),
+        searchInput: Obx(() {
+          return SearchView(
+            enabled: true,
+            hintText: controller.hotHint,
+            editingController: controller.textEditingController,
+            onSuffixPressed: () => controller.clearSearchView(),
+            onChange: (String value) {
+              // 输入时监听赋值
+              controller.keyword = value;
+              controller.onChange(value);
+            },
+            onSubmit: (value) => {
+              controller.loadSearchKeys(),
+            },
+          );
+        }),
       ),
       body: _buildSearchView(),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/base/base_getx_controller.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
+import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_error_page.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
 import 'package:flutter_wan_android_getx/widget/state/shimmer_loading_page.dart';
@@ -66,7 +67,7 @@ class _CommonStatePageState<T extends BaseGetXController>
               EmptyErrorStatePage(
                 loadState: LoadState.empty,
                 onTap: widget.onPressed,
-                errMsg: '暂无数据哦',
+                errMsg: StringsConstant.noData.tr,
               );
         } else if (widget.controller.loadState == LoadState.success) {
           return widget.child;

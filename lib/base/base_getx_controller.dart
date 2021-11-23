@@ -16,7 +16,7 @@ import 'package:get/get.dart';
 
 class BaseGetXController extends GetxController {
   /// 加载状态
-  final _loadState = LoadState.normal.obs;
+  final _loadState = LoadState.simpleLoading.obs;
 
   get loadState => _loadState.value;
 
@@ -67,7 +67,7 @@ class BaseGetXController extends GetxController {
       }
     }
 
-    // await Future.delayed(const Duration(seconds: 1));
+    // await Future.delayed(const Duration(seconds: 1000));
 
     future.then((value) {
       LoggerUtil.d('BaseGetController ==> start handleRequest');

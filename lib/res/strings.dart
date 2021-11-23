@@ -18,6 +18,16 @@ class StringsConstant {
   static const String traditionalChineseHongKong = "繁体中文(香港)"; //繁体中文(香港)
   static const String usEnglish = "英语(US)"; //英语
   static const String exitAppToast = "再次点击退出程序";
+  static const String search = "搜索";
+  static const String noData = "暂无数据哦";
+  static const String noMoreData = "我也是有底线的~";
+  static const String loading = "加载中...";
+  static const String pullToRefresh = "下拉刷新";
+  static const String refreshFailed = "刷新失败~";
+  static const String refreshSuccess = "刷新成功~";
+  static const String releaseStartRefreshing  = "松手开始刷新数据";
+  static const String releaseStartLeading  = "松手开始加载数据";
+  static const String clickRetry  = "点击重试";
 }
 
 ///使用Get配置语言环境
@@ -44,6 +54,16 @@ class Messages extends Translations {
           StringsConstant.traditionalChineseHongKong: '繁体中文(香港)',
           StringsConstant.usEnglish: '英语(US)',
           StringsConstant.exitAppToast: '再次点击退出程序',
+          StringsConstant.search: '搜索',
+          StringsConstant.noData: '暂无数据哦',
+          StringsConstant.loading: '加载中...',
+          StringsConstant.noMoreData: "我也是有底线的~",
+          StringsConstant.pullToRefresh:"下拉刷新",
+          StringsConstant.refreshFailed:"刷新失败~",
+          StringsConstant.refreshSuccess:"刷新成功~",
+          StringsConstant.releaseStartRefreshing:"松手开始刷新数据",
+          StringsConstant.releaseStartLeading:"松手开始加载数据",
+          StringsConstant.clickRetry: "点击重试",
         },
         //繁体中文（香港）
         'zh_HK': {
@@ -64,6 +84,16 @@ class Messages extends Translations {
           StringsConstant.traditionalChineseHongKong: '繁体中文(香港)',
           StringsConstant.usEnglish: '英語(US)',
           StringsConstant.exitAppToast: '再按一次退出程序',
+          StringsConstant.search: '搜索',
+          StringsConstant.noData: '暫無數據哦',
+          StringsConstant.loading: '加載中...',
+          StringsConstant.noMoreData: "我也是有底線的~",
+          StringsConstant.pullToRefresh:"下拉刷新",
+          StringsConstant.refreshFailed:"刷新失败~",
+          StringsConstant.refreshSuccess:"刷新成功~",
+          StringsConstant.releaseStartRefreshing:"松手开始刷新数据",
+          StringsConstant.releaseStartLeading:"松手开始加载数据",
+          StringsConstant.clickRetry:"點擊重試",
         },
         //English
         'en_US': {
@@ -85,6 +115,16 @@ class Messages extends Translations {
               'Traditional Chinese(HongKong)',
           StringsConstant.usEnglish: 'English(US)',
           StringsConstant.exitAppToast: 'Click Again ToExit The Program',
+          StringsConstant.search: 'search',
+          StringsConstant.noData: 'No data yet',
+          StringsConstant.loading: 'Loading...',
+          StringsConstant.noMoreData: "There's no more data~",
+          StringsConstant.pullToRefresh:"pull to refresh",
+          StringsConstant.refreshFailed:"refresh the failure~",
+          StringsConstant.refreshSuccess:"refresh the success~",
+          StringsConstant.releaseStartRefreshing:"release start refreshing",
+          StringsConstant.releaseStartLeading:"release start leading",
+          StringsConstant.clickRetry:"click retry",
         },
       };
 }
