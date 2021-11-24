@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
-import 'package:get/get.dart';
 
 /// 自定义搜索栏 - AppBar
 /// 说明：
@@ -68,6 +67,13 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// 显示状态栏
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: [SystemUiOverlay.top]);
+
+    // /// 隐藏状态栏
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+
     final Color _backgroundColor =
         backgroundColor ?? context.appBarBackgroundColor!;
 

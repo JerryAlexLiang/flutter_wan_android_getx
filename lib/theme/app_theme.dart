@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_wan_android_getx/theme/app_color.dart';
 import 'package:get/get.dart';
 
@@ -7,6 +8,7 @@ ThemeData lightTheme = ThemeData.light().copyWith(
   primaryColor: Colors.blue,
   splashColor: Colors.white12,
   appBarTheme: AppBarTheme(
+    systemOverlayStyle: SystemUiOverlayStyle.dark,
     elevation: 0,
     backgroundColor: ThemeData.light().scaffoldBackgroundColor,
     iconTheme: const IconThemeData(color: Colors.black),
@@ -41,6 +43,7 @@ ThemeData lightTheme = ThemeData.light().copyWith(
 ///夜间模式
 ThemeData darkTheme = ThemeData.dark().copyWith(
   appBarTheme: AppBarTheme(
+    systemOverlayStyle: SystemUiOverlayStyle.light,
     elevation: 0,
     backgroundColor: ThemeData.dark().scaffoldBackgroundColor,
     iconTheme: const IconThemeData(color: Colors.white),
@@ -73,6 +76,9 @@ bool isDarkMode(BuildContext context) {
 }
 
 extension ThemeExtension on BuildContext {
+  Color? get statusBarColor =>
+      Theme.of(this).appBarTheme.systemOverlayStyle!.statusBarColor;
+
   //WrapChip背景填充色
   Color? get chipBackgroundColor {
     return Get.isDarkMode ? Colors.grey.withOpacity(0.2) : Colors.grey[200];

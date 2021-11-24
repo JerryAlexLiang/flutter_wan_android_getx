@@ -57,6 +57,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// 显示状态栏
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: [SystemUiOverlay.top]);
+
+    // /// 隐藏状态栏
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+
     final Color _backgroundColor =
         backgroundColor ?? context.appBarBackgroundColor!;
 
