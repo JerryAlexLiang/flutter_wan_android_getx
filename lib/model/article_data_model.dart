@@ -18,20 +18,20 @@ class ArticleDataModel with JsonConvert<ArticleDataModel> {
 class ArticleDataModelDatas with JsonConvert<ArticleDataModelDatas> {
 	String? apkLink;
 	int? audit;
-	String? author;
+	String? author;               // 作者
 	bool? canEdit;
 	int? chapterId;
-	String? chapterName;
-	bool? collect;
+	String? chapterName;          // 分类副名称
+	bool? collect;                // 是否收藏
 	int? courseId;
-	String? desc;
+	String? desc;                 // 简述
 	String? descMd;
-	String? envelopePic;
-	bool? fresh;
+	String? envelopePic;          // 封面
+	bool? fresh;                  // 新条目
 	String? host;
 	int? id;
 	String? link;
-	String? niceDate;
+	String? niceDate;            // 分享时间（格式化）
 	String? niceShareDate;
 	String? origin;
 	String? prefix;
@@ -40,11 +40,11 @@ class ArticleDataModelDatas with JsonConvert<ArticleDataModelDatas> {
 	int? realSuperChapterId;
 	int? selfVisible;
 	int? shareDate;
-	String? shareUser;
+	String? shareUser;           // 分享作者
 	int? superChapterId;
-	String? superChapterName;
-	List<ArticleDataModelDatasTags>? tags;
-	String? title;
+	String? superChapterName;    // 分类主名称
+	List<ArticleDataModelDatasTags>? tags;         // 分类
+	String? title;              // 主标题
 	int? type;
 	int? userId;
 	int? visible;
@@ -52,6 +52,6 @@ class ArticleDataModelDatas with JsonConvert<ArticleDataModelDatas> {
 }
 
 class ArticleDataModelDatasTags with JsonConvert<ArticleDataModelDatasTags> {
-	String? name;
-	String? url;
+	String? name;      // 分类名称
+	String? url;       // 分类路由
 }

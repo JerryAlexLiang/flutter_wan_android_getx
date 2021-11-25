@@ -88,8 +88,12 @@ dependencies:
   # 13、加载SVG图片 https://pub.flutter-io.cn/packages/flutter_svg
   flutter_svg: ^0.23.0+1
 
- # 14、加载html标签 flutter_html: ^2.1.5
+  # 14、加载html标签 flutter_html: ^2.1.5
   flutter_html: ^2.1.5
+
+  # 15、图片缓存框架
+  cached_network_image: ^3.1.0+1
+
 
 dev_dependencies:
   flutter_test:

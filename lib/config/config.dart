@@ -89,5 +89,12 @@ class Config {
       );
       SystemChrome.setSystemUIOverlayStyle(_style);
     }
+
+    /// 显示状态栏
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: [SystemUiOverlay.top]);
+
+    // /// 隐藏状态栏
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   }
 }

@@ -127,7 +127,11 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
         // 指示器刷新失败
         customHeader = refreshStatusWidget(
           context: context,
-          constant: StringsConstant.refreshFailed.tr,
+          constant: controller.httpErrorMsg != null
+              ? StringsConstant.refreshFailed.tr +
+                  '\n' +
+                  controller.httpErrorMsg
+              : StringsConstant.refreshFailed.tr,
           iconData: Icons.error,
         );
       } else if (refreshStatus == RefreshStatus.completed) {
@@ -138,6 +142,7 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
           iconData: Icons.done,
         );
       } else {
+        // 松手开始刷新数据
         customHeader = refreshStatusWidget(
           context: context,
           constant: StringsConstant.releaseStartRefreshing.tr,
@@ -157,11 +162,18 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
     return CustomFooter(builder: (context, loadStatus) {
       Widget? customFooter;
 
-      if (loadStatus == LoadStatus.canLoading) {
-        /// 上滑时显示
+      if (loadStatus == LoadStatus.idle) {
+        /// 上滑时显示 pullToLoading
         customFooter = refreshStatusWidget(
           context: context,
-          constant: StringsConstant.releaseStartLeading.tr,
+          constant: StringsConstant.pullToLoading.tr,
+          iconData: Icons.arrow_upward,
+        );
+      } else if (loadStatus == LoadStatus.canLoading) {
+        /// 上滑要松手时显示
+        customFooter = refreshStatusWidget(
+          context: context,
+          constant: StringsConstant.releaseStartLoading.tr,
           iconData: Icons.autorenew,
         );
       } else if (loadStatus == LoadStatus.loading) {
@@ -179,7 +191,9 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
       } else if (loadStatus == LoadStatus.failed) {
         customFooter = refreshStatusWidget(
           context: context,
-          constant: controller.httpErrorMsg,
+          constant: controller.httpErrorMsg != null
+              ? StringsConstant.loadFailed.tr + "\n" + controller.httpErrorMsg
+              : StringsConstant.loadFailed.tr,
           iconData: Icons.error_outline,
         );
       }
@@ -211,6 +225,7 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
         Text(
           constant,
           style: context.bodyText2Style!.copyWith(color: Colors.grey),
+          textAlign: TextAlign.center,
         ),
       ],
     );

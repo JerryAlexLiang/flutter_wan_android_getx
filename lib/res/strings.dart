@@ -25,9 +25,11 @@ class StringsConstant {
   static const String pullToRefresh = "下拉刷新";
   static const String refreshFailed = "刷新失败~";
   static const String refreshSuccess = "刷新成功~";
-  static const String releaseStartRefreshing  = "松手开始刷新数据";
-  static const String releaseStartLeading  = "松手开始加载数据";
-  static const String clickRetry  = "点击重试";
+  static const String pullToLoading = "上拉加载";
+  static const String releaseStartRefreshing = "松手开始刷新数据";
+  static const String releaseStartLoading = "松手开始加载数据";
+  static const String loadFailed = "加载失败";
+  static const String clickRetry = "点击重试";
 }
 
 ///使用Get配置语言环境
@@ -58,11 +60,13 @@ class Messages extends Translations {
           StringsConstant.noData: '暂无数据哦',
           StringsConstant.loading: '加载中...',
           StringsConstant.noMoreData: "我也是有底线的~",
-          StringsConstant.pullToRefresh:"下拉刷新",
-          StringsConstant.refreshFailed:"刷新失败~",
-          StringsConstant.refreshSuccess:"刷新成功~",
-          StringsConstant.releaseStartRefreshing:"松手开始刷新数据",
-          StringsConstant.releaseStartLeading:"松手开始加载数据",
+          StringsConstant.pullToRefresh: "下拉刷新",
+          StringsConstant.refreshFailed: "刷新失败~",
+          StringsConstant.refreshSuccess: "刷新成功~",
+          StringsConstant.pullToLoading: "上拉加载",
+          StringsConstant.releaseStartRefreshing: "松手开始刷新数据",
+          StringsConstant.releaseStartLoading: "松手开始加载数据",
+          StringsConstant.loadFailed: '加载失败~',
           StringsConstant.clickRetry: "点击重试",
         },
         //繁体中文（香港）
@@ -88,12 +92,14 @@ class Messages extends Translations {
           StringsConstant.noData: '暫無數據哦',
           StringsConstant.loading: '加載中...',
           StringsConstant.noMoreData: "我也是有底線的~",
-          StringsConstant.pullToRefresh:"下拉刷新",
-          StringsConstant.refreshFailed:"刷新失败~",
-          StringsConstant.refreshSuccess:"刷新成功~",
-          StringsConstant.releaseStartRefreshing:"松手开始刷新数据",
-          StringsConstant.releaseStartLeading:"松手开始加载数据",
-          StringsConstant.clickRetry:"點擊重試",
+          StringsConstant.pullToRefresh: "下拉刷新",
+          StringsConstant.refreshFailed: "刷新失敗~",
+          StringsConstant.refreshSuccess: "刷新成功~",
+          StringsConstant.releaseStartRefreshing: "鬆手開始刷新數據",
+          StringsConstant.pullToLoading: "上拉加載",
+          StringsConstant.releaseStartLoading: "鬆手開始加載數據",
+          StringsConstant.loadFailed: '加載失敗~',
+          StringsConstant.clickRetry: "點擊重試",
         },
         //English
         'en_US': {
@@ -119,12 +125,14 @@ class Messages extends Translations {
           StringsConstant.noData: 'No data yet',
           StringsConstant.loading: 'Loading...',
           StringsConstant.noMoreData: "There's no more data~",
-          StringsConstant.pullToRefresh:"pull to refresh",
-          StringsConstant.refreshFailed:"refresh the failure~",
-          StringsConstant.refreshSuccess:"refresh the success~",
-          StringsConstant.releaseStartRefreshing:"release start refreshing",
-          StringsConstant.releaseStartLeading:"release start leading",
-          StringsConstant.clickRetry:"click retry",
+          StringsConstant.pullToRefresh: "pull to refresh",
+          StringsConstant.refreshFailed: "refresh the failure~",
+          StringsConstant.refreshSuccess: "refresh the success~",
+          StringsConstant.releaseStartRefreshing: "release start refreshing",
+          StringsConstant.pullToLoading: "pull to loading",
+          StringsConstant.releaseStartLoading: "release start leading",
+          StringsConstant.loadFailed: 'load failed~',
+          StringsConstant.clickRetry: "click retry",
         },
       };
 }
