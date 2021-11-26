@@ -30,6 +30,7 @@ class StringsConstant {
   static const String releaseStartLoading = "松手开始加载数据";
   static const String loadFailed = "加载失败";
   static const String clickRetry = "点击重试";
+  static const String freshTag = "新";
 }
 
 ///使用Get配置语言环境
@@ -68,6 +69,7 @@ class Messages extends Translations {
           StringsConstant.releaseStartLoading: "松手开始加载数据",
           StringsConstant.loadFailed: '加载失败~',
           StringsConstant.clickRetry: "点击重试",
+          StringsConstant.freshTag: "新",
         },
         //繁体中文（香港）
         'zh_HK': {
@@ -100,6 +102,7 @@ class Messages extends Translations {
           StringsConstant.releaseStartLoading: "鬆手開始加載數據",
           StringsConstant.loadFailed: '加載失敗~',
           StringsConstant.clickRetry: "點擊重試",
+          StringsConstant.freshTag: "新",
         },
         //English
         'en_US': {
@@ -133,6 +136,7 @@ class Messages extends Translations {
           StringsConstant.releaseStartLoading: "release start leading",
           StringsConstant.loadFailed: 'load failed~',
           StringsConstant.clickRetry: "click retry",
+          StringsConstant.freshTag: "New",
         },
       };
 }

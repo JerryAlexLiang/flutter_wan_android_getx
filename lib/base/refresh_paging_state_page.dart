@@ -127,7 +127,8 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
         // 指示器刷新失败
         customHeader = refreshStatusWidget(
           context: context,
-          constant: controller.httpErrorMsg != null
+          constant: (controller.httpErrorMsg != null &&
+                  controller.httpErrorMsg.toString().isNotEmpty)
               ? StringsConstant.refreshFailed.tr +
                   '\n' +
                   controller.httpErrorMsg
@@ -191,7 +192,8 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
       } else if (loadStatus == LoadStatus.failed) {
         customFooter = refreshStatusWidget(
           context: context,
-          constant: controller.httpErrorMsg != null
+          constant: (controller.httpErrorMsg != null &&
+                  controller.httpErrorMsg.toString().isNotEmpty)
               ? StringsConstant.loadFailed.tr + "\n" + controller.httpErrorMsg
               : StringsConstant.loadFailed.tr,
           iconData: Icons.error_outline,

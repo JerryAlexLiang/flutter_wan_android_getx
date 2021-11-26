@@ -17,7 +17,15 @@ class UserInfoImage extends GetView<MineController> {
       child: Row(
         children: [
           Container(
-            decoration: DecorationStyle.imageDecorationCircle(true),
+            decoration: DecorationStyle.imageDecorationCircle(
+              isCircle: true,
+              // borderRadius: 10,
+              borderWidth: 3,
+              borderColor: Colors.pinkAccent,
+              boxShadowBlurRadius: 3,
+              boxShadowSpreadRadius: 3,
+              boxShadowColor: Colors.white.withOpacity(0.8),
+            ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(100),
               clipBehavior: Clip.antiAlias,
