@@ -59,8 +59,6 @@ class DioInterceptors extends Interceptor {
             success: false,
             data: null,
           );
-          throw ResultException(
-              response.data['errorCode'], response.data['errorMsg']);
         }
       } else {
         LoggerUtil.d("=======> wan error");
@@ -70,8 +68,6 @@ class DioInterceptors extends Interceptor {
           success: false,
           data: null,
         );
-        throw ResultException(
-            response.data['errorCode'], response.data['errorMsg']);
       }
     }
 
@@ -95,7 +91,6 @@ class DioInterceptors extends Interceptor {
             success: false,
             data: null,
           );
-          throw ResultException(response.data['code'], response.data['msg']);
         }
       } else {
         LoggerUtil.d("=======> mxnzp error");
@@ -105,7 +100,6 @@ class DioInterceptors extends Interceptor {
           success: false,
           data: null,
         );
-        throw ResultException(response.data['code'], response.data['msg']);
       }
     }
 

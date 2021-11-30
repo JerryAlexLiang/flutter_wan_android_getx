@@ -51,8 +51,10 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
     bool isSimpleLoading = false,
     RefreshState refreshState = RefreshState.refresh,
     required Future<dynamic> future,
+    Function()? onStart,
     required Function(dynamic value) onSuccess,
     required Function(dynamic value) onFail,
+    Function(dynamic value)? onError,
   }) async {
 
     // 重置无数据状态刷新器
@@ -65,6 +67,10 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
       } else {
         refreshLoadState = LoadState.multipleLoading;
       }
+    }
+
+    if (onStart != null) {
+      onStart();
     }
 
     future.then((value) {
@@ -132,7 +138,9 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
         refreshLoadingFailed(refreshState);
         refreshLoadState = LoadState.success;
       }
-      onFail(error);
+      if (onError != null) {
+        onError(error);
+      }
       LoggerUtil.e(
           'handleRequestWithRefreshPaging  onError ====> code: ${error.code} message: ${error.message}');
     });

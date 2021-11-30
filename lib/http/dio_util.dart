@@ -170,6 +170,7 @@ class DioUtil {
       extra: {
         'newBaseUrl': newBaseUrl,
       },
+      headers: headerToken(),
     );
 
     try {
@@ -200,6 +201,25 @@ class DioUtil {
       //还原BaseUrL
       _dio.options.baseUrl = baseUrl;
     }
+  }
+
+  /// 请求时添加Cookie
+  Map<String, dynamic> headerToken() {
+    /// 自定义header，如果需要添加token信息，则调用此参数
+    // 用户信息
+    //UserEntity? info = SpUtil.getUserInfo();
+    //   if(info == null){
+    //     return null;
+    //   }
+
+
+    Map<String, dynamic> httpHeaders = {
+      'Cookie':
+      // 'loginUserName=1935990239@qq.com;loginUserPassword=1935990239SMILE',
+      'loginUserName=123456Handsome;loginUserPassword=123456',
+    };
+
+    return httpHeaders;
   }
 
   // ///请求类

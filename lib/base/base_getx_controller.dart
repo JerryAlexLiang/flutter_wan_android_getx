@@ -56,8 +56,10 @@ class BaseGetXController extends GetxController {
     required bool isLoading,
     required bool isSimpleLoading,
     required Future<dynamic> future,
+    Function()? onStart,
     required Function(dynamic value) onSuccess,
     required Function(dynamic value) onFail,
+    Function(dynamic value)? onError,
   }) async {
     if (isLoading) {
       if (isSimpleLoading) {
@@ -65,6 +67,10 @@ class BaseGetXController extends GetxController {
       } else {
         loadState = LoadState.multipleLoading;
       }
+    }
+
+    if (onStart != null) {
+      onStart();
     }
 
     // await Future.delayed(const Duration(seconds: 1000));
@@ -82,10 +88,12 @@ class BaseGetXController extends GetxController {
           var data = response.data;
           if (data != null) {
             loadState = LoadState.success;
+
             /// 在onSuccess()中也要判断具体的业务数据是否为空
             onSuccess(data);
           } else {
             loadState = LoadState.empty;
+            onSuccess(data);
           }
           LoggerUtil.e(
               'BaseGetController handleRequest success ====> code: ${response.code}  message: ${response.message}');
@@ -110,6 +118,10 @@ class BaseGetXController extends GetxController {
         loadState = LoadState.fail;
         // LoadErrorMsg 文字内容
         httpErrorMsg = '${error.code}  ${error.message}';
+      }
+
+      if (onError != null) {
+        onError(error);
       }
       LoggerUtil.e(
           'BaseGetController handleRequest onError ====> code: ${error.code} message: ${error.message}');

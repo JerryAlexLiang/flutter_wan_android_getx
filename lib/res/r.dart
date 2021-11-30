@@ -12,4 +12,12 @@ class R {
   // 空页面
   static const String assetsLottieRefreshEmpty =
       'assets/lottie/refresh_empty.json';
+
+  // 收藏动画
+  static const String assetsLottieCollectAnimation =
+      'assets/lottie/33003_a_simple_like_button.json';
+
+  // Lottie Loading
+  static const String assetsLottieLoadingAnimation =
+      'assets/lottie/31568_pocket_rocket.json';
 }

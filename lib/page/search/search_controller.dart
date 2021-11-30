@@ -5,6 +5,7 @@ import 'package:flutter_wan_android_getx/http/dio_util.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
 import 'package:flutter_wan_android_getx/model/article_data_model.dart';
 import 'package:flutter_wan_android_getx/model/hot_search_model.dart';
+import 'package:flutter_wan_android_getx/page/search/article_detail_controller.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/utils/sp_util.dart';
@@ -18,6 +19,8 @@ import 'package:get/get.dart';
 /// 作者: 杨亮
 
 class SearchController extends BaseGetXWithPageRefreshController {
+  // final detailController = Get.find<ArticleDetailController>();
+
   /// 搜索输入框孔控制器
   late TextEditingController textEditingController;
 
@@ -224,7 +227,7 @@ class SearchController extends BaseGetXWithPageRefreshController {
           "k": keyword,
         },
       ),
-      onSuccess: (response) {
+      onSuccess: (response) async {
         var articleDataModel = ArticleDataModel().fromJson(response);
         List<ArticleDataModelDatas>? dataList = articleDataModel.datas;
 
@@ -236,8 +239,16 @@ class SearchController extends BaseGetXWithPageRefreshController {
           }
         }
 
+
         if (dataList != null && dataList.isNotEmpty) {
           refreshLoadState = LoadState.success;
+
+          /// 循环遍历 装载 可观察变量 isCollect
+          for (var element in dataList) {
+            var collect = element.collect;
+            element.isCollect = collect;
+          }
+
           if (refreshState == RefreshState.first) {
             searchResult.assignAll(dataList);
           } else if (refreshState == RefreshState.refresh) {

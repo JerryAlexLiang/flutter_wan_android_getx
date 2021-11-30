@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_wan_android_getx/constant/constant.dart';
 import 'package:flutter_wan_android_getx/model/article_data_model.dart';
+import 'package:flutter_wan_android_getx/page/search/article_detail_controller.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_wan_android_getx/widget/cached_network_image_view.dart';
 import 'package:flutter_wan_android_getx/widget/custom_point_widget.dart';
 import 'package:flutter_wan_android_getx/widget/ripple_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
 /// 类名: search_list_item_widget.dart
@@ -20,44 +22,50 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 /// 作者: 杨亮
 
 class SearchListItemWidget extends StatelessWidget {
-  const SearchListItemWidget({Key? key, required this.model}) : super(key: key);
+  SearchListItemWidget({
+    Key? key,
+    required this.dataList,
+    required this.index,
+  }) : super(key: key);
 
-  final ArticleDataModelDatas? model;
+  final controller = Get.find<ArticleDetailController>();
+
+  /// 文章类表数据源
+  final List<ArticleDataModelDatas> dataList;
+  /// ListView item index
+  final int index;
 
   @override
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: model != null ? true : false,
-      child: RippleView(
-        onTap: () => Fluttertoast.showToast(msg: model?.title ?? ""),
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            vertical: 10,
-          ),
-          margin: const EdgeInsets.symmetric(horizontal: 10),
-          decoration: DecorationStyle.imageDecorationCircle(
-            borderBottom: true,
-            borderColor: Colors.grey,
-          ),
-          child: Column(
-            children: [
-              authorShareTime(context),
-              Gaps.vGap5,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: leftContainer(context),
-                  ),
-                  Gaps.hGap15,
-                  rightContainer(),
-                ],
-              ),
-              Gaps.vGap10,
-              chapterCollect(context),
-            ],
-          ),
+    return RippleView(
+      onTap: () => Fluttertoast.showToast(msg: dataList[index].title ?? ""),
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          vertical: 10,
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 10),
+        decoration: DecorationStyle.imageDecorationCircle(
+          borderBottom: true,
+          borderColor: Colors.grey,
+        ),
+        child: Column(
+          children: [
+            authorShareTime(context),
+            Gaps.vGap5,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: leftContainer(context),
+                ),
+                Gaps.hGap15,
+                rightContainer(),
+              ],
+            ),
+            Gaps.vGap10,
+            chapterCollect(context),
+          ],
         ),
       ),
     );
@@ -75,11 +83,12 @@ class SearchListItemWidget extends StatelessWidget {
   /// CachedNetworkImage作为CachedNetworkImageProvider对Web的支持最小。它目前不包括缓存
   Widget rightContainer() {
     return CachedNetworkImageView(
-      visible: (model!.envelopePic != null && model!.envelopePic!.isNotEmpty)
+      visible: (dataList[index].envelopePic != null &&
+              dataList[index].envelopePic!.isNotEmpty)
           ? true
           : false,
       borderRadius: 6,
-      imageUrl: model!.envelopePic ?? Constant.defaultImageUrlVertical,
+      imageUrl: dataList[index].envelopePic ?? Constant.defaultImageUrlVertical,
       // 测试errorWidget效果
       // imageUrl: Constant.placeHolderImageUrl.replaceFirst(RegExp('size1'), '100x120'),
       width: 90,
@@ -107,7 +116,7 @@ class SearchListItemWidget extends StatelessWidget {
   /// 新
   Widget refreshTag(BuildContext context) {
     return Visibility(
-      visible: model?.fresh ?? false,
+      visible: dataList[index].fresh ?? false,
       child: Container(
         margin: const EdgeInsets.only(right: 10),
         padding: const EdgeInsets.symmetric(
@@ -132,7 +141,10 @@ class SearchListItemWidget extends StatelessWidget {
   /// tags
   Widget chapterTag(BuildContext context) {
     return Visibility(
-      visible: (model?.tags != null && model!.tags!.isNotEmpty) ? true : false,
+      visible:
+          (dataList[index].tags != null && dataList[index].tags!.isNotEmpty)
+              ? true
+              : false,
       child: Container(
         margin: const EdgeInsets.only(right: 10),
         padding: const EdgeInsets.symmetric(
@@ -144,8 +156,8 @@ class SearchListItemWidget extends StatelessWidget {
           borderRadius: 3,
         ),
         child: Text(
-          (model?.tags != null && model!.tags!.isNotEmpty)
-              ? model!.tags![0].name!
+          (dataList[index].tags != null && dataList[index].tags!.isNotEmpty)
+              ? dataList[index].tags![0].name!
               : "",
           style: const TextStyle(
             color: Colors.white,
@@ -159,13 +171,13 @@ class SearchListItemWidget extends StatelessWidget {
   /// 作者、分享者
   Widget author(BuildContext context) {
     String value = '';
-    if (model!.author != null) {
-      if (model!.author!.isNotEmpty) {
-        value = model!.author!;
+    if (dataList[index].author != null) {
+      if (dataList[index].author!.isNotEmpty) {
+        value = dataList[index].author!;
       } else {
-        if (model!.shareUser != null) {
-          if (model!.shareUser!.isNotEmpty) {
-            value = model!.shareUser!;
+        if (dataList[index].shareUser != null) {
+          if (dataList[index].shareUser!.isNotEmpty) {
+            value = dataList[index].shareUser!;
           }
         }
       }
@@ -200,7 +212,7 @@ class SearchListItemWidget extends StatelessWidget {
         ),
         Gaps.hGap5,
         Text(
-          model?.niceDate ?? (model?.niceShareDate ?? ""),
+          dataList[index].niceDate ?? (dataList[index].niceShareDate ?? ""),
           style: context.bodyText2Style?.copyWith(
             fontSize: 12,
             color: Colors.grey,
@@ -215,7 +227,7 @@ class SearchListItemWidget extends StatelessWidget {
     return Column(
       children: [
         Visibility(
-          visible: model!.title!.isNotEmpty ? true : false,
+          visible: dataList[index].title!.isNotEmpty ? true : false,
           // child: Text(
           //   model?.title ?? "",
           //   style: context.bodyText1Style?.copyWith(
@@ -224,7 +236,8 @@ class SearchListItemWidget extends StatelessWidget {
           // ),
           child: Html(
             data: HtmlUtils.html2HighLight(
-              model!.title!,
+              html: dataList[index].title!,
+              // color: 'yellow',
             ),
             style: {
               'font': Style(
@@ -235,12 +248,12 @@ class SearchListItemWidget extends StatelessWidget {
           ),
         ),
         Visibility(
-          visible: model!.desc!.isNotEmpty ? true : false,
+          visible: dataList[index].desc!.isNotEmpty ? true : false,
           child: Column(
             children: [
               Gaps.vGap8,
               Text(
-                model?.desc ?? "",
+                dataList[index].desc ?? "",
                 style: context.bodyText2Style?.copyWith(
                   fontSize: 13,
                   color: Colors.grey,
@@ -269,7 +282,7 @@ class SearchListItemWidget extends StatelessWidget {
             borderRadius: 3,
           ),
           child: Text(
-            model!.superChapterName!,
+            dataList[index].superChapterName!,
             style: context.bodyText2Style?.copyWith(
               fontSize: 12,
               color: Colors.white,
@@ -300,7 +313,7 @@ class SearchListItemWidget extends StatelessWidget {
             borderRadius: 3,
           ),
           child: Text(
-            model!.chapterName!,
+            dataList[index].chapterName!,
             style: context.bodyText2Style?.copyWith(
               fontSize: 12,
               color: Colors.white,
@@ -310,10 +323,19 @@ class SearchListItemWidget extends StatelessWidget {
 
         const Spacer(),
         RippleView(
-          onTap: () => Fluttertoast.showToast(msg: 'msg'),
-          child: const Icon(
-            Icons.fmd_good,
-            color: Colors.grey,
+          onTap: () =>
+              controller.collectInsideArticle(dataList[index].id!, index),
+          radius: 50,
+          child: Container(
+            margin: const EdgeInsets.all(10),
+            child: Obx(() {
+              return Icon(
+                Icons.favorite,
+                color: dataList[index].isCollect
+                    ? Colors.red
+                    : Colors.grey.withOpacity(0.5),
+              );
+            }),
           ),
         ),
       ],
