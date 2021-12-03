@@ -1,3 +1,4 @@
+import 'package:flutter_wan_android_getx/page/web/article_detail_page.dart';
 import 'package:flutter_wan_android_getx/page/index/index_binding.dart';
 import 'package:flutter_wan_android_getx/page/index/index_page.dart';
 import 'package:flutter_wan_android_getx/page/search/search_binding.dart';
@@ -48,6 +49,10 @@ class AppPages {
       page: () => SearchPage(),
       binding: SearchBinding(),
       transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: AppRoutes.articleDetailPage,
+      page: () => ArticleDetailPage(),
     ),
   ];
 }

@@ -13,27 +13,28 @@ class FavoriteLottieWidget extends StatelessWidget {
     required this.visible,
     required this.animate,
     required this.repeat,
+    this.width,
+    this.height,
+    this.fit = BoxFit.cover,
   }) : super(key: key);
 
   final bool visible;
   final bool animate;
   final bool repeat;
+  final double? width;
+  final double? height;
+  final BoxFit? fit;
 
   @override
   Widget build(BuildContext context) {
     return Visibility(
       visible: visible,
-      child: Positioned(
-        /// 居中显示
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        child: Lottie.asset(
-          R.assetsLottieCollectAnimation,
-          animate: animate,
-          repeat: repeat,
-        ),
+      child: Lottie.asset(
+        R.assetsLottieCollectAnimation,
+        animate: animate,
+        width: width,
+        height: height,
+        fit: fit,
       ),
     );
   }

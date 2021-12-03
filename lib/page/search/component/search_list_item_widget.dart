@@ -6,6 +6,7 @@ import 'package:flutter_wan_android_getx/model/article_data_model.dart';
 import 'package:flutter_wan_android_getx/page/search/article_detail_controller.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
+import 'package:flutter_wan_android_getx/routes/app_routes.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:flutter_wan_android_getx/utils/decoration_style.dart';
 import 'package:flutter_wan_android_getx/utils/html_utils.dart';
@@ -32,13 +33,20 @@ class SearchListItemWidget extends StatelessWidget {
 
   /// 文章类表数据源
   final List<ArticleDataModelDatas> dataList;
+
   /// ListView item index
   final int index;
 
   @override
   Widget build(BuildContext context) {
     return RippleView(
-      onTap: () => Fluttertoast.showToast(msg: dataList[index].title ?? ""),
+      onTap: () => Get.toNamed(
+        AppRoutes.articleDetailPage,
+        arguments: {
+          "data": dataList[index],
+          "index": index,
+        },
+      ),
       child: Container(
         padding: const EdgeInsets.symmetric(
           vertical: 10,

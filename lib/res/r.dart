@@ -18,6 +18,16 @@ class R {
       'assets/lottie/33003_a_simple_like_button.json';
 
   // Lottie Loading
-  static const String assetsLottieLoadingAnimation =
+  static const String assetsLottieRocketLoadingAnimation =
       'assets/lottie/31568_pocket_rocket.json';
+
+  static const String assetsLottieRocketLunchLoadingAnimation =
+      'assets/lottie/34115_rocket_lunch.json';
+
+  /// SVG
+  static const String assetsSvgShare = 'assets/svg/share.svg';
+
+  /// png
+  static const String iconInvertedTriangle =
+      'images/icon_inverted_triangle.png';
 }

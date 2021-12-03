@@ -1,11 +1,17 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter_wan_android_getx/base/base_getx_controller.dart';
+import 'package:flutter_wan_android_getx/constant/constant.dart';
 import 'package:flutter_wan_android_getx/http/dio_method.dart';
 import 'package:flutter_wan_android_getx/http/dio_util.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
 import 'package:flutter_wan_android_getx/page/search/search_controller.dart';
+import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:sprintf/sprintf.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 /// 类名: article_detail_controller.dart
 /// 创建日期: 11/29/21 on 1:50 PM
@@ -28,8 +34,70 @@ class ArticleDetailController extends BaseGetXController {
 
   final searchController = Get.find<SearchController>();
 
+  late WebViewController webViewController;
+
+  /////进度条
+  final _webProgress = 0.0.obs;
+
+  get webProgress => _webProgress.value;
+
+  set webProgress(value) => _webProgress.value = value;
+
+  /// 第一次进入WebView显示加载页面
+  final _isFirstInitWeb = true.obs;
+
+  get isFirstInitWeb => _isFirstInitWeb.value;
+
+  set isFirstInitWeb(value) => _isFirstInitWeb.value = value;
+
+
+  @override
+  void onInit() {
+    super.onInit();
+    if (Platform.isAndroid) {
+      WebView.platform = SurfaceAndroidWebView();
+    }
+  }
+
+  /// WebView加载页面进度
+  void updateWebProgress(int progress) {
+    webProgress = (progress / 100).toDouble();
+  }
+
+  //WebView创建时回调
+  Future<void> onWebViewCreated(WebViewController controller) async {
+    //WebView控制器，通过WebViewController可以实现Web内的前进、后退等操作
+    webViewController = controller;
+    LoggerUtil.d('currentUrl : ${webViewController.currentUrl()}');
+    // //加载一个url
+    // controller.loadUrl(widget.item.link);
+    // controller.canGoBack().then((value) => print('是否能后退: $value'));
+    // controller.currentUrl().then((value) => print('当前Url: $value'));
+    // controller.canGoForward().then((value) => print('是否能前进: $value'));
+  }
+
+  void reloadWebView() {
+    // 刷新页面
+    webViewController.reload();
+    isFirstInitWeb = false;
+  }
+
+  Future<bool> onWillPop() async {
+    //点击返回键时回调
+    if (await webViewController.canGoBack()) {
+      //如果WebView可以返回
+      webViewController.goBack();
+      //WebView返回，界面不返回
+      return false;
+    } else {
+      //否则界面返回，且恢复第一次进入标志
+      isFirstInitWeb = true;
+      return true;
+    }
+  }
+
   /// 收藏、取消收藏（站内文章）  collectInsideArticle
-  collectInsideArticle(int articleId, int index) async {
+  void collectInsideArticle(int articleId, int index) async {
     // 收藏站内文章
     var collectUrl = sprintf(RequestApi.collectInsideArticle, [articleId]);
     // 取消收藏站内文章
@@ -43,8 +111,7 @@ class ArticleDetailController extends BaseGetXController {
         currentCollectState == false ? collectUrl : unCollectUrl;
 
     handleRequest(
-        isLoading: false,
-        isSimpleLoading: false,
+        loadingType: Constant.noLoading,
         // 此接口使用sprintf插件进行String格式化操作  static const String collectInsideArticle = '/lg/collect/%s/json';
         future: DioUtil().request(requestURL, method: DioMethod.post),
         onStart: () {
@@ -62,6 +129,7 @@ class ArticleDetailController extends BaseGetXController {
         },
         onSuccess: (response) async {
           await Future.delayed(const Duration(milliseconds: 1000));
+
           /// 点击之前状态为 未收藏 时
           if (currentCollectState == false) {
             // 收藏请求成功 隐藏收藏动画

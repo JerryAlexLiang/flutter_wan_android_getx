@@ -1,6 +1,7 @@
 enum LoadState {
-  simpleLoading,
-  multipleLoading,
+  simpleShimmerLoading,
+  multipleShimmerLoading,
+  lottieRocketLoading,
   fail,
   success,
   empty,

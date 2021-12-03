@@ -1,3 +1,4 @@
+import 'package:flutter_wan_android_getx/constant/constant.dart';
 import 'package:flutter_wan_android_getx/http/base_response.dart';
 import 'package:flutter_wan_android_getx/http/handle_dio_error.dart';
 import 'package:flutter_wan_android_getx/utils/connectivity_utils.dart';
@@ -16,7 +17,7 @@ import 'package:get/get.dart';
 
 class BaseGetXController extends GetxController {
   /// 加载状态
-  final _loadState = LoadState.simpleLoading.obs;
+  final _loadState = LoadState.simpleShimmerLoading.obs;
 
   get loadState => _loadState.value;
 
@@ -53,20 +54,23 @@ class BaseGetXController extends GetxController {
   void onReadyInitData() {}
 
   void handleRequest({
-    required bool isLoading,
-    required bool isSimpleLoading,
+    required String loadingType,
     required Future<dynamic> future,
     Function()? onStart,
     required Function(dynamic value) onSuccess,
     required Function(dynamic value) onFail,
     Function(dynamic value)? onError,
   }) async {
-    if (isLoading) {
-      if (isSimpleLoading) {
-        loadState = LoadState.simpleLoading;
-      } else {
-        loadState = LoadState.multipleLoading;
-      }
+    /// 是否显示加载页面、加载页面类型
+    if (loadingType == Constant.simpleShimmerLoading) {
+      loadState = LoadState.simpleShimmerLoading;
+    } else if (loadingType == Constant.multipleShimmerLoading) {
+      loadState = LoadState.multipleShimmerLoading;
+    } else if (loadingType == Constant.lottieRocketLoading) {
+      loadState = LoadState.lottieRocketLoading;
+    } else if (loadingType == Constant.noLoading) {
+      loadState = LoadState.success;
+      // return;
     }
 
     if (onStart != null) {
@@ -113,7 +117,7 @@ class BaseGetXController extends GetxController {
       }
     }).onError<ResultException>((error, stackTrace) {
       /// 网络请求失败
-      if (isLoading) {
+      if (loadingType != Constant.noLoading) {
         // 加载状态设置为fail
         loadState = LoadState.fail;
         // LoadErrorMsg 文字内容

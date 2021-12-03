@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/base/base_getx_with_page_refresh_controller.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
+import 'package:flutter_wan_android_getx/res/r.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_error_page.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
+import 'package:flutter_wan_android_getx/widget/state/loading_lottie_rocket_widget.dart';
 import 'package:flutter_wan_android_getx/widget/state/shimmer_loading_page.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -66,11 +68,24 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(() {
-        if (controller.refreshLoadState == LoadState.simpleLoading) {
+        if (controller.refreshLoadState == LoadState.simpleShimmerLoading) {
           return const ShimmerLoadingPage();
-        } else if (controller.refreshLoadState == LoadState.multipleLoading) {
+        } else if (controller.refreshLoadState ==
+            LoadState.multipleShimmerLoading) {
           return const ShimmerLoadingPage(
             simpleLoading: false,
+          );
+        } else if (controller.refreshLoadState ==
+            LoadState.lottieRocketLoading) {
+          return Column(
+            children: const [
+              Gaps.vGap150,
+              LoadingLottieRocketWidget(
+                visible: true,
+                animate: true,
+                repeat: true,
+              ),
+            ],
           );
         } else if (controller.refreshLoadState == LoadState.fail) {
           return errorPage ??
@@ -121,7 +136,16 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
         customHeader = refreshStatusWidget(
           context: context,
           constant: StringsConstant.loading.tr,
-          refreshWidget: const CupertinoActivityIndicator(),
+          // refreshWidget: const CupertinoActivityIndicator(),
+          refreshWidget: const LoadingLottieRocketWidget(
+            lottieAsset: R.assetsLottieRocketLunchLoadingAnimation,
+            visible: true,
+            animate: true,
+            repeat: true,
+            width: 30,
+            height: 50,
+            fit: BoxFit.cover,
+          ),
         );
       } else if (refreshStatus == RefreshStatus.failed) {
         // 指示器刷新失败

@@ -1,4 +1,5 @@
 import 'package:flutter_wan_android_getx/base/base_getx_controller.dart';
+import 'package:flutter_wan_android_getx/constant/constant.dart';
 import 'package:flutter_wan_android_getx/http/base_response.dart';
 import 'package:flutter_wan_android_getx/http/handle_dio_error.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
@@ -27,7 +28,7 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
   int currentPage = 0;
 
   /// 刷新列表加载状态
-  final _refreshLoadState = LoadState.simpleLoading.obs;
+  final _refreshLoadState = LoadState.simpleShimmerLoading.obs;
 
   get refreshLoadState => _refreshLoadState.value;
 
@@ -47,8 +48,7 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
 
   /// 带分页加载下拉刷新的请求，适用于ListView等
   void handleRequestWithRefreshPaging({
-    required bool isLoading,
-    bool isSimpleLoading = false,
+    required String loadingType,
     RefreshState refreshState = RefreshState.refresh,
     required Future<dynamic> future,
     Function()? onStart,
@@ -56,17 +56,19 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
     required Function(dynamic value) onFail,
     Function(dynamic value)? onError,
   }) async {
-
     // 重置无数据状态刷新器
     _refreshController.resetNoData();
 
-    /// 第一次加载数据，则显示加载进度页面
-    if (isLoading) {
-      if (isSimpleLoading) {
-        refreshLoadState = LoadState.simpleLoading;
-      } else {
-        refreshLoadState = LoadState.multipleLoading;
-      }
+    /// 是否显示加载页面，及加载页面类型
+    if (loadingType == Constant.simpleShimmerLoading) {
+      refreshLoadState = LoadState.simpleShimmerLoading;
+    } else if (loadingType == Constant.multipleShimmerLoading) {
+      refreshLoadState = LoadState.multipleShimmerLoading;
+    } else if (loadingType == Constant.lottieRocketLoading) {
+      refreshLoadState = LoadState.lottieRocketLoading;
+    } else if (loadingType == Constant.noLoading) {
+      loadState = LoadState.success;
+      // return;
     }
 
     if (onStart != null) {
@@ -89,10 +91,11 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
             onSuccess(data);
           } else {
             /// 第一次加载，返回数据为空，则显示空页面
-            if (isLoading) {
+            if (loadingType != Constant.noLoading) {
               refreshLoadState = LoadState.empty;
             } else {
               refreshLoadState = LoadState.success;
+
               /// 非第一次加载，返回数据为空，则不显示空页面
               refreshLoadingSuccess(refreshState);
             }
@@ -102,13 +105,12 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
         } else {
           /// 请求失败
           /// 第一次加载，请求失败，则显示错误页面
-          if (isLoading) {
+          if (loadingType != Constant.noLoading) {
             refreshLoadState = LoadState.fail;
           } else {
             /// 非第一次加载，请求失败，则不显示错误页面
             refreshLoadingFailed(refreshState);
             refreshLoadState = LoadState.success;
-
           }
           onFail(value);
           LoggerUtil.e(
@@ -116,7 +118,7 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
         }
       } else {
         /// 第一次加载，请求失败，则显示错误页面
-        if (isLoading) {
+        if (loadingType != Constant.noLoading) {
           refreshLoadState = LoadState.fail;
         } else {
           /// 非第一次加载，请求失败，则不显示错误页面
@@ -128,7 +130,7 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
       }
     }).onError<ResultException>((error, stackTrace) {
       /// 网络请求失败 第一次加载，请求失败，则显示错误页面
-      if (isLoading) {
+      if (loadingType != Constant.noLoading) {
         // 加载状态设置为fail
         refreshLoadState = LoadState.fail;
         // LoadErrorMsg 文字内容

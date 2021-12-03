@@ -97,6 +97,9 @@ dependencies:
   # 16、字符串转化 String 格式化
   sprintf: ^6.0.0
 
+  # 17、WebView插件 在iOS上，WebView小部件由WKWebView支持；在Android上，WebView小部件由WebView支持
+  webview_flutter: ^2.3.1
+
 
 dev_dependencies:
   flutter_test:
@@ -129,6 +132,7 @@ flutter:
     - images/
     - assets/
     - assets/lottie/
+    - assets/svg/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

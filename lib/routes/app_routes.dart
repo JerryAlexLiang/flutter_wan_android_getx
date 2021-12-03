@@ -6,4 +6,5 @@ abstract class AppRoutes {
   static const themeModePage = '/themeModePage';
   static const languageModePage = '/languageModePage';
   static const searchPage = '/searchPage';
+  static const articleDetailPage = '/articleDetailPage';
 }

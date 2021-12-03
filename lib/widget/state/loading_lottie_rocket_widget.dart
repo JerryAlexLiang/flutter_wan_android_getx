@@ -7,33 +7,37 @@ import 'package:lottie/lottie.dart';
 /// 描述: Lottie loading 动画
 /// 作者: 杨亮
 
-class Loading53483LottieWidget extends StatelessWidget {
-  const Loading53483LottieWidget({
+class LoadingLottieRocketWidget extends StatelessWidget {
+  const LoadingLottieRocketWidget({
     Key? key,
+    this.lottieAsset,
     required this.visible,
     required this.animate,
     required this.repeat,
+    this.width,
+    this.height,
+    this.fit,
   }) : super(key: key);
 
+  final String? lottieAsset;
   final bool visible;
   final bool animate;
   final bool repeat;
+  final double? width;
+  final double? height;
+  final BoxFit? fit;
 
   @override
   Widget build(BuildContext context) {
     return Visibility(
       visible: visible,
-      child: Positioned(
-        /// 居中显示
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        child: Lottie.asset(
-          R.assetsLottieLoadingAnimation,
-          animate: animate,
-          repeat: repeat,
-        ),
+      child: Lottie.asset(
+        lottieAsset ?? R.assetsLottieRocketLoadingAnimation,
+        animate: animate,
+        repeat: repeat,
+        width: width,
+        height: height,
+        fit: fit,
       ),
     );
   }

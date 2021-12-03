@@ -4,6 +4,7 @@ import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_error_page.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
+import 'package:flutter_wan_android_getx/widget/state/loading_lottie_rocket_widget.dart';
 import 'package:flutter_wan_android_getx/widget/state/shimmer_loading_page.dart';
 import 'package:get/get.dart';
 
@@ -49,11 +50,24 @@ class _CommonStatePageState<T extends BaseGetXController>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(() {
-        if (widget.controller.loadState == LoadState.simpleLoading) {
+        if (widget.controller.loadState == LoadState.simpleShimmerLoading) {
           return const ShimmerLoadingPage();
-        } else if (widget.controller.loadState == LoadState.multipleLoading) {
+        } else if (widget.controller.loadState ==
+            LoadState.multipleShimmerLoading) {
           return const ShimmerLoadingPage(
             simpleLoading: false,
+          );
+        } else if (widget.controller.loadState ==
+            LoadState.lottieRocketLoading) {
+          return Column(
+            children: const [
+              Gaps.vGap150,
+              LoadingLottieRocketWidget(
+                visible: true,
+                animate: true,
+                repeat: true,
+              ),
+            ],
           );
         } else if (widget.controller.loadState == LoadState.fail) {
           return widget.errorPage ??

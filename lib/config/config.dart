@@ -82,7 +82,7 @@ class Config {
 
   static void initStatusBar() {
     if (Platform.isAndroid) {
-      //如果是android设备，状态栏设置为透明沉浸
+      //如果是Android设备，状态栏设置为透明沉浸
       SystemUiOverlayStyle _style = const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         systemNavigationBarColor: Colors.transparent,
@@ -90,11 +90,13 @@ class Config {
       SystemChrome.setSystemUIOverlayStyle(_style);
     }
 
-    /// 显示状态栏
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.top]);
+    if (Platform.isIOS) {
+      /// 显示状态栏
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+          overlays: [SystemUiOverlay.top]);
 
-    // /// 隐藏状态栏
-    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+      // /// 隐藏状态栏
+      // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+    }
   }
 }

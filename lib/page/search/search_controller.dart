@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/base/base_getx_with_page_refresh_controller.dart';
+import 'package:flutter_wan_android_getx/constant/constant.dart';
 import 'package:flutter_wan_android_getx/http/dio_method.dart';
 import 'package:flutter_wan_android_getx/http/dio_util.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
@@ -178,8 +179,7 @@ class SearchController extends BaseGetXWithPageRefreshController {
       }
     }
     searchByKeyword(
-        isLoading: true,
-        isSimpleLoading: false,
+        loadingType: Constant.multipleShimmerLoading,
         refreshState: RefreshState.first,
         keyword: keyword);
   }
@@ -198,8 +198,7 @@ class SearchController extends BaseGetXWithPageRefreshController {
 
   /// 搜索
   void searchByKeyword({
-    required isLoading,
-    bool isSimpleLoading = false,
+    required String loadingType,
     required String keyword,
     required RefreshState refreshState,
   }) async {
@@ -217,8 +216,7 @@ class SearchController extends BaseGetXWithPageRefreshController {
     }
 
     handleRequestWithRefreshPaging(
-      isLoading: isLoading,
-      isSimpleLoading: isSimpleLoading,
+      loadingType: loadingType,
       refreshState: refreshState,
       future: DioUtil().request(
         RequestApi.articleSearch.replaceFirst(RegExp('page'), '$currentPage'),
@@ -258,7 +256,8 @@ class SearchController extends BaseGetXWithPageRefreshController {
             searchResult.addAll(dataList);
           }
         } else {
-          if (isLoading) {
+          // if (isLoading) {
+          if (loadingType!=Constant.noLoading) {
             refreshLoadState = LoadState.empty;
           } else {
             loadNoData();
@@ -278,8 +277,7 @@ class SearchController extends BaseGetXWithPageRefreshController {
     LoggerUtil.d('============> onReady*****()');
 
     handleRequest(
-      isLoading: true,
-      isSimpleLoading: true,
+      loadingType: Constant.simpleShimmerLoading,
       future: DioUtil().request(RequestApi.hotSearch, method: DioMethod.get),
       onSuccess: (response) {
         ///列表转换的时候一定要加一下强转List<dynamic>，否则会报错

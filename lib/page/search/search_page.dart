@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/base/common_state_page.dart';
 import 'package:flutter_wan_android_getx/base/refresh_paging_state_page.dart';
+import 'package:flutter_wan_android_getx/constant/constant.dart';
 import 'package:flutter_wan_android_getx/page/search/article_detail_controller.dart';
 import 'package:flutter_wan_android_getx/page/search/component/normal_search_page.dart';
 import 'package:flutter_wan_android_getx/page/search/component/search_list_item_widget.dart';
-import 'package:flutter_wan_android_getx/res/r.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/widget/search_app_bar.dart';
 import 'package:flutter_wan_android_getx/widget/search_view.dart';
 import 'package:flutter_wan_android_getx/widget/state/favorite_lottie_widget.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
-import 'package:flutter_wan_android_getx/widget/state/loading_lottie_widget.dart';
+import 'package:flutter_wan_android_getx/widget/state/loading_lottie_rocket_widget.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
+
 import 'search_controller.dart';
 
 /// 搜索界面
@@ -82,18 +82,8 @@ class SearchPage extends StatelessWidget {
   }
 
   Widget searchResultView() {
-    /////  初始化收藏状态 async 防止因控件还没有构建完成 【setState() or markNeedsBuild() called during build.】
-    //   Future<void> initCollectState() async {
-    //     // 使用延迟加载可以解决问题
-    //     await Future.delayed(const Duration(milliseconds: 0));
-    //     /// 初始化收藏状态
-    //     if (model != null) {
-    //       controller.initCollectState(model!.collect!);
-    //       LoggerUtil.d('+++++++>>>>>1  ${model!.collect!}');
-    //       LoggerUtil.d('+++++++>>>>>2  ${controller.isCollect}');
-    //     }
-    //   }
     return Stack(
+      alignment: Alignment.center,
       children: [
         RefreshPagingStatePage<SearchController>(
           controller: controller,
@@ -105,14 +95,14 @@ class SearchPage extends StatelessWidget {
           onRefresh: () {
             /// isRefresh: true 下拉刷新
             controller.searchByKeyword(
-                isLoading: false,
+                loadingType: Constant.noLoading,
                 refreshState: RefreshState.refresh,
                 keyword: controller.keyword);
           },
           onLoadMore: () {
             /// isLoadMore: true 上滑加载更多
             controller.searchByKeyword(
-                isLoading: false,
+                loadingType: Constant.noLoading,
                 refreshState: RefreshState.loadMore,
                 keyword: controller.keyword);
           },
@@ -128,34 +118,33 @@ class SearchPage extends StatelessWidget {
         ),
         Obx(() {
           /// 收藏动画
-          // return Visibility(
-          //   visible: detailController.collectAnimation,
-          //   child: Positioned(
-          //     /// 居中显示
-          //     top: 0,
-          //     bottom: 0,
-          //     left: 0,
-          //     right: 0,
-          //     child: Lottie.asset(
-          //       R.assetsLottieCollectAnimation,
-          //       animate: detailController.collectAnimation,
-          //       repeat: false,
-          //     ),
-          //   ),
-          // );
-          return FavoriteLottieWidget(
-            visible: detailController.collectAnimation,
-            animate: detailController.collectAnimation,
-            repeat: false,
+          return Positioned(
+            top: Get.height / 5,
+            left: 0,
+            right: 0,
+            child: FavoriteLottieWidget(
+              visible: detailController.collectAnimation,
+              animate: detailController.collectAnimation,
+              repeat: false,
+              width: Get.width,
+              height: Get.height / 3,
+            ),
           );
         }),
         Obx(() {
-          return Loading53483LottieWidget(
-            visible: detailController.unCollectAnimation,
-            animate: detailController.unCollectAnimation,
-            repeat: false,
+          return Positioned(
+            top: Get.height / 5,
+            left: 0,
+            right: 0,
+            child: LoadingLottieRocketWidget(
+              visible: detailController.unCollectAnimation,
+              animate: detailController.unCollectAnimation,
+              repeat: false,
+              width: Get.width,
+              height: Get.height / 3,
+            ),
           );
-        })
+        }),
       ],
     );
   }

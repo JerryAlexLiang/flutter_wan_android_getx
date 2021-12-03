@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 /// 自定义AppBar
@@ -21,6 +22,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.backImg = 'images/ic_back_black.png',
     this.backIcon,
     this.backImageColor,
+    this.onLeftPressed,
     this.actionName = '',
     this.actionNameStyle,
     this.actionIcon,
@@ -42,6 +44,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String backImg;
   final Widget? backIcon;
   final Color? backImageColor;
+  final VoidCallback? onLeftPressed;
   final String actionName;
   final TextStyle? actionNameStyle;
   final Widget? actionIcon;
@@ -57,9 +60,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// 显示状态栏
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.top]);
+    // /// 显示状态栏
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+    //     overlays: [SystemUiOverlay.top]);
 
     // /// 隐藏状态栏
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
@@ -129,14 +132,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget backWidget(BuildContext context) {
     final Widget widget = isBack
         ? IconButton(
-            onPressed: () async {
-              FocusManager.instance.primaryFocus?.unfocus();
-              // bool isBack = await navigator!.maybePop();
-              // if (isBack) {
-              //   Get.back();
-              // }
-              Get.back(canPop: true);
-            },
+            onPressed: onLeftPressed ??
+                () {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  // bool isBack = await navigator!.maybePop();
+                  // if (isBack) {
+                  //   Get.back();
+                  // }
+                  Get.back(canPop: true);
+                  Fluttertoast.showToast(msg: 'msg');
+                },
             tooltip: 'Back',
             padding: const EdgeInsets.all(12.0),
             icon: backIcon ??
