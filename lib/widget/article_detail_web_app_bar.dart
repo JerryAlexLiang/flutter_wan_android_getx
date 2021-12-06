@@ -116,7 +116,6 @@ class ArticleDetailWebAppBar extends StatelessWidget
                       Get.back(),
                       // 恢复第一次进入标志
                       detailController.isFirstInitWeb = true,
-                      detailController.unCollectAnimation = false,
                     };
             },
             child: Container(
@@ -130,28 +129,30 @@ class ArticleDetailWebAppBar extends StatelessWidget
             ),
           ),
         ),
-        Visibility(
-          visible: !detailController.isFirstInitWeb,
-          child: Container(
-            // decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(100),
-            //     color: Colors.red.withOpacity(0.1)),
-            child: RippleView(
-              radius: 100,
-              onTap: () => {
-                Get.back(),
-                detailController.unCollectAnimation = false,
-              },
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                child: Icon(
-                  Icons.close_outlined,
-                  color: context.appBarIconColor,
+        Obx(() {
+          return Visibility(
+            // visible: detailController.isFirstInitWeb == true ? false : true,
+            visible: !detailController.isFirstInitWeb,
+            child: Container(
+              // decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(100),
+              //     color: Colors.red.withOpacity(0.1)),
+              child: RippleView(
+                radius: 100,
+                onTap: () => {
+                  Get.back(),
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Icon(
+                    Icons.close_outlined,
+                    color: context.appBarIconColor,
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
+          );
+        }),
       ],
     );
   }

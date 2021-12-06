@@ -5,10 +5,12 @@ import 'package:flutter_wan_android_getx/page/search/article_detail_controller.d
 import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/theme/app_color.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
+import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/widget/article_detail_web_app_bar.dart';
 import 'package:flutter_wan_android_getx/widget/ripple_view.dart';
 import 'package:flutter_wan_android_getx/widget/state/favorite_lottie_widget.dart';
 import 'package:flutter_wan_android_getx/widget/state/loading_lottie_rocket_widget.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -48,6 +50,7 @@ class ArticleDetailPage extends GetView<ArticleDetailController> {
       children: [
         Container(
           child: WebView(
+            allowsInlineMediaPlayback: true,
             zoomEnabled: true,
             // 默认禁止js
             javascriptMode: JavascriptMode.unrestricted,
@@ -59,34 +62,23 @@ class ArticleDetailPage extends GetView<ArticleDetailController> {
             },
             // 页面开始加载时
             onPageStarted: (String url) async {
-              // 首次进入显示加载页面
-              if (controller.isFirstInitWeb) {
-                controller.unCollectAnimation = true;
-              }
-              if (url != model.link) {
-                controller.isFirstInitWeb = false;
-              }
+              controller.onPageStarted(url, model.link ?? "");
             },
             onProgress: (int progress) {
               // WebView加载页面进度
               controller.updateWebProgress(progress);
             },
             onPageFinished: (url) async {
-              // 首次进入显示加载页面
-              if (controller.isFirstInitWeb) {
-                controller.unCollectAnimation = false;
-              }
+              controller.onPageFinished(url, model.link ?? "");
             },
-            // navigationDelegate: (NavigationRequest request) {
-            //   if (!request.url.contains('http')) {
-            //     return NavigationDecision.prevent;
-            //   }
-            //   return NavigationDecision.navigate;
-            // },
+            navigationDelegate: (NavigationRequest request) {
+              if (!request.url.contains('http')) {
+                return NavigationDecision.prevent;
+              }
+              return NavigationDecision.navigate;
+            },
             onWebResourceError: (WebResourceError error) {
-              controller.unCollectAnimation = true;
-
-
+              controller.onWebResourceError(error, url, model.link ?? "");
             },
           ),
           // 前置背景色

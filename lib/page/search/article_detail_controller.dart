@@ -50,7 +50,6 @@ class ArticleDetailController extends BaseGetXController {
 
   set isFirstInitWeb(value) => _isFirstInitWeb.value = value;
 
-
   @override
   void onInit() {
     super.onInit();
@@ -62,13 +61,14 @@ class ArticleDetailController extends BaseGetXController {
   /// WebView加载页面进度
   void updateWebProgress(int progress) {
     webProgress = (progress / 100).toDouble();
+    webCanBack();
   }
 
   //WebView创建时回调
   Future<void> onWebViewCreated(WebViewController controller) async {
     //WebView控制器，通过WebViewController可以实现Web内的前进、后退等操作
     webViewController = controller;
-    LoggerUtil.d('currentUrl : ${webViewController.currentUrl()}');
+    LoggerUtil.d('currentUrl : ${webViewController.currentUrl().toString()}');
     // //加载一个url
     // controller.loadUrl(widget.item.link);
     // controller.canGoBack().then((value) => print('是否能后退: $value'));
@@ -79,7 +79,31 @@ class ArticleDetailController extends BaseGetXController {
   void reloadWebView() {
     // 刷新页面
     webViewController.reload();
-    isFirstInitWeb = false;
+  }
+
+  void onPageStarted(String url, String link) {
+    webCanBack();
+    // 显示加载动画页面
+    unCollectAnimation = true;
+    LoggerUtil.d('==========> onPageStarted1 $url');
+    LoggerUtil.d('==========> onPageStarted2 $link');
+  }
+
+  void onPageFinished(String url, String link) {
+    webCanBack();
+    // 关闭加载动画页面
+    unCollectAnimation = false;
+    LoggerUtil.d('==========> onPageFinished1 $url');
+    LoggerUtil.d('==========> onPageFinished2 $link');
+  }
+
+  void onWebResourceError(WebResourceError error, String url, String link) {
+    webCanBack();
+    // 关闭加载动画页面
+    unCollectAnimation = false;
+    LoggerUtil.d('==========> onWebResourceError1 $url');
+    LoggerUtil.d('==========> onWebResourceError2 $link');
+    LoggerUtil.d('==========> onWebResourceError3 ${error.description}  ${error.errorType}  ${error.failingUrl}');
   }
 
   Future<bool> onWillPop() async {
@@ -94,6 +118,17 @@ class ArticleDetailController extends BaseGetXController {
       isFirstInitWeb = true;
       return true;
     }
+  }
+
+  Future<void> webCanBack() async {
+    if(await webViewController.canGoBack()){
+      // Web页面可以返回，非首页
+      isFirstInitWeb = false;
+    }else{
+      // Web页面不可以返回，首页
+      isFirstInitWeb = true;
+    }
+    LoggerUtil.d('==========> isFirstInitWeb $isFirstInitWeb');
   }
 
   /// 收藏、取消收藏（站内文章）  collectInsideArticle
