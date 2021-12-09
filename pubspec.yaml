@@ -45,38 +45,38 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.4
 
   # 1、GetX 是 Flutter 上的一个轻量且强大的解决方案：高性能的状态管理、智能的依赖注入和便捷的路由管理  State Manager、Navigation Manager
-  get: ^4.3.8
+  get: ^4.5.1
 
   # 2、强大的Dart Http请求库
-  dio: ^4.0.0
+  dio: ^4.0.4
 
   # 3、logger
   logger: ^1.1.0
 
   # 4、shared_preferences
-  shared_preferences: ^2.0.8
+  shared_preferences: ^2.0.9
 
   # 5、fluttertoast插件依赖原生
   fluttertoast: ^8.0.8
 
   # 6、oktoast: ^3.1.1  包裹你的 MaterialApp,不是包裹你的 Scaffold
-  oktoast: ^3.1.3+1
+  oktoast: ^3.1.5
 
   # 7、屏幕适配
-  flutter_screenutil: ^5.0.0+2
+  flutter_screenutil: ^5.0.1
 
   # 8、刷新加载框架
   pull_to_refresh: ^2.0.0
 
   # 9、闪屏页
-  flutter_native_splash: ^1.3.1
+  flutter_native_splash: ^1.3.2
 
   # 10、网络检测 https://pub.flutter-io.cn/packages/connectivity
 #  connectivity: ^3.0.6  已弃用 此插件已被Flutter Community Plus插件版本connectivity_plus取代
-  connectivity_plus: ^2.0.2
+  connectivity_plus: ^2.1.0
 
   # 11、骨架屏
 #  pk_skeleton: ^0.0.2 不支持Null safety 废弃
@@ -89,16 +89,26 @@ dependencies:
   flutter_svg: ^0.23.0+1
 
   # 14、加载html标签 flutter_html: ^2.1.5
-  flutter_html: ^2.1.5
+  flutter_html: ^2.2.0
 
   # 15、图片缓存框架
-  cached_network_image: ^3.1.0+1
+  cached_network_image: ^3.2.0
 
   # 16、字符串转化 String 格式化
   sprintf: ^6.0.0
 
   # 17、WebView插件 在iOS上，WebView小部件由WKWebView支持；在Android上，WebView小部件由WebView支持
-  webview_flutter: ^2.3.1
+  webview_flutter: ^2.8.0
+
+  # 18、cookie_jar: ^3.0.1  dio_cookie_manager: ^2.0.0
+  cookie_jar: ^3.0.1
+  dio_cookie_manager: ^2.0.0
+
+  # 19、path_provider: ^2.0.7
+  path_provider: ^2.0.7
+
+  # 20、flutter_easyloading: ^3.0.3
+  flutter_easyloading: ^3.0.3
 
 
 dev_dependencies:
@@ -110,7 +120,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.0
+  flutter_lints: ^1.0.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

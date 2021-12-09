@@ -1,9 +1,11 @@
 import 'dart:io';
-
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter_wan_android_getx/config/config.dart';
 import 'package:flutter_wan_android_getx/http/base_url_reuqest_interceptors.dart';
+import 'package:flutter_wan_android_getx/http/dio_cache_interceptors.dart';
 import 'package:flutter_wan_android_getx/http/dio_interceptors.dart';
 import 'package:flutter_wan_android_getx/http/dio_method.dart';
 import 'package:flutter_wan_android_getx/http/handle_dio_error.dart';
@@ -11,6 +13,7 @@ import 'package:flutter_wan_android_getx/http/request_api.dart';
 import 'package:flutter_wan_android_getx/utils/connectivity_utils.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:get/get.dart' as get_x;
+import 'package:path_provider/path_provider.dart';
 
 /// 封装网络请求
 
@@ -46,6 +49,9 @@ class DioUtil {
 
   static final DioUtil _instance = DioUtil._init();
 
+  /// Cookie
+  late PersistCookieJar cookieJar;
+
   factory DioUtil() => _instance;
 
   /// 声明Dio变量
@@ -55,9 +61,6 @@ class DioUtil {
 
   /// 取消请求
   final CancelToken _cancelToken = CancelToken();
-
-  // /// cookie
-  // CookieJar cookieJar = CookieJar();
 
   //对Dio请求进行初始化
   //对 超时时间 、响应时间 、BaseUrl 进行统一设置
@@ -111,11 +114,19 @@ class DioUtil {
 
     /// 添加cookie管理器 cookie的使用需要用到两个第三方组件 dio_cookie_manager 和 cookie_jar
     //由服务器生成的一小段文本信息，发送给浏览器，浏览器把cookie以k-v形式保存到本地某个目录下的文本文件内，下一次请求同一网站时会把该cookie发送给服务器。
+    // 原理
+    /// 客户端发送一个请求(http请求+用户认证信息)到服务器
+    // 认证成功，服务器发送一个HttpResponse响应到客户端，其中包含Set-Cookie的头部
+    // 客户端提取并保存 cookie 于内存或磁盘
+    // 再次请求时，HttpRequest请求中会包含一个已认证的 Cookie 的头部
+    // 服务器解析cookie，获取 cookie 中客户端的相关信息
+    // 服务器返回响应数据
     //1、cookie_jar：Dart 中 http 请求的 cookie 管理器，通过它您可以轻松处理复杂的 cookie 策略和持久化 cookie
     //2、dio_cookie_manager： CookieManager 拦截器可以帮助我们自动管理请求/响应 cookie。 CookieManager 依赖于 cookieJar 包
+    /// 管理Cookie
     // _dio.interceptors.add(CookieManager(cookieJar));
 
-    /// 添加缓存拦截器
+    // /// 添加缓存拦截器
     // _dio.interceptors.add(DioCacheInterceptors());
 
     /// 4、拦截器
@@ -137,6 +148,19 @@ class DioUtil {
     if (Config.isDebug) {
       openLog();
     }
+  }
+
+  /// 初始化Cookie
+  Future initCookieJar() async {
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String appDocPath = appDocDir.path;
+    cookieJar = PersistCookieJar(storage: FileStorage(appDocPath));
+    _dio.interceptors.add(CookieManager(cookieJar));
+  }
+
+  /// 清除Cookie
+  Future<void> clearCookie() async {
+    await cookieJar.deleteAll();
   }
 
   /// 2、初始化Dio
@@ -170,8 +194,15 @@ class DioUtil {
       extra: {
         'newBaseUrl': newBaseUrl,
       },
-      headers: headerToken(),
+      // headers: headerToken(),
     );
+
+    /// Cookie
+    // Directory appDocDir = await getApplicationDocumentsDirectory();
+    // String appDocPath = appDocDir.path;
+    // cookieJar = PersistCookieJar(storage: FileStorage(appDocPath));
+    // _dio.interceptors.add(CookieManager(cookieJar));
+    initCookieJar();
 
     try {
       /// 请求前先检查网络连接
@@ -212,11 +243,10 @@ class DioUtil {
     //     return null;
     //   }
 
-
     Map<String, dynamic> httpHeaders = {
       'Cookie':
-      // 'loginUserName=1935990239@qq.com;loginUserPassword=1935990239SMILE',
-      'loginUserName=123456Handsome;loginUserPassword=123456',
+          // 'loginUserName=1935990239@qq.com;loginUserPassword=1935990239SMILE',
+          'loginUserName=123456Handsome;loginUserPassword=123456',
     };
 
     return httpHeaders;
@@ -287,7 +317,8 @@ class DioUtil {
 
   /// 5、统一日志打印
   void openLog() {
-    _dio.interceptors.add(LogInterceptor(responseBody: true));
+    _dio.interceptors
+        .add(LogInterceptor(requestBody: true, responseBody: true));
   }
 
   /// 设置Http代理(设置即开启)

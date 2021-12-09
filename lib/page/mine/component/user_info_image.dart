@@ -4,6 +4,7 @@ import 'package:flutter_wan_android_getx/page/mine/mine_controller.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/routes/app_routes.dart';
 import 'package:flutter_wan_android_getx/utils/decoration_style.dart';
+import 'package:flutter_wan_android_getx/widget/ripple_view.dart';
 import 'package:get/get.dart';
 
 /// 用户信息头像等
@@ -16,24 +17,28 @@ class UserInfoImage extends GetView<MineController> {
       width: Get.width,
       child: Row(
         children: [
-          Container(
-            decoration: DecorationStyle.imageDecorationCircle(
-              isCircle: true,
-              // borderRadius: 10,
-              borderWidth: 3,
-              borderColor: Colors.pinkAccent,
-              boxShadowBlurRadius: 3,
-              boxShadowSpreadRadius: 3,
-              boxShadowColor: Colors.white.withOpacity(0.8),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(100),
-              clipBehavior: Clip.antiAlias,
-              child: Image.asset(
-                'images/launch_image.png',
-                fit: BoxFit.contain,
-                width: 80,
-                height: 80,
+          RippleView(
+            radius: 100,
+            onTap: () => Get.toNamed(AppRoutes.loginRegisterPage),
+            child: Container(
+              decoration: DecorationStyle.imageDecorationCircle(
+                isCircle: true,
+                // borderRadius: 10,
+                borderWidth: 3,
+                borderColor: Colors.pinkAccent,
+                boxShadowBlurRadius: 3,
+                boxShadowSpreadRadius: 3,
+                boxShadowColor: Colors.white.withOpacity(0.8),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                clipBehavior: Clip.antiAlias,
+                child: Image.asset(
+                  'images/launch_image.png',
+                  fit: BoxFit.contain,
+                  width: 80,
+                  height: 80,
+                ),
               ),
             ),
           ),

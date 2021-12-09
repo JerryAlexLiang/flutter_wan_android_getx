@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan_android_getx/config/config.dart';
 import 'package:flutter_wan_android_getx/http/base_response.dart';
@@ -37,40 +38,42 @@ class MyApp extends StatelessWidget {
         designSize: const Size(360, 690),
         builder: () {
           return OKToast(
-            child: GetMaterialApp(
-              debugShowCheckedModeBanner: false,
-              builder: (context, child) {
-                return Scaffold(
-                  //Global GestureDetector that will dismiss the keyboard
-                  //关闭键盘的全局手势检测器
-                  body: GestureDetector(
-                    child: child,
-                    onTap: () => KeyboardUtils.hideKeyboard(context),
-                  ),
-                );
-              },
-              enableLog: true,
-              smartManagement: SmartManagement.keepFactory,
+            child: FlutterEasyLoading(
+              child: GetMaterialApp(
+                debugShowCheckedModeBanner: false,
+                builder: (context, child) {
+                  return Scaffold(
+                    //Global GestureDetector that will dismiss the keyboard
+                    //关闭键盘的全局手势检测器
+                    body: GestureDetector(
+                      child: child,
+                      onTap: () => KeyboardUtils.hideKeyboard(context),
+                    ),
+                  );
+                },
+                enableLog: true,
+                smartManagement: SmartManagement.keepFactory,
 
-              /// 主题颜色
-              theme: lightTheme,
-              darkTheme: darkTheme,
-              themeMode: ThemeMode.light,
+                /// 主题颜色
+                theme: lightTheme,
+                darkTheme: darkTheme,
+                themeMode: ThemeMode.light,
 
-              /// 国际化支持
-              //来源配置
-              translations: Messages(),
-              //默认语言
-              locale: LocaleUtil.getDefaultLocale(),
-              //备用语言
-              fallbackLocale: const Locale('en', 'US'),
-              localizationsDelegates: const [
-                // Refresh国际化 这行是关键
-                RefreshLocalizations.delegate,
-              ],
-              defaultTransition: Transition.fade,
-              initialRoute: AppRoutes.splash,
-              getPages: AppPages.routes,
+                /// 国际化支持
+                //来源配置
+                translations: Messages(),
+                //默认语言
+                locale: LocaleUtil.getDefaultLocale(),
+                //备用语言
+                fallbackLocale: const Locale('en', 'US'),
+                localizationsDelegates: const [
+                  // Refresh国际化 这行是关键
+                  RefreshLocalizations.delegate,
+                ],
+                defaultTransition: Transition.fade,
+                initialRoute: AppRoutes.splash,
+                getPages: AppPages.routes,
+              ),
             ),
           );
         },

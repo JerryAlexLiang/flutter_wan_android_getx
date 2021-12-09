@@ -1,0 +1,169 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_wan_android_getx/res/gaps.dart';
+import 'package:flutter_wan_android_getx/res/r.dart';
+import 'package:flutter_wan_android_getx/theme/app_theme.dart';
+import 'package:flutter_wan_android_getx/utils/keyboard_util.dart';
+import 'package:flutter_wan_android_getx/widget/custom_app_bar.dart';
+import 'package:flutter_wan_android_getx/widget/edit_widget.dart';
+import 'package:flutter_wan_android_getx/widget/ripple_view.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+
+import 'login_register_controller.dart';
+
+/// 类名: login_register_page.dart
+/// 创建日期: 12/7/21 on 4:25 PM
+/// 描述: 注册登录
+/// 作者: 杨亮
+
+class LoginRegisterPage extends StatelessWidget {
+  final controller = Get.find<LoginRegisterController>();
+
+  LoginRegisterPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(R.iconSplashBg), fit: BoxFit.cover),
+        ),
+        child: ListView(
+          children: [
+            CustomAppBar(
+              centerTitle: '登录',
+              isBack: true,
+              backImageColor: Colors.white,
+              titleStyle: context.subtitle1Style?.copyWith(color: Colors.white),
+              backgroundColor: Colors.transparent,
+            ),
+            Gaps.vGap50,
+            const FlutterLogo(
+              size: 100,
+            ),
+            Gaps.vGap32,
+            // 用户名
+            _inputUserName(),
+            // 密码
+            _inputPassword(),
+            // 确认密码
+            _inputEnsurePassword(),
+            Gaps.vGap15,
+            // 登录按钮
+            _loginButton(),
+            Gaps.vGap26,
+            // 登录注册切换按钮
+            _switchLoginRegisterTypeButton(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// 用户名
+  _inputUserName() {
+    return EditWidget(
+      textEditingController: controller.textEditingControllerUserName,
+      iconWidget: const Icon(
+        Icons.person_outline,
+        color: Colors.white,
+      ),
+      hintText: '请输入用户名',
+      onChanged: (value) => controller.userName = value,
+    );
+  }
+
+  /// 密码
+  _inputPassword() {
+    return EditWidget(
+      textEditingController: controller.textEditingControllerUserPassword,
+      iconWidget: const Icon(
+        Icons.lock_outline,
+        color: Colors.white,
+      ),
+      hintText: '请输入密码',
+      passwordType: true,
+      onChanged: (value) => controller.password = value,
+    );
+  }
+
+  /// 确认密码
+  _inputEnsurePassword() {
+    return Obx(() {
+      return Visibility(
+        visible: controller.buttonType == ButtonType.register ? true : false,
+        child: EditWidget(
+          textEditingController:
+              controller.textEditingControllerUserEnsurePassword,
+          iconWidget: const Icon(
+            Icons.lock_outline,
+            color: Colors.white,
+          ),
+          hintText: '请再次输入密码',
+          passwordType: true,
+          onChanged: (value) => controller.ensurePassword = value,
+        ),
+      );
+    });
+  }
+
+  /// 登录按钮
+  _loginButton() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 25),
+      child: MaterialButton(
+        height: 45,
+        color: Colors.blue,
+        textColor: Colors.white,
+        splashColor: Colors.red,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        onPressed: () => {
+          KeyboardUtils.hideKeyboard(Get.context!),
+          controller.buttonType == ButtonType.login
+              ? controller.goToLogin()
+              : controller.goToRegister(),
+        },
+        child: Obx(() {
+          return Text(
+            controller.buttonTypeDesc,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
+  /// 登录注册切换按钮
+  _switchLoginRegisterTypeButton(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      child: RippleView(
+        radius: 20,
+        onTap: () => controller.switchLoginRegister(context),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.transparent.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          child: Obx(() {
+            return Text(
+              controller.switchButtonTypeDesc,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+              ),
+            );
+          }),
+        ),
+      ),
+    );
+  }
+}

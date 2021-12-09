@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_wan_android_getx/http/dio_util.dart';
 import 'package:flutter_wan_android_getx/page/setting/theme/theme_setting_controller.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
@@ -41,6 +42,9 @@ class Config {
   static Future init() async {
     //运行开始
     WidgetsFlutterBinding.ensureInitialized();
+
+    //因为EasyLoading是一个全局单例, 所以你可以在任意一个地方自定义它的样式:
+    EasyLoading.instance.indicatorType = EasyLoadingIndicatorType.threeBounce;
 
     //初始化状态栏
     initStatusBar();

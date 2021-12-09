@@ -1,0 +1,172 @@
+import 'package:dio/dio.dart' as dio;
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_wan_android_getx/base/base_getx_controller.dart';
+import 'package:flutter_wan_android_getx/constant/constant.dart';
+import 'package:flutter_wan_android_getx/http/dio_method.dart';
+import 'package:flutter_wan_android_getx/http/dio_util.dart';
+import 'package:flutter_wan_android_getx/http/request_api.dart';
+import 'package:flutter_wan_android_getx/model/login_res_model.dart';
+import 'package:flutter_wan_android_getx/utils/keyboard_util.dart';
+import 'package:flutter_wan_android_getx/utils/logger_util.dart';
+import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+
+/// 类名: login_register_controller.dart
+/// 创建日期: 12/8/21 on 2:33 PM
+/// 描述: 注册登录
+/// 作者: 杨亮
+
+enum ButtonType { login, register }
+
+class LoginRegisterController extends BaseGetXController {
+  /// 登录注册类型
+  final _buttonType = ButtonType.login.obs;
+
+  get buttonType => _buttonType.value;
+
+  set buttonType(value) => _buttonType.value = value;
+
+  /// 登录注册按钮描述语
+  final _switchButtonTypeDesc = "没有账号，去注册".obs;
+
+  get switchButtonTypeDesc => _switchButtonTypeDesc.value;
+
+  set switchButtonTypeDesc(value) => _switchButtonTypeDesc.value = value;
+
+  final _buttonTypeDesc = "登录".obs;
+
+  get buttonTypeDesc => _buttonTypeDesc.value;
+
+  set buttonTypeDesc(value) => _buttonTypeDesc.value = value;
+
+  /// 用户名
+  final _userName = "".obs;
+
+  get userName => _userName.value;
+
+  set userName(value) => _userName.value = value;
+
+  /// 密码
+  final _password = "".obs;
+
+  get password => _password.value;
+
+  set password(value) => _password.value = value;
+
+  /// 确认密码
+  final _ensurePassword = "".obs;
+
+  get ensurePassword => _ensurePassword.value;
+
+  set ensurePassword(value) => _ensurePassword.value = value;
+
+  late final TextEditingController textEditingControllerUserName;
+  late final TextEditingController textEditingControllerUserPassword;
+  late final TextEditingController textEditingControllerUserEnsurePassword;
+
+  @override
+  void onInit() {
+    super.onInit();
+    textEditingControllerUserName = TextEditingController();
+    textEditingControllerUserPassword = TextEditingController();
+    textEditingControllerUserEnsurePassword = TextEditingController();
+  }
+
+  /// 切换登录注册类型
+  void switchLoginRegister(BuildContext context) {
+    if (buttonType == ButtonType.login) {
+      // 点击前是登陆类型，则切换为注册类型
+      buttonType = ButtonType.register;
+      switchButtonTypeDesc = '已有账号，去登录';
+      buttonTypeDesc = '注册';
+    } else {
+      // 点击前是注册类型，则切换为登录类型
+      buttonType = ButtonType.login;
+      switchButtonTypeDesc = '没有账号，去注册';
+      buttonTypeDesc = '登录';
+    }
+    // 清空输入框
+    userName = "";
+    password = "";
+    ensurePassword = "";
+    textEditingControllerUserName.clear();
+    textEditingControllerUserPassword.clear();
+    textEditingControllerUserEnsurePassword.clear();
+    KeyboardUtils.hideKeyboard(context);
+  }
+
+  /// 登录
+  void goToLogin() {
+    if (userName.toString().trim().isEmpty) {
+      Fluttertoast.showToast(msg: '用户名不能为空~');
+      return;
+    }
+
+    if (password.toString().trim().isEmpty) {
+      Fluttertoast.showToast(msg: '密码不能为空~');
+      return;
+    }
+
+    /// 登录 POST https://www.wanandroid.com/user/login
+    /// 参数：username，password   登录后会在cookie中返回账号密码，只要在客户端做cookie持久化存储即可自动登录验证。
+    /// 简单做法，存储账号密码（demo）
+    var params = {
+      "username": userName.toString().trim(),
+      "password": password.toString().trim()
+    };
+
+    dio.FormData formData = dio.FormData.fromMap(params);
+
+    handleRequest(
+      showLoadingDialog: true,
+      loadingType: Constant.lottieRocketLoading,
+      future: DioUtil().request(RequestApi.goToLogin,
+          method: DioMethod.post, data: formData),
+      onSuccess: (value) {
+        var loginInfoModel = LoginInfoModel.fromJson(value);
+        LoggerUtil.d('login success : ${loginInfoModel.toJson()}');
+
+        isLogin = true;
+        EasyLoading.showSuccess('登陆成功');
+        Get.back();
+      },
+      onFail: (value) {
+        isLogin = false;
+        EasyLoading.showError('登录失败:$value');
+      },
+      onError: (value){
+        isLogin = false;
+        EasyLoading.showError('登录失败:$value');
+      }
+    );
+  }
+
+  /// 注册
+  void goToRegister() {
+    if (userName.toString().trim().isEmpty) {
+      Fluttertoast.showToast(msg: '用户名不能为空~');
+      return;
+    }
+
+    if (password.toString().trim().isEmpty) {
+      Fluttertoast.showToast(msg: '密码不能为空~');
+      return;
+    }
+
+    if (ensurePassword.toString().trim().isEmpty) {
+      Fluttertoast.showToast(msg: '确认密码不能为空~');
+      return;
+    }
+
+    if (password.toString().trim().isNotEmpty &&
+        ensurePassword.toString().trim().isNotEmpty) {
+      if (password.toString().trim() != ensurePassword.toString().trim()) {
+        Fluttertoast.showToast(msg: '两次输入的密码不一致!');
+      } else {
+        Fluttertoast.showToast(msg: '注册');
+      }
+    }
+  }
+}

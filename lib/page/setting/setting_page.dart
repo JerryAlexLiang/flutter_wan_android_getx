@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wan_android_getx/http/dio_util.dart';
 import 'package:flutter_wan_android_getx/page/setting/language/language_controller.dart';
 import 'package:flutter_wan_android_getx/page/setting/setting_controller.dart';
 import 'package:flutter_wan_android_getx/page/setting/theme/theme_setting_controller.dart';
@@ -47,6 +48,23 @@ class SettingPage extends StatelessWidget {
               rightContent: languageController.currentLanguage,
               onTap: () => Get.toNamed(AppRoutes.languageModePage),
             ),
+            // Visibility(
+            //   visible: settingController.isLogin,
+            //   child: CustomListTitle(
+            //     title: '退出登录',
+            //     isShowLeftWidget: true,
+            //     leftWidget: const Icon(Icons.logout),
+            //     onTap: () => settingController.gotoLogout(),
+            //   ),
+            // ),
+            Obx(() {
+              return CustomListTitle(
+                title: '${settingController.isLogin}',
+                isShowLeftWidget: true,
+                leftWidget: const Icon(Icons.logout),
+                onTap: () => settingController.gotoLogout(),
+              );
+            })
           ],
         );
       }),

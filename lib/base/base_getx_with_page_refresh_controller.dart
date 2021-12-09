@@ -1,3 +1,4 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_wan_android_getx/base/base_getx_controller.dart';
 import 'package:flutter_wan_android_getx/constant/constant.dart';
 import 'package:flutter_wan_android_getx/http/base_response.dart';
@@ -48,6 +49,7 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
 
   /// 带分页加载下拉刷新的请求，适用于ListView等
   void handleRequestWithRefreshPaging({
+    bool showLoadingDialog = false,
     required String loadingType,
     RefreshState refreshState = RefreshState.refresh,
     required Future<dynamic> future,
@@ -71,6 +73,10 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
       // return;
     }
 
+    if(showLoadingDialog){
+      EasyLoading.show(status: 'loading...');
+    }
+
     if (onStart != null) {
       onStart();
     }
@@ -82,11 +88,13 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
       var success = response.success;
       if (success != null) {
         if (success) {
+
+          dismissEasyLoading();
+
           /// 请求成功
           var data = response.data;
           if (data != null) {
             refreshLoadingSuccess(refreshState);
-
             /// 在onSuccess()中也要判断具体的业务数据是否为空
             onSuccess(data);
           } else {
@@ -112,6 +120,7 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
             refreshLoadingFailed(refreshState);
             refreshLoadState = LoadState.success;
           }
+          dismissEasyLoading();
           onFail(value);
           LoggerUtil.e(
               'handleRequestWithRefreshPaging  fail1 ====> code: ${response.code} message: ${response.message}');
@@ -124,6 +133,7 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
           /// 非第一次加载，请求失败，则不显示错误页面
           refreshLoadingFailed(refreshState);
         }
+        dismissEasyLoading();
         onFail(value);
         LoggerUtil.e(
             'handleRequestWithRefreshPaging  fail2 ====> code: ${response.code} message: ${response.message}');
@@ -140,6 +150,7 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
         refreshLoadingFailed(refreshState);
         refreshLoadState = LoadState.success;
       }
+      dismissEasyLoading();
       if (onError != null) {
         onError(error);
       }
@@ -170,5 +181,11 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
   void loadNoData() {
     refreshLoadState = LoadState.success;
     _refreshController.loadNoData();
+  }
+
+  void dismissEasyLoading() {
+    if(EasyLoading.isShow){
+      EasyLoading.dismiss();
+    }
   }
 }
