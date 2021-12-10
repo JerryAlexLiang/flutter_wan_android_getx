@@ -33,7 +33,12 @@ class CustomListTitle extends StatelessWidget {
     this.bottomLineColor,
     this.isSelectType = false,
     this.isSelect = false,
+    this.splashColor,
+    this.highlightColor,
   }) : super(key: key);
+
+  final Color? splashColor;
+  final Color? highlightColor;
 
   /// 左侧组件
   final bool isShowLeftWidget;
@@ -89,6 +94,8 @@ class CustomListTitle extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
+        splashColor: splashColor ?? Colors.transparent.withOpacity(0.1),
+        highlightColor: highlightColor ?? context.highlightColor,
         onTap: onTap,
         onLongPress: onLongPress,
         child: buildContainer(context),

@@ -10,6 +10,7 @@ class RippleView extends StatelessWidget {
   const RippleView({
     Key? key,
     required this.onTap,
+    this.onLongPress,
     this.radius = 0.0,
     required this.child,
     this.splashColor,
@@ -17,6 +18,7 @@ class RippleView extends StatelessWidget {
   }) : super(key: key);
 
   final VoidCallback onTap;
+  final VoidCallback? onLongPress;
   final double radius;
   final Color? splashColor;
   final Color? highlightColor;
@@ -37,6 +39,7 @@ class RippleView extends StatelessWidget {
           highlightColor: highlightColor ?? context.highlightColor,
           child: child,
           onTap: onTap,
+          onLongPress: onLongPress,
         ),
       ),
     );

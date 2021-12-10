@@ -4,9 +4,9 @@ import 'package:flutter_wan_android_getx/http/base_response.dart';
 import 'package:flutter_wan_android_getx/http/handle_dio_error.dart';
 import 'package:flutter_wan_android_getx/utils/connectivity_utils.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
+import 'package:flutter_wan_android_getx/utils/sp_util.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
 import 'package:get/get.dart';
-import 'package:oktoast/oktoast.dart';
 
 /// 类名: base_getx_controller.dart
 /// 创建日期: 11/16/21 on 3:04 PM
@@ -32,13 +32,6 @@ class BaseGetXController extends GetxController {
 
   set httpErrorMsg(value) => _httpErrorMsg.value = value;
 
-  /// 登录状态
-  final _isLogin = false.obs;
-
-  get isLogin => _isLogin.value;
-
-  set isLogin(value) => _isLogin.value = value;
-
   @override
   void onReady() async {
     super.onReady();
@@ -62,19 +55,38 @@ class BaseGetXController extends GetxController {
   /// onReady() 时期请求数据
   void onReadyInitData() {}
 
+  /// 设置登录状态
+  void setLoginState(bool isLogin) {
+    SpUtil.saveLoginState(isLogin);
+  }
+
+  /// 获取登录状态
+  bool getLoginState() {
+    var loginState = SpUtil.getLoginState();
+    if (loginState != null && loginState == true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   void handleRequest({
-    bool showLoadingDialog = false,
     required String loadingType,
     required Future<dynamic> future,
     Function()? onStart,
     required Function(dynamic value) onSuccess,
-    required Function(dynamic value) onFail,
-    Function(dynamic value)? onError,
+    required Function(BaseResponse value) onFail,
+    Function(ResultException value)? onError,
   }) async {
     /// 是否显示加载页面、加载页面类型
-    if (loadingType == Constant.simpleShimmerLoading) {
+    if (loadingType==Constant.showLoadingDialog) {
+      /// 页面上加载Loading
+      EasyLoading.show(status: 'loading...');
+    } else if (loadingType == Constant.simpleShimmerLoading) {
+      /// 覆盖页面-简单Shimmer动画
       loadState = LoadState.simpleShimmerLoading;
     } else if (loadingType == Constant.multipleShimmerLoading) {
+      /// 覆盖页面-列表Shimmer动画
       loadState = LoadState.multipleShimmerLoading;
     } else if (loadingType == Constant.lottieRocketLoading) {
       loadState = LoadState.lottieRocketLoading;
@@ -83,10 +95,6 @@ class BaseGetXController extends GetxController {
       // return;
     }
 
-    if (showLoadingDialog) {
-      LoggerUtil.d('================================================');
-      EasyLoading.show(status: 'loading...');
-    }
 
     if (onStart != null) {
       onStart();
@@ -118,23 +126,26 @@ class BaseGetXController extends GetxController {
             onSuccess(data);
           }
           LoggerUtil.e(
-              'BaseGetController handleRequest success ====> code: ${response.code}  message: ${response.message}');
+              'BaseGetController handleRequest success ====> code: ${response
+                  .code}  message: ${response.message}');
         } else {
           /// 请求失败
           loadState = LoadState.fail;
           dismissEasyLoading();
           // 外部方法在后，可在方法里根据业务更改状态
-          onFail(value);
+          onFail(response);
           LoggerUtil.e(
-              'BaseGetController handleRequest fail 1 ====> code: ${response.code} message: ${response.message}');
+              'BaseGetController handleRequest fail 1 ====> code: ${response
+                  .code} message: ${response.message}');
         }
       } else {
         /// 请求失败
         loadState = LoadState.fail;
         dismissEasyLoading();
-        onFail(value);
+        onFail(response);
         LoggerUtil.e(
-            'BaseGetController handleRequest fail 2 ====> code: ${response.code} message: ${response.message}');
+            'BaseGetController handleRequest fail 2 ====> code: ${response
+                .code} message: ${response.message}');
       }
     }).onError<ResultException>((error, stackTrace) {
       /// 网络请求失败
@@ -149,7 +160,8 @@ class BaseGetXController extends GetxController {
         onError(error);
       }
       LoggerUtil.e(
-          'BaseGetController handleRequest onError ====> code: ${error.code} message: ${error.message}');
+          'BaseGetController handleRequest onError ====> code: ${error
+              .code} message: ${error.message}');
     });
   }
 

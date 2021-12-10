@@ -27,7 +27,14 @@ class RequestApi {
   /// 简单做法，存储账号密码（demo）
   static const String goToLogin = '/user/login';
 
+  /// 注册 POST https://www.wanandroid.com/user/register
+  /// 参数：username,password,repassword
+  static const String gotoRegister = '/user/register';
+
   /// 退出登录 GET https://www.wanandroid.com/user/logout/json
   /// 访问了logout后，服务端会让客户端清除 Cookie（即cookie max-Age=0），如果客户端 Cookie 实现合理，可以实现自动清理，如果本地做了用户账号密码和保存，及时清理。
   static const String goToLogout = '/user/logout/json';
+
+  /// 个人信息接口 GET https://wanandroid.com/user/lg/userinfo/json
+  static const String getUserInfo = "/user/lg/userinfo/json";
 }

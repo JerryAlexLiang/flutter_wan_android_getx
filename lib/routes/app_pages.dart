@@ -1,4 +1,3 @@
-import 'package:flutter_wan_android_getx/page/login_register/login_register_binding.dart';
 import 'package:flutter_wan_android_getx/page/login_register/login_register_page.dart';
 import 'package:flutter_wan_android_getx/page/web/article_detail_page.dart';
 import 'package:flutter_wan_android_getx/page/index/index_binding.dart';
@@ -59,7 +58,6 @@ class AppPages {
     GetPage(
       name: AppRoutes.loginRegisterPage,
       page: () => LoginRegisterPage(),
-      binding: LoginRegisterBinding(),
     ),
   ];
 }

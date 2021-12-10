@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/utils/formatter/customized_length_formatter.dart';
 import 'package:flutter_wan_android_getx/utils/formatter/customized_text_formatter.dart';
+import 'package:flutter_wan_android_getx/widget/ripple_view.dart';
 
 /// 类名: edit_widget.dart
 /// 创建日期: 12/7/21 on 6:11 PM
@@ -20,9 +22,11 @@ class EditWidget extends StatefulWidget {
   final Widget iconWidget;
 
   ///图标Widget
-  final bool passwordType;
+  final bool showPasswordType;
 
   final TextInputType keyboardType;
+
+  final TextInputAction textInputAction;
 
   final TextEditingController? textEditingController;
 
@@ -30,10 +34,11 @@ class EditWidget extends StatefulWidget {
     Key? key,
     this.onChanged,
     this.hintText = "",
-    this.passwordType = false,
+    this.showPasswordType = false,
     required this.iconWidget,
     this.keyboardType = TextInputType.number,
     this.textEditingController,
+    this.textInputAction = TextInputAction.done,
   }) : super(key: key);
 
   @override
@@ -53,11 +58,12 @@ class _EditWidgetState extends State<EditWidget> {
           child: TextField(
             controller: widget.textEditingController,
             keyboardType: widget.keyboardType,
+            textInputAction: widget.textInputAction,
             textAlign: TextAlign.left,
             autofocus: false,
             maxLines: 1,
             // 隐藏文本
-            obscureText: eyeExpand && widget.passwordType,
+            obscureText: eyeExpand && widget.showPasswordType,
             style: const TextStyle(
               color: Colors.blue,
               fontSize: 16,
@@ -77,7 +83,7 @@ class _EditWidgetState extends State<EditWidget> {
               ///输入长度和格式限制
               CustomizedLengthTextInputFormatter(16),
               CustomizedTextInputFormatter(
-                filterPattern: RegExp("[a-zA-Z]|[0-9]"),
+                filterPattern: RegExp("[a-zA-Z]|[0-9]|[*]|[@]"),
               ),
             ],
 
@@ -121,7 +127,7 @@ class _EditWidgetState extends State<EditWidget> {
         Positioned(
           right: 40,
           child: Visibility(
-            visible: showPassWord && widget.passwordType,
+            visible: showPassWord && widget.showPasswordType,
             child: IconButton(
               icon: Icon(
                 eyeExpand ? Icons.visibility_off : Icons.remove_red_eye,
@@ -135,7 +141,26 @@ class _EditWidgetState extends State<EditWidget> {
               },
             ),
           ),
-        )
+        ),
+        Positioned(
+          right: 40,
+          child: Visibility(
+            visible: (!widget.showPasswordType &&
+                widget.textEditingController!.text.isNotEmpty),
+            child: IconButton(
+              icon: const Icon(
+                Icons.cancel,
+                size: 24,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                setState(() {
+                  widget.textEditingController!.clear();
+                });
+              },
+            ),
+          ),
+        ),
       ],
     );
   }

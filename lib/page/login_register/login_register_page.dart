@@ -6,7 +6,6 @@ import 'package:flutter_wan_android_getx/utils/keyboard_util.dart';
 import 'package:flutter_wan_android_getx/widget/custom_app_bar.dart';
 import 'package:flutter_wan_android_getx/widget/edit_widget.dart';
 import 'package:flutter_wan_android_getx/widget/ripple_view.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import 'login_register_controller.dart';
@@ -17,7 +16,8 @@ import 'login_register_controller.dart';
 /// 作者: 杨亮
 
 class LoginRegisterPage extends StatelessWidget {
-  final controller = Get.find<LoginRegisterController>();
+  /// 登录注册
+  final controller = Get.put(LoginRegisterController());
 
   LoginRegisterPage({Key? key}) : super(key: key);
 
@@ -31,14 +31,18 @@ class LoginRegisterPage extends StatelessWidget {
         ),
         child: ListView(
           children: [
-            CustomAppBar(
-              centerTitle: '登录',
-              isBack: true,
-              backImageColor: Colors.white,
-              titleStyle: context.subtitle1Style?.copyWith(color: Colors.white),
-              backgroundColor: Colors.transparent,
-            ),
-            Gaps.vGap50,
+            Obx(() {
+              return CustomAppBar(
+                centerTitle:
+                    controller.buttonType == ButtonType.login ? '登录' : "注册",
+                isBack: true,
+                backImageColor: Colors.white,
+                titleStyle:
+                    context.subtitle1Style?.copyWith(color: Colors.white),
+                backgroundColor: Colors.transparent,
+              );
+            }),
+            Gaps.vGap15,
             const FlutterLogo(
               size: 100,
             ),
@@ -52,7 +56,8 @@ class LoginRegisterPage extends StatelessWidget {
             Gaps.vGap15,
             // 登录按钮
             _loginButton(),
-            Gaps.vGap26,
+            _infoText(),
+            Gaps.vGap32,
             // 登录注册切换按钮
             _switchLoginRegisterTypeButton(context),
           ],
@@ -62,7 +67,7 @@ class LoginRegisterPage extends StatelessWidget {
   }
 
   /// 用户名
-  _inputUserName() {
+  Widget _inputUserName() {
     return EditWidget(
       textEditingController: controller.textEditingControllerUserName,
       iconWidget: const Icon(
@@ -70,12 +75,13 @@ class LoginRegisterPage extends StatelessWidget {
         color: Colors.white,
       ),
       hintText: '请输入用户名',
+      keyboardType: TextInputType.text,
       onChanged: (value) => controller.userName = value,
     );
   }
 
   /// 密码
-  _inputPassword() {
+  Widget _inputPassword() {
     return EditWidget(
       textEditingController: controller.textEditingControllerUserPassword,
       iconWidget: const Icon(
@@ -83,13 +89,13 @@ class LoginRegisterPage extends StatelessWidget {
         color: Colors.white,
       ),
       hintText: '请输入密码',
-      passwordType: true,
+      showPasswordType: true,
       onChanged: (value) => controller.password = value,
     );
   }
 
   /// 确认密码
-  _inputEnsurePassword() {
+  Widget _inputEnsurePassword() {
     return Obx(() {
       return Visibility(
         visible: controller.buttonType == ButtonType.register ? true : false,
@@ -101,7 +107,7 @@ class LoginRegisterPage extends StatelessWidget {
             color: Colors.white,
           ),
           hintText: '请再次输入密码',
-          passwordType: true,
+          showPasswordType: true,
           onChanged: (value) => controller.ensurePassword = value,
         ),
       );
@@ -109,7 +115,7 @@ class LoginRegisterPage extends StatelessWidget {
   }
 
   /// 登录按钮
-  _loginButton() {
+  Widget _loginButton() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 25),
       child: MaterialButton(
@@ -123,9 +129,7 @@ class LoginRegisterPage extends StatelessWidget {
         ),
         onPressed: () => {
           KeyboardUtils.hideKeyboard(Get.context!),
-          controller.buttonType == ButtonType.login
-              ? controller.goToLogin()
-              : controller.goToRegister(),
+          controller.goToLoginRegister(),
         },
         child: Obx(() {
           return Text(
@@ -141,7 +145,7 @@ class LoginRegisterPage extends StatelessWidget {
   }
 
   /// 登录注册切换按钮
-  _switchLoginRegisterTypeButton(BuildContext context) {
+  Widget _switchLoginRegisterTypeButton(BuildContext context) {
     return Container(
       alignment: Alignment.center,
       child: RippleView(
@@ -165,5 +169,43 @@ class LoginRegisterPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _infoText() {
+    return Obx(() {
+      return Visibility(
+        visible: controller.buttonType == ButtonType.register,
+        child: Container(
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+          child: RichText(
+            text: const TextSpan(children: [
+              WidgetSpan(
+                alignment: PlaceholderAlignment.middle,
+                child: Icon(
+                  Icons.info_outline,
+                  size: 15,
+                  color: Colors.red,
+                ),
+              ),
+              WidgetSpan(
+                alignment: PlaceholderAlignment.middle,
+                child: Gaps.hGap5,
+              ),
+              WidgetSpan(
+                alignment: PlaceholderAlignment.middle,
+                child: Text(
+                  '注册账号成功即登录',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ]),
+          ),
+        ),
+      );
+    });
   }
 }

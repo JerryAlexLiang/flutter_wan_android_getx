@@ -55,7 +55,7 @@ class DioInterceptors extends Interceptor {
           LoggerUtil.d("=======> wan fail");
           response.data = BaseResponse(
             code: BaseResponseCode.error,
-            message: "数据请求失败啦! ${response.data['errorMsg']}",
+            message: "数据请求失败:${response.data['errorMsg']}",
             success: false,
             data: null,
           );
@@ -64,7 +64,7 @@ class DioInterceptors extends Interceptor {
         LoggerUtil.d("=======> wan error");
         response.data = BaseResponse(
           code: BaseResponseCode.error,
-          message: "数据请求失败啦! ${response.data['errorMsg']}",
+          message: "数据请求失败:${response.data['errorMsg']}",
           success: false,
           data: null,
         );
@@ -87,7 +87,7 @@ class DioInterceptors extends Interceptor {
           LoggerUtil.d("=======> mxnzp fail");
           response.data = BaseResponse(
             code: BaseResponseCode.error,
-            message: "数据请求失败啦! ${response.data['msg']}",
+            message: "数据请求失败:${response.data['msg']}",
             success: false,
             data: null,
           );
@@ -96,7 +96,7 @@ class DioInterceptors extends Interceptor {
         LoggerUtil.d("=======> mxnzp error");
         response.data = BaseResponse(
           code: BaseResponseCode.error,
-          message: "数据请求失败啦! ${response.data['msg']}",
+          message: "数据请求失败:${response.data['msg']}",
           success: false,
           data: null,
         );

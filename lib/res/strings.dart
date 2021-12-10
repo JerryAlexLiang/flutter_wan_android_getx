@@ -31,6 +31,10 @@ class StringsConstant {
   static const String loadFailed = "加载失败";
   static const String clickRetry = "点击重试";
   static const String freshTag = "新";
+  static const String loginSuccess = "登陆成功";
+  static const String loginFail = "登录失败 !";
+  static const String logoutSuccess = "退出登录成功";
+  static const String logoutFail = "退出登录失败";
 }
 
 ///使用Get配置语言环境
@@ -70,6 +74,10 @@ class Messages extends Translations {
           StringsConstant.loadFailed: '加载失败~',
           StringsConstant.clickRetry: "点击重试",
           StringsConstant.freshTag: "新",
+          StringsConstant.loginSuccess: "登陆成功",
+          StringsConstant.loginFail: "登录失败 !",
+          StringsConstant.logoutSuccess: "退出登录成功",
+          StringsConstant.logoutFail: "退出登录失败",
         },
         //繁体中文（香港）
         'zh_HK': {
@@ -103,6 +111,10 @@ class Messages extends Translations {
           StringsConstant.loadFailed: '加載失敗~',
           StringsConstant.clickRetry: "點擊重試",
           StringsConstant.freshTag: "新",
+          StringsConstant.loginSuccess: "登陆成功",
+          StringsConstant.loginFail: "登录失败 !",
+          StringsConstant.logoutSuccess: "退出登录成功",
+          StringsConstant.logoutFail: "退出登录失败",
         },
         //English
         'en_US': {
@@ -137,6 +149,10 @@ class Messages extends Translations {
           StringsConstant.loadFailed: 'load failed~',
           StringsConstant.clickRetry: "click retry",
           StringsConstant.freshTag: "New",
+          StringsConstant.loginSuccess: "login success!",
+          StringsConstant.loginFail: "login fail !",
+          StringsConstant.logoutSuccess: "logout success",
+          StringsConstant.logoutFail: "logout fail",
         },
       };
 }

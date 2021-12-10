@@ -49,20 +49,21 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
 
   /// 带分页加载下拉刷新的请求，适用于ListView等
   void handleRequestWithRefreshPaging({
-    bool showLoadingDialog = false,
     required String loadingType,
     RefreshState refreshState = RefreshState.refresh,
     required Future<dynamic> future,
     Function()? onStart,
     required Function(dynamic value) onSuccess,
-    required Function(dynamic value) onFail,
-    Function(dynamic value)? onError,
+    required Function(BaseResponse value) onFail,
+    Function(ResultException value)? onError,
   }) async {
     // 重置无数据状态刷新器
     _refreshController.resetNoData();
 
     /// 是否显示加载页面，及加载页面类型
-    if (loadingType == Constant.simpleShimmerLoading) {
+    if (loadingType == Constant.showLoadingDialog) {
+      EasyLoading.show(status: 'loading...');
+    } else if (loadingType == Constant.simpleShimmerLoading) {
       refreshLoadState = LoadState.simpleShimmerLoading;
     } else if (loadingType == Constant.multipleShimmerLoading) {
       refreshLoadState = LoadState.multipleShimmerLoading;
@@ -71,10 +72,6 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
     } else if (loadingType == Constant.noLoading) {
       loadState = LoadState.success;
       // return;
-    }
-
-    if(showLoadingDialog){
-      EasyLoading.show(status: 'loading...');
     }
 
     if (onStart != null) {
@@ -88,13 +85,13 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
       var success = response.success;
       if (success != null) {
         if (success) {
-
           dismissEasyLoading();
 
           /// 请求成功
           var data = response.data;
           if (data != null) {
             refreshLoadingSuccess(refreshState);
+
             /// 在onSuccess()中也要判断具体的业务数据是否为空
             onSuccess(data);
           } else {
@@ -121,7 +118,7 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
             refreshLoadState = LoadState.success;
           }
           dismissEasyLoading();
-          onFail(value);
+          onFail(response);
           LoggerUtil.e(
               'handleRequestWithRefreshPaging  fail1 ====> code: ${response.code} message: ${response.message}');
         }
@@ -134,7 +131,7 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
           refreshLoadingFailed(refreshState);
         }
         dismissEasyLoading();
-        onFail(value);
+        onFail(response);
         LoggerUtil.e(
             'handleRequestWithRefreshPaging  fail2 ====> code: ${response.code} message: ${response.message}');
       }
@@ -184,7 +181,7 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
   }
 
   void dismissEasyLoading() {
-    if(EasyLoading.isShow){
+    if (EasyLoading.isShow) {
       EasyLoading.dismiss();
     }
   }

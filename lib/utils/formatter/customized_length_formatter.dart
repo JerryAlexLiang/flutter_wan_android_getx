@@ -15,7 +15,9 @@ class CustomizedLengthTextInputFormatter extends TextInputFormatter {
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
-    if (newValue.isComposingRangeValid) return newValue;
+    if (newValue.isComposingRangeValid) {
+      return newValue;
+    }
     return LengthLimitingTextInputFormatter(maxLength)
         .formatEditUpdate(oldValue, newValue);
   }

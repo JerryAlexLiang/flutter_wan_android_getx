@@ -48,23 +48,15 @@ class SettingPage extends StatelessWidget {
               rightContent: languageController.currentLanguage,
               onTap: () => Get.toNamed(AppRoutes.languageModePage),
             ),
-            // Visibility(
-            //   visible: settingController.isLogin,
-            //   child: CustomListTitle(
-            //     title: '退出登录',
-            //     isShowLeftWidget: true,
-            //     leftWidget: const Icon(Icons.logout),
-            //     onTap: () => settingController.gotoLogout(),
-            //   ),
-            // ),
-            Obx(() {
-              return CustomListTitle(
-                title: '${settingController.isLogin}',
+            Visibility(
+              visible: settingController.getLoginState(),
+              child: CustomListTitle(
+                title: '退出登录',
                 isShowLeftWidget: true,
                 leftWidget: const Icon(Icons.logout),
                 onTap: () => settingController.gotoLogout(),
-              );
-            })
+              ),
+            ),
           ],
         );
       }),

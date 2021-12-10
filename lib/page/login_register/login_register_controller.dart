@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_wan_android_getx/base/base_getx_controller.dart';
 import 'package:flutter_wan_android_getx/constant/constant.dart';
+import 'package:flutter_wan_android_getx/http/base_response.dart';
 import 'package:flutter_wan_android_getx/http/dio_method.dart';
 import 'package:flutter_wan_android_getx/http/dio_util.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
-import 'package:flutter_wan_android_getx/model/login_res_model.dart';
+import 'package:flutter_wan_android_getx/model/user_info_model.dart';
+import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/utils/keyboard_util.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
-import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
+import 'package:flutter_wan_android_getx/utils/sp_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
@@ -98,7 +100,7 @@ class LoginRegisterController extends BaseGetXController {
   }
 
   /// 登录
-  void goToLogin() {
+  void goToLoginRegister() {
     if (userName.toString().trim().isEmpty) {
       Fluttertoast.showToast(msg: '用户名不能为空~');
       return;
@@ -107,66 +109,68 @@ class LoginRegisterController extends BaseGetXController {
     if (password.toString().trim().isEmpty) {
       Fluttertoast.showToast(msg: '密码不能为空~');
       return;
+    }
+
+    if (buttonType == ButtonType.register) {
+      if (ensurePassword.toString().trim().isEmpty) {
+        Fluttertoast.showToast(msg: '确认密码不能为空~');
+        return;
+      }
+
+      if (userName.toString().trim().isNotEmpty &&
+          password.toString().trim().isNotEmpty &&
+          ensurePassword.toString().trim().isNotEmpty) {
+        if (password.toString().trim() != ensurePassword.toString().trim()) {
+          Fluttertoast.showToast(msg: '两次输入的密码不一致!');
+          return;
+        }
+      }
     }
 
     /// 登录 POST https://www.wanandroid.com/user/login
     /// 参数：username，password   登录后会在cookie中返回账号密码，只要在客户端做cookie持久化存储即可自动登录验证。
     /// 简单做法，存储账号密码（demo）
-    var params = {
+    var paramsLogin = {
       "username": userName.toString().trim(),
-      "password": password.toString().trim()
+      "password": password.toString().trim(),
     };
 
-    dio.FormData formData = dio.FormData.fromMap(params);
+    var paramsRegister = {
+      "username": userName.toString().trim(),
+      "password": password.toString().trim(),
+      "repassword": ensurePassword.toString().trim(),
+    };
+
+    /// FormData参数
+    dio.FormData formData = buttonType == ButtonType.login
+        ? dio.FormData.fromMap(paramsLogin)
+        : dio.FormData.fromMap(paramsRegister);
+
+    String requestUrl = buttonType == ButtonType.login
+        ? RequestApi.goToLogin
+        : RequestApi.gotoRegister;
 
     handleRequest(
-      showLoadingDialog: true,
-      loadingType: Constant.lottieRocketLoading,
-      future: DioUtil().request(RequestApi.goToLogin,
-          method: DioMethod.post, data: formData),
-      onSuccess: (value) {
-        var loginInfoModel = LoginInfoModel.fromJson(value);
-        LoggerUtil.d('login success : ${loginInfoModel.toJson()}');
-
-        isLogin = true;
-        EasyLoading.showSuccess('登陆成功');
-        Get.back();
-      },
-      onFail: (value) {
-        isLogin = false;
-        EasyLoading.showError('登录失败:$value');
-      },
-      onError: (value){
-        isLogin = false;
-        EasyLoading.showError('登录失败:$value');
-      }
-    );
-  }
-
-  /// 注册
-  void goToRegister() {
-    if (userName.toString().trim().isEmpty) {
-      Fluttertoast.showToast(msg: '用户名不能为空~');
-      return;
-    }
-
-    if (password.toString().trim().isEmpty) {
-      Fluttertoast.showToast(msg: '密码不能为空~');
-      return;
-    }
-
-    if (ensurePassword.toString().trim().isEmpty) {
-      Fluttertoast.showToast(msg: '确认密码不能为空~');
-      return;
-    }
-
-    if (password.toString().trim().isNotEmpty &&
-        ensurePassword.toString().trim().isNotEmpty) {
-      if (password.toString().trim() != ensurePassword.toString().trim()) {
-        Fluttertoast.showToast(msg: '两次输入的密码不一致!');
-      } else {
-        Fluttertoast.showToast(msg: '注册');
-      }
-    }
+        loadingType: Constant.showLoadingDialog,
+        future: DioUtil()
+            .request(requestUrl, method: DioMethod.post, data: formData),
+        onSuccess: (value) {
+          UserInfoModel userInfoModel = UserInfoModel.fromJson(value);
+          LoggerUtil.d('login success : ${userInfoModel.toJson()}');
+          EasyLoading.showSuccess(StringsConstant.loginSuccess.tr);
+          // 保存登录状态true
+          setLoginState(true);
+          // 保存用户数据
+          SpUtil.saveUserInfo(userInfoModel);
+          Get.back();
+        },
+        onFail: (response) {
+          setLoginState(false);
+          EasyLoading.showError('${StringsConstant.loginFail.tr} \n ${response.message}');
+        },
+        onError: (error) {
+          setLoginState(false);
+          EasyLoading.showError('${StringsConstant.loginFail.tr} \n ${error.message}');
+        });
   }
 }

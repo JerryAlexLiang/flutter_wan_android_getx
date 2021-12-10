@@ -110,6 +110,9 @@ dependencies:
   # 20、flutter_easyloading: ^3.0.3
   flutter_easyloading: ^3.0.3
 
+  flutter_localizations:
+    sdk: flutter
+
 
 dev_dependencies:
   flutter_test:

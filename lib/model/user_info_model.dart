@@ -1,9 +1,9 @@
-/// 类名: login_res_model.dart
+/// 类名: user_info_model.dart
 /// 创建日期: 12/9/21 on 3:06 PM
 /// 描述: 登录返回信息
 /// 作者: 杨亮
 
-class LoginInfoModel {
+class UserInfoModel {
   bool? admin;
   List<int?>? chapterTops;
   int? coinCount;
@@ -18,7 +18,7 @@ class LoginInfoModel {
   int? type;
   String? username;
 
-  LoginInfoModel(
+  UserInfoModel(
       {this.admin,
       this.chapterTops,
       this.coinCount,
@@ -33,7 +33,7 @@ class LoginInfoModel {
       this.type,
       this.username});
 
-  LoginInfoModel.fromJson(Map<String, dynamic> json) {
+  UserInfoModel.fromJson(Map<String, dynamic> json) {
     admin = json['admin'];
     chapterTops = json['chapterTops'].cast<int>();
     coinCount = json['coinCount'];

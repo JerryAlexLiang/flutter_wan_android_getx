@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_wan_android_getx/page/auth_middle_page.dart';
 import 'package:flutter_wan_android_getx/page/mine/mine_controller.dart';
+import 'package:flutter_wan_android_getx/page/search/search_page.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/routes/app_routes.dart';
 import 'package:flutter_wan_android_getx/utils/decoration_style.dart';
+import 'package:flutter_wan_android_getx/utils/sp_util.dart';
 import 'package:flutter_wan_android_getx/widget/ripple_view.dart';
 import 'package:get/get.dart';
 
@@ -19,7 +22,13 @@ class UserInfoImage extends GetView<MineController> {
         children: [
           RippleView(
             radius: 100,
-            onTap: () => Get.toNamed(AppRoutes.loginRegisterPage),
+            onTap: () =>
+                Get.to(
+                  AuthMiddlePage(
+                    child: SearchPage(),
+                  ),
+                  transition: Transition.native,
+                ),
             child: Container(
               decoration: DecorationStyle.imageDecorationCircle(
                 isCircle: true,
@@ -43,8 +52,21 @@ class UserInfoImage extends GetView<MineController> {
             ),
           ),
           Gaps.hGap15,
+          // Obx(() {
+          //   return Text(
+          //     controller.getLoginState() == true
+          //         ? '${controller.userInfo.value.coinCount}'
+          //         : 'Jerry',
+          //     style: TextStyle(
+          //         color: Colors.white,
+          //         fontSize: 23.sp,
+          //         fontWeight: FontWeight.bold),
+          //   );
+          // }),
           Text(
-            'Jerry',
+            controller.getLoginState() == true
+                ? '${controller.userInfo.value.coinCount}'
+                : 'Jerry',
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 23.sp,
@@ -57,6 +79,11 @@ class UserInfoImage extends GetView<MineController> {
             color: Colors.transparent,
             child: Ink(
               child: InkWell(
+                splashColor: Colors.transparent.withOpacity(0.1),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  bottomLeft: Radius.circular(20),
+                ),
                 onTap: () => Get.toNamed(AppRoutes.settingPage),
                 child: ClipRRect(
                   borderRadius: const BorderRadius.only(

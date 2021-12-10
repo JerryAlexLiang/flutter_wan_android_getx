@@ -6,10 +6,17 @@ class Constant {
   static const String simpleShimmerLoading = 'simpleShimmerLoading';
   static const String multipleShimmerLoading = 'multipleShimmerLoading';
   static const String lottieRocketLoading = 'lottieRocketLoading';
+  static const String showLoadingDialog = 'showLoadingDialog';
   static const String noLoading = 'noLoading';
 
   // wanAndroid 历史搜索
-  static const String searchHistory = "searchHistory";
+  static const String searchHistoryKey = "searchHistory";
+
+  // 登录登出状态
+  static const String loginStateKey = 'loginStateKey';
+
+  // 保存用户信息
+  static const String userInfoKey = "userInfoKey";
 
   // Constant.placeHolderImageUrl.replaceFirst(RegExp('size'), '100x120'),
   static const String placeHolderImageUrl =
