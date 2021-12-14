@@ -39,15 +39,25 @@ class SpUtil {
     Get.find<SharedPreferences>().remove(Constant.searchHistoryKey);
   }
 
-  /// 存储登录状态
-  static saveLoginState(bool isLogin) {
-    Get.find<SharedPreferences>().setBool(Constant.loginStateKey, isLogin);
-  }
-
-  /// 获取登录状态
-  static bool? getLoginState() {
-    return Get.find<SharedPreferences>().getBool(Constant.loginStateKey);
-  }
+  // /// 存储登录状态
+  // static saveLoginState(bool isLogin) {
+  //   Get.find<SharedPreferences>().setBool(Constant.loginStateKey, isLogin);
+  // }
+  //
+  // /// 获取登录状态
+  // static bool? getLoginState() {
+  //   return Get.find<SharedPreferences>().getBool(Constant.loginStateKey);
+  // }
+  //
+  // /// 获取登录状态
+  // static bool getCurrentLoginState() {
+  //   var loginState = SpUtil.getLoginState();
+  //   if (loginState != null && loginState == true) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   /// 保存用户信息
   static saveUserInfo(UserInfoModel userInfoModel) {

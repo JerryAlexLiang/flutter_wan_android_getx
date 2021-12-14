@@ -1,13 +1,14 @@
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_wan_android_getx/app_user_login_state_controller.dart';
 import 'package:flutter_wan_android_getx/base/base_getx_controller.dart';
 import 'package:flutter_wan_android_getx/constant/constant.dart';
-import 'package:flutter_wan_android_getx/http/base_response.dart';
 import 'package:flutter_wan_android_getx/http/dio_method.dart';
 import 'package:flutter_wan_android_getx/http/dio_util.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
 import 'package:flutter_wan_android_getx/model/user_info_model.dart';
+import 'package:flutter_wan_android_getx/page/mine/mine_controller.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/utils/keyboard_util.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
@@ -67,6 +68,8 @@ class LoginRegisterController extends BaseGetXController {
   late final TextEditingController textEditingControllerUserName;
   late final TextEditingController textEditingControllerUserPassword;
   late final TextEditingController textEditingControllerUserEnsurePassword;
+
+  final mineController = Get.find<MineController>();
 
   @override
   void onInit() {
@@ -151,26 +154,32 @@ class LoginRegisterController extends BaseGetXController {
         : RequestApi.gotoRegister;
 
     handleRequest(
-        loadingType: Constant.showLoadingDialog,
-        future: DioUtil()
-            .request(requestUrl, method: DioMethod.post, data: formData),
-        onSuccess: (value) {
-          UserInfoModel userInfoModel = UserInfoModel.fromJson(value);
-          LoggerUtil.d('login success : ${userInfoModel.toJson()}');
-          EasyLoading.showSuccess(StringsConstant.loginSuccess.tr);
-          // 保存登录状态true
-          setLoginState(true);
-          // 保存用户数据
-          SpUtil.saveUserInfo(userInfoModel);
-          Get.back();
-        },
-        onFail: (response) {
-          setLoginState(false);
-          EasyLoading.showError('${StringsConstant.loginFail.tr} \n ${response.message}');
-        },
-        onError: (error) {
-          setLoginState(false);
-          EasyLoading.showError('${StringsConstant.loginFail.tr} \n ${error.message}');
-        });
+      loadingType: Constant.showLoadingDialog,
+      future:
+          DioUtil().request(requestUrl, method: DioMethod.post, data: formData),
+      onSuccess: (value) {
+        UserInfoModel userInfoModel = UserInfoModel.fromJson(value);
+        LoggerUtil.d('login success : ${userInfoModel.toJson()}');
+        EasyLoading.showSuccess(StringsConstant.loginSuccess.tr);
+        // 保存登录状态true
+        loginState = true;
+        mineController.getUserInfo();
+
+        // 保存用户数据
+        SpUtil.saveUserInfo(userInfoModel);
+        Get.back();
+
+      },
+      onFail: (response) {
+        EasyLoading.showError(
+            '${StringsConstant.loginFail.tr} \n ${response.message}');
+      },
+      onError: (error) {
+        EasyLoading.showError(
+            '${StringsConstant.loginFail.tr} \n ${error.message}');
+      },
+    );
   }
+
+
 }

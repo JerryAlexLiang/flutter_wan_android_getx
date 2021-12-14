@@ -269,6 +269,11 @@ class SearchController extends BaseGetXWithPageRefreshController {
         showResult = true;
         Fluttertoast.showToast(msg: '数据请求失败 ${error.code}  ${error.message}');
       },
+      onError: (error){
+        //显示搜索结果页面
+        showResult = true;
+        Fluttertoast.showToast(msg: '数据请求失败 ${error.code}  ${error.message}');
+      }
     );
   }
 
@@ -310,6 +315,10 @@ class SearchController extends BaseGetXWithPageRefreshController {
         LoggerUtil.d('======> initHotKeysList : load fail1');
         LoggerUtil.d('=====> fail : ${hotKeys.map((e) => e.name).toList()}');
       },
+      onError: (error){
+        showHotKeys = false;
+        LoggerUtil.d('======> initHotKeysList : load error');
+      }
     );
   }
 

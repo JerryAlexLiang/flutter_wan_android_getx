@@ -20,7 +20,11 @@ class IndexBinding extends Bindings {
     Get.lazyPut(() => NavigationTreeController());
     Get.lazyPut(() => ProjectController());
     Get.lazyPut(() => MineController());
+
     /// 文章详情控制器（收藏、点赞等）
     Get.put(ArticleDetailController());
+
+    // /// 登录注册退出
+    // Get.lazyPut(() => LoginRegisterController());
   }
 }

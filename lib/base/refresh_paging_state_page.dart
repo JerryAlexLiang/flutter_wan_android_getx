@@ -26,6 +26,10 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
     required this.child,
     this.header,
     this.footer,
+    this.physics,
+    this.scrollController,
+    this.enableRefreshPullUp = true,
+    this.enableRefreshPullDown = true,
   }) : super(key: key);
 
   /// 业务GetXController
@@ -41,10 +45,10 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
   final Widget? emptyPage;
 
   ///是否启用上拉加载
-  final bool enablePullUp = true;
+  final bool enableRefreshPullUp;
 
   ///是否启用下拉刷新
-  final bool enablePullDown = true;
+  final bool enableRefreshPullDown;
 
   /// 组件
   final Widget child;
@@ -63,6 +67,10 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
 
   /// 刷新尾部
   final Widget? footer;
+
+  final ScrollPhysics? physics;
+
+  final ScrollController? scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -104,10 +112,12 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
         } else if (controller.refreshLoadState == LoadState.success) {
           return SmartRefresher(
             controller: refreshController,
-            enablePullDown: enablePullDown,
-            enablePullUp: enablePullUp,
+            enablePullDown: enableRefreshPullDown,
+            enablePullUp: enableRefreshPullUp,
             onRefresh: onRefresh,
             onLoading: onLoadMore,
+            physics: physics,
+            scrollController: scrollController,
             header: header ?? customHeaderWidget(context),
             footer: footer ?? customFooterWidget(context),
             child: child,

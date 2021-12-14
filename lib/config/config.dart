@@ -4,7 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_wan_android_getx/app_user_login_state_controller.dart';
 import 'package:flutter_wan_android_getx/http/dio_util.dart';
+import 'package:flutter_wan_android_getx/page/login_register/login_register_controller.dart';
 import 'package:flutter_wan_android_getx/page/setting/theme/theme_setting_controller.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
@@ -55,6 +57,19 @@ class Config {
 
     var themeSettingController =
         Get.put<ThemeSettingController>(ThemeSettingController());
+
+    // 用户状态
+    var appUserLoginStateController =
+    Get.put<AppUserLoginStateController>(AppUserLoginStateController());
+
+    // 获取用户存储信息
+    var userInfo = SpUtil.getUserInfo();
+    if (userInfo != null) {
+      // appUserLoginStateController.setLoginState(true);
+      loginState = true;
+    }else{
+      loginState = false;
+    }
 
     //初始化默认主题
     // var themeData =

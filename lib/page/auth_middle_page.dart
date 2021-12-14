@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wan_android_getx/app_user_login_state_controller.dart';
 import 'package:flutter_wan_android_getx/page/login_register/login_register_page.dart';
 import 'package:flutter_wan_android_getx/utils/sp_util.dart';
 
@@ -18,9 +19,12 @@ class AuthMiddlePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool? loginState = SpUtil.getLoginState();
-    return (loginState != null && loginState == true)
-        ? child
-        : LoginRegisterPage();
+    // bool? loginState = SpUtil.getLoginState();
+    // bool loginState = isLogin;
+    // return (loginState == true)
+    //     ? child
+    //     : LoginRegisterPage();
+
+    return loginState ? child : LoginRegisterPage();
   }
 }

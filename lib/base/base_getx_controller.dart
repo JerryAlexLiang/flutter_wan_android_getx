@@ -2,6 +2,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_wan_android_getx/constant/constant.dart';
 import 'package:flutter_wan_android_getx/http/base_response.dart';
 import 'package:flutter_wan_android_getx/http/handle_dio_error.dart';
+import 'package:flutter_wan_android_getx/model/total_user_info_model.dart';
+import 'package:flutter_wan_android_getx/model/user_info_model.dart';
 import 'package:flutter_wan_android_getx/utils/connectivity_utils.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/utils/sp_util.dart';
@@ -55,31 +57,16 @@ class BaseGetXController extends GetxController {
   /// onReady() 时期请求数据
   void onReadyInitData() {}
 
-  /// 设置登录状态
-  void setLoginState(bool isLogin) {
-    SpUtil.saveLoginState(isLogin);
-  }
-
-  /// 获取登录状态
-  bool getLoginState() {
-    var loginState = SpUtil.getLoginState();
-    if (loginState != null && loginState == true) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   void handleRequest({
     required String loadingType,
     required Future<dynamic> future,
     Function()? onStart,
     required Function(dynamic value) onSuccess,
     required Function(BaseResponse value) onFail,
-    Function(ResultException value)? onError,
+    required Function(ResultException value)? onError,
   }) async {
     /// 是否显示加载页面、加载页面类型
-    if (loadingType==Constant.showLoadingDialog) {
+    if (loadingType == Constant.showLoadingDialog) {
       /// 页面上加载Loading
       EasyLoading.show(status: 'loading...');
     } else if (loadingType == Constant.simpleShimmerLoading) {
@@ -94,7 +81,6 @@ class BaseGetXController extends GetxController {
       loadState = LoadState.success;
       // return;
     }
-
 
     if (onStart != null) {
       onStart();
@@ -126,8 +112,7 @@ class BaseGetXController extends GetxController {
             onSuccess(data);
           }
           LoggerUtil.e(
-              'BaseGetController handleRequest success ====> code: ${response
-                  .code}  message: ${response.message}');
+              'BaseGetController handleRequest success ====> code: ${response.code}  message: ${response.message}');
         } else {
           /// 请求失败
           loadState = LoadState.fail;
@@ -135,8 +120,7 @@ class BaseGetXController extends GetxController {
           // 外部方法在后，可在方法里根据业务更改状态
           onFail(response);
           LoggerUtil.e(
-              'BaseGetController handleRequest fail 1 ====> code: ${response
-                  .code} message: ${response.message}');
+              'BaseGetController handleRequest fail 1 ====> code: ${response.code} message: ${response.message}');
         }
       } else {
         /// 请求失败
@@ -144,8 +128,7 @@ class BaseGetXController extends GetxController {
         dismissEasyLoading();
         onFail(response);
         LoggerUtil.e(
-            'BaseGetController handleRequest fail 2 ====> code: ${response
-                .code} message: ${response.message}');
+            'BaseGetController handleRequest fail 2 ====> code: ${response.code} message: ${response.message}');
       }
     }).onError<ResultException>((error, stackTrace) {
       /// 网络请求失败
@@ -160,8 +143,7 @@ class BaseGetXController extends GetxController {
         onError(error);
       }
       LoggerUtil.e(
-          'BaseGetController handleRequest onError ====> code: ${error
-              .code} message: ${error.message}');
+          'BaseGetController handleRequest onError ====> code: ${error.code} message: ${error.message}');
     });
   }
 

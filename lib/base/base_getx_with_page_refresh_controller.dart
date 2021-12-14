@@ -1,8 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_wan_android_getx/base/base_getx_controller.dart';
 import 'package:flutter_wan_android_getx/constant/constant.dart';
 import 'package:flutter_wan_android_getx/http/base_response.dart';
 import 'package:flutter_wan_android_getx/http/handle_dio_error.dart';
+import 'package:flutter_wan_android_getx/model/total_user_info_model.dart';
+import 'package:flutter_wan_android_getx/model/user_info_model.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
 import 'package:get/get.dart';
@@ -35,6 +38,9 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
 
   set refreshLoadState(value) => _refreshLoadState.value = value;
 
+  //滚动控制器
+  ScrollController scrollController = ScrollController();
+
   @override
   void onInit() {
     super.onInit();
@@ -55,7 +61,7 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
     Function()? onStart,
     required Function(dynamic value) onSuccess,
     required Function(BaseResponse value) onFail,
-    Function(ResultException value)? onError,
+    required  Function(ResultException value)? onError,
   }) async {
     // 重置无数据状态刷新器
     _refreshController.resetNoData();
@@ -95,6 +101,7 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
             /// 在onSuccess()中也要判断具体的业务数据是否为空
             onSuccess(data);
           } else {
+            onSuccess(data);
             /// 第一次加载，返回数据为空，则显示空页面
             if (loadingType != Constant.noLoading) {
               refreshLoadState = LoadState.empty;
@@ -178,11 +185,5 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
   void loadNoData() {
     refreshLoadState = LoadState.success;
     _refreshController.loadNoData();
-  }
-
-  void dismissEasyLoading() {
-    if (EasyLoading.isShow) {
-      EasyLoading.dismiss();
-    }
   }
 }

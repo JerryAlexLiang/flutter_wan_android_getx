@@ -81,9 +81,9 @@ class _EditWidgetState extends State<EditWidget> {
             },
             inputFormatters: [
               ///输入长度和格式限制
-              CustomizedLengthTextInputFormatter(16),
+              CustomizedLengthTextInputFormatter(30),
               CustomizedTextInputFormatter(
-                filterPattern: RegExp("[a-zA-Z]|[0-9]|[*]|[@]"),
+                filterPattern: RegExp("[a-zA-Z]|[0-9]|[*]|[@]|[.]"),
               ),
             ],
 
