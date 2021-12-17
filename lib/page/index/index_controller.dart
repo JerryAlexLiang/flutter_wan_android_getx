@@ -113,7 +113,7 @@ class IndexController extends GetxController {
     ];
 
     tabPageBodies = <Widget>[
-      KeepAliveWrapper(
+      const KeepAliveWrapper(
         // keepAlive默认为true
         // keepAlive为 true 后会缓存所有的列表项，列表项将不会销毁。
         // keepAlive为 false 时，列表项滑出预加载区域后将会别销毁。

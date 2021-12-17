@@ -41,6 +41,13 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
   //滚动控制器
   ScrollController scrollController = ScrollController();
 
+  //标题栏透明比例
+  final _percent = 0.0.obs;
+
+  get percent => _percent.value;
+
+  set percent(value) => _percent.value = value;
+
   @override
   void onInit() {
     super.onInit();

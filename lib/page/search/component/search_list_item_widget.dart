@@ -331,8 +331,11 @@ class SearchListItemWidget extends StatelessWidget {
 
         const Spacer(),
         RippleView(
-          onTap: () =>
-              controller.collectInsideArticle(dataList[index].id!, index),
+          onTap: () =>{
+    Fluttertoast.showToast(msg: '$index  ${dataList[index].title}'),
+            controller.collectInsideArticle(dataList[index].id!, index),
+    },
+
           radius: 50,
           child: Container(
             margin: const EdgeInsets.all(10),

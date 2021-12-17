@@ -1,6 +1,5 @@
 import 'package:flutter_wan_android_getx/generated/json/base/json_convert_content.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
-import 'package:get/get.dart';
 
 class Language with JsonConvert<Language> {
   String? name;
@@ -22,5 +21,5 @@ final supportLanguageList = [
       name: StringsConstant.traditionalChineseHongKong,
       language: 'zh',
       country: 'HK'),
-  Language(name: StringsConstant.usEnglish, language: 'zh', country: 'US'),
+  Language(name: StringsConstant.usEnglish, language: 'en', country: 'US'),
 ];

@@ -71,8 +71,8 @@ class MyApp extends StatelessWidget {
               //默认语言
               locale: LocaleUtil.getDefaultLocale(),
               //备用语言
-              // fallbackLocale: const Locale('en', 'US'),
-              fallbackLocale: const Locale('zh', 'CN'),
+              fallbackLocale: const Locale('en', 'US'),
+              // fallbackLocale: const Locale('zh', 'CN'),
               localizationsDelegates: const [
                 // Refresh国际化 这行是关键
                 RefreshLocalizations.delegate,

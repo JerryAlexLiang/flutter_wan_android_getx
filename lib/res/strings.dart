@@ -35,6 +35,7 @@ class StringsConstant {
   static const String loginFail = "登录失败 !";
   static const String logoutSuccess = "退出登录成功";
   static const String logoutFail = "退出登录失败";
+  static const String myCompany = 'Flutter-玩Android';
 }
 
 ///使用Get配置语言环境
@@ -78,6 +79,7 @@ class Messages extends Translations {
           StringsConstant.loginFail: "登录失败 !",
           StringsConstant.logoutSuccess: "退出登录成功",
           StringsConstant.logoutFail: "退出登录失败",
+          StringsConstant.myCompany: "Flutter-玩Android",
         },
         //繁体中文（香港）
         'zh_HK': {
@@ -115,6 +117,7 @@ class Messages extends Translations {
           StringsConstant.loginFail: "登录失败 !",
           StringsConstant.logoutSuccess: "退出登录成功",
           StringsConstant.logoutFail: "退出登录失败",
+          StringsConstant.myCompany: "Flutter-玩Android",
         },
         //English
         'en_US': {
@@ -153,6 +156,7 @@ class Messages extends Translations {
           StringsConstant.loginFail: "login fail !",
           StringsConstant.logoutSuccess: "logout success",
           StringsConstant.logoutFail: "logout fail",
+          StringsConstant.myCompany: "Flutter-Wan Android",
         },
       };
 }

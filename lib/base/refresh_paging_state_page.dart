@@ -26,6 +26,7 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
     required this.child,
     this.header,
     this.footer,
+    this.lottieRocketRefreshHeader = true,
     this.physics,
     this.scrollController,
     this.enableRefreshPullUp = true,
@@ -64,6 +65,8 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
 
   /// 刷新头部
   final Widget? header;
+
+  final bool? lottieRocketRefreshHeader;
 
   /// 刷新尾部
   final Widget? footer;
@@ -146,16 +149,19 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
         customHeader = refreshStatusWidget(
           context: context,
           constant: StringsConstant.loading.tr,
-          // refreshWidget: const CupertinoActivityIndicator(),
-          refreshWidget: const LoadingLottieRocketWidget(
-            lottieAsset: R.assetsLottieRocketLunchLoadingAnimation,
-            visible: true,
-            animate: true,
-            repeat: true,
-            width: 30,
-            height: 50,
-            fit: BoxFit.cover,
-          ),
+          refreshWidget: (lottieRocketRefreshHeader == null ||
+                  (lottieRocketRefreshHeader != null &&
+                      lottieRocketRefreshHeader == true))
+              ? const LoadingLottieRocketWidget(
+                  lottieAsset: R.assetsLottieRocketLunchLoadingAnimation,
+                  visible: true,
+                  animate: true,
+                  repeat: true,
+                  width: 30,
+                  height: 50,
+                  fit: BoxFit.cover,
+                )
+              : const CupertinoActivityIndicator(),
         );
       } else if (refreshStatus == RefreshStatus.failed) {
         // 指示器刷新失败

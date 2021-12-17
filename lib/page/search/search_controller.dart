@@ -6,7 +6,6 @@ import 'package:flutter_wan_android_getx/http/dio_util.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
 import 'package:flutter_wan_android_getx/model/article_data_model.dart';
 import 'package:flutter_wan_android_getx/model/hot_search_model.dart';
-import 'package:flutter_wan_android_getx/page/search/article_detail_controller.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/utils/sp_util.dart';
@@ -47,7 +46,7 @@ class SearchController extends BaseGetXWithPageRefreshController {
   set hotKeys(value) => _hotKeys.assignAll(value);
 
   /// 搜索hint
-  final _hotHint = '热搜'.obs;
+  final _hotHint = ''.obs;
 
   get hotHint => _hotHint.value;
 
@@ -256,7 +255,6 @@ class SearchController extends BaseGetXWithPageRefreshController {
             searchResult.addAll(dataList);
           }
         } else {
-          // if (isLoading) {
           if (loadingType!=Constant.noLoading) {
             refreshLoadState = LoadState.empty;
           } else {

@@ -5,6 +5,7 @@ import 'package:flutter_wan_android_getx/constant/constant.dart';
 import 'package:flutter_wan_android_getx/model/article_data_model.dart';
 import 'package:flutter_wan_android_getx/page/search/article_detail_controller.dart';
 import 'package:flutter_wan_android_getx/res/r.dart';
+import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:flutter_wan_android_getx/widget/article_detail_app_bar_add_menu.dart';
 import 'package:flutter_wan_android_getx/widget/cached_network_image_view.dart';
@@ -184,7 +185,7 @@ class ArticleDetailWebAppBar extends StatelessWidget
           Container(
             margin: const EdgeInsets.only(left: 15),
             child: Text(
-              name ?? '致一科技',
+              name ?? StringsConstant.myCompany.tr,
               style: context.bodyText2Style,
             ),
           ),
