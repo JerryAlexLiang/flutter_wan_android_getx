@@ -2,7 +2,6 @@ import 'package:flutter_wan_android_getx/base/base_getx_controller.dart';
 import 'package:flutter_wan_android_getx/model/total_user_info_model.dart';
 import 'package:flutter_wan_android_getx/model/user_info_model.dart';
 import 'package:flutter_wan_android_getx/utils/sp_util.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 /// 类名: app_user_login_state_controller.dart
@@ -29,14 +28,13 @@ class AppUserLoginStateController extends BaseGetXController {
       if (localUserInfo != null) {
         userInfo.value.nickname = localUserInfo.nickname!;
       }
-      Fluttertoast.showToast(msg: '已登录');
-    }else{
+    } else {
       userInfo.value.nickname = '登录';
-      Fluttertoast.showToast(msg: '未登录');
     }
   }
 }
 
+/// 登录状态
 bool get loginState => Get.find<AppUserLoginStateController>().isLogin.value;
 
 set loginState(value) =>

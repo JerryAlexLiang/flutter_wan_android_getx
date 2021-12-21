@@ -69,8 +69,6 @@ class LoginRegisterController extends BaseGetXController {
   late final TextEditingController textEditingControllerUserPassword;
   late final TextEditingController textEditingControllerUserEnsurePassword;
 
-  final mineController = Get.find<MineController>();
-
   @override
   void onInit() {
     super.onInit();
@@ -161,12 +159,11 @@ class LoginRegisterController extends BaseGetXController {
         UserInfoModel userInfoModel = UserInfoModel.fromJson(value);
         LoggerUtil.d('login success : ${userInfoModel.toJson()}');
         EasyLoading.showSuccess(StringsConstant.loginSuccess.tr);
-        // 保存登录状态true
-        loginState = true;
-        mineController.getUserInfo();
-
         // 保存用户数据
         SpUtil.saveUserInfo(userInfoModel);
+        appStateController.updateUserInfo();
+        // 保存登录状态true
+        loginState = true;
         Get.back();
 
       },

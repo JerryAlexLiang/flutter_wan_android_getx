@@ -57,6 +57,8 @@ class HomePage extends StatelessWidget {
           // header: const ClassicHeader(),
           lottieRocketRefreshHeader: false,
           child: CustomScrollView(
+            // 滑动监听器
+            controller: controller.scrollController,
             slivers: [
               _homeBanner(),
               _homeArticleList(controller),

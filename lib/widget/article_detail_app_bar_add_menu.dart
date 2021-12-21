@@ -100,7 +100,7 @@ class _ArticleDetailAppBarAddMenuState extends State<ArticleDetailAppBarAddMenu>
             onPressed: () {
               // 收藏、取消收藏站内文章
               detailController.collectInsideArticle(
-                widget.model.id!,
+                widget.model,
                 widget.index,
               );
               Get.back();

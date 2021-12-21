@@ -14,22 +14,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 class MineController extends BaseGetXWithPageRefreshController {
-  //标题栏透明比例
-  final _percent = 0.0.obs;
-
-  get percent => _percent.value;
-
-  set percent(value) => _percent.value = value;
-
-  // /// 个人用户信息
-  // final userInfo = UserInfoModel().obs;
-  // final coinInfo = CoinInfo().obs;
-
-  // final userNickName = "".obs;
-
-  /// 登录注册退出
-  // final loginController = Get.put(LoginRegisterController());
-
   @override
   void onInit() {
     super.onInit();
@@ -47,28 +31,17 @@ class MineController extends BaseGetXWithPageRefreshController {
     });
 
     appStateController.updateUserInfo();
-  }
 
-  // updateUserInfo() {
-  //   if (loginState) {
-  //     // 获取本地化存储用户数据
-  //     var localUserInfo = SpUtil.getUserInfo();
-  //     if (localUserInfo != null) {
-  //       // userNickName.value = localUserInfo.nickname!;
-  //       appStateController.userInfo.value.nickname = localUserInfo.nickname!;
-  //     }
-  //
-  //     Fluttertoast.showToast(msg: '已登录');
-  //   }else{
-  //     appStateController.userInfo.value.nickname = '登录';
-  //     Fluttertoast.showToast(msg: '未登录');
-  //   }
-  // }
+    /// 每次登录状态发生改变时更新数据
+    ever(appStateController.isLogin, (callback) {
+      onReadyInitData();
+    });
+  }
 
   @override
   void onReadyInitData() {
     super.onReadyInitData();
-    if(loginState){
+    if (loginState) {
       getUserInfo();
     }
   }
@@ -83,10 +56,6 @@ class MineController extends BaseGetXWithPageRefreshController {
         refreshLoadState = LoadState.success;
         var model = TotalUserInfoModel.fromJson(response);
         if (model.userInfo != null) {
-          // userInfo.value = model.userInfo!;
-          // coinInfo.value = model.coinInfo!;
-          // userNickName.value = model.userInfo!.nickname!;
-
           appStateController.userInfo.value = model.userInfo!;
           appStateController.coinInfo.value = model.coinInfo!;
 

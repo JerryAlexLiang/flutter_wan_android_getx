@@ -203,8 +203,7 @@ class ArticleDetailWebAppBar extends StatelessWidget
         children: [
           RippleView(
             radius: 100,
-            onTap: () =>
-                detailController.collectInsideArticle(model.id!, index),
+            onTap: () => detailController.collectInsideArticle(model, index),
             child: Container(
               padding: const EdgeInsets.all(5),
               child: Obx(() {

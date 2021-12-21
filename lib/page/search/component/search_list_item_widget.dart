@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_wan_android_getx/app_user_login_state_controller.dart';
 import 'package:flutter_wan_android_getx/constant/constant.dart';
 import 'package:flutter_wan_android_getx/model/article_data_model.dart';
 import 'package:flutter_wan_android_getx/page/search/article_detail_controller.dart';
@@ -331,19 +332,22 @@ class SearchListItemWidget extends StatelessWidget {
 
         const Spacer(),
         RippleView(
-          onTap: () =>{
-    Fluttertoast.showToast(msg: '$index  ${dataList[index].title}'),
-            controller.collectInsideArticle(dataList[index].id!, index),
-    },
-
+          onTap: () => {
+            controller.collectInsideArticle(dataList[index], index),
+          },
           radius: 50,
           child: Container(
             margin: const EdgeInsets.all(10),
             child: Obx(() {
               return Icon(
                 Icons.favorite,
-                color: dataList[index].isCollect
-                    ? Colors.red
+                // color: dataList[index].isCollect
+                //     ? Colors.red
+                //     : Colors.grey.withOpacity(0.5),
+                color: loginState
+                    ? (dataList[index].isCollect
+                        ? Colors.red
+                        : Colors.grey.withOpacity(0.5))
                     : Colors.grey.withOpacity(0.5),
               );
             }),

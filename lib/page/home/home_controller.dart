@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart';
+import 'package:flutter_wan_android_getx/app_user_login_state_controller.dart';
 import 'package:flutter_wan_android_getx/base/base_getx_with_page_refresh_controller.dart';
 import 'package:flutter_wan_android_getx/constant/constant.dart';
 import 'package:flutter_wan_android_getx/http/base_response.dart';
@@ -25,16 +27,15 @@ class HomeController extends BaseGetXWithPageRefreshController {
   @override
   void onInit() {
     super.onInit();
-    //滑动监听
-    scrollController.addListener(() {
-      var scrollerPercent = scrollController.offset / 140;
-      if (scrollerPercent < 0) {
-        scrollerPercent = 0;
-      } else if (scrollerPercent > 1.0) {
-        scrollerPercent = 1.0;
-      }
-      percent = scrollerPercent;
-      LoggerUtil.d('=======> 滑动监听: $percent');
+
+    /// 每次登陆状态发生变化后更新数据
+    ever(appStateController.isLogin, (callback) {
+      onRefreshHomeData();
+      // // 匀速滑动到顶部
+      // scrollController.animateTo(0,
+      //     duration: const Duration(milliseconds: 1000), curve: Curves.linear);
+      // 定位到顶部
+      scrollController.jumpTo(0);
     });
   }
 
@@ -67,7 +68,6 @@ class HomeController extends BaseGetXWithPageRefreshController {
             .map((e) => HomeBannerModel.fromJson(e))
             .toList();
         homeBannerList.assignAll(model);
-        Fluttertoast.showToast(msg: 'Banner数据列表长度:${homeBannerList.length}');
       }
     }
   }
@@ -80,9 +80,11 @@ class HomeController extends BaseGetXWithPageRefreshController {
 
     //RequestApi.articleSearch.replaceFirst(RegExp('page'), '$currentPage'),
 
-    String requestUrl = RequestApi.homeArticleList.replaceFirst(RegExp('page'), '$currentPage');
+    String requestUrl =
+        RequestApi.homeArticleList.replaceFirst(RegExp('page'), '$currentPage');
 
-    LoggerUtil.d('+++++++>>>>  loadingType: $loadingType refreshState:$refreshState');
+    LoggerUtil.d(
+        '+++++++>>>>  loadingType: $loadingType refreshState:$refreshState');
 
     handleRequestWithRefreshPaging(
       loadingType: loadingType,
@@ -113,7 +115,7 @@ class HomeController extends BaseGetXWithPageRefreshController {
             homeArticleList.assignAll(dataList);
           } else if (refreshState == RefreshState.refresh) {
             homeArticleList.assignAll(dataList);
-            Fluttertoast.showToast(msg: StringsConstant.refreshSuccess.tr);
+            // Fluttertoast.showToast(msg: StringsConstant.refreshSuccess.tr);
           } else if (refreshState == RefreshState.loadMore) {
             homeArticleList.addAll(dataList);
           }
@@ -151,16 +153,17 @@ class HomeController extends BaseGetXWithPageRefreshController {
     if (refreshState == RefreshState.loadMore) {
       /// 上滑加载更多
       currentPage++;
-      Fluttertoast.showToast(msg: 'currentPage: $currentPage');
+      // Fluttertoast.showToast(msg: 'currentPage: $currentPage');
     }
-    LoggerUtil.d('============> getHomeData() $currentPage',tag: 'HomeController');
+    LoggerUtil.d('============> getHomeData() $currentPage',
+        tag: 'HomeController');
     // 获取首页文章列表
     getHomeArticleList(loadingType, refreshState);
   }
 
   /// 第一次进入首页
-  void onFirstInHomeData(){
-    LoggerUtil.d('============> onFirstInHomeData()',tag: 'HomeController');
+  void onFirstInHomeData() {
+    LoggerUtil.d('============> onFirstInHomeData()', tag: 'HomeController');
     getHomeData(
       loadingType: Constant.lottieRocketLoading,
       refreshState: RefreshState.first,
@@ -169,7 +172,7 @@ class HomeController extends BaseGetXWithPageRefreshController {
 
   /// 下拉刷新首页
   void onRefreshHomeData() {
-    LoggerUtil.d('============> onRefreshHomeData()',tag: 'HomeController');
+    LoggerUtil.d('============> onRefreshHomeData()', tag: 'HomeController');
     getHomeData(
       loadingType: Constant.noLoading,
       refreshState: RefreshState.refresh,
@@ -177,8 +180,8 @@ class HomeController extends BaseGetXWithPageRefreshController {
   }
 
   /// 上滑加载更多
-  void onLoadMoreHomeData(){
-    LoggerUtil.d('============> onLoadMoreHomeData()',tag: 'HomeController');
+  void onLoadMoreHomeData() {
+    LoggerUtil.d('============> onLoadMoreHomeData()', tag: 'HomeController');
     getHomeData(
       loadingType: Constant.noLoading,
       refreshState: RefreshState.loadMore,

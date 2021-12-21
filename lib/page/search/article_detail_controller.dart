@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_wan_android_getx/app_user_login_state_controller.dart';
 import 'package:flutter_wan_android_getx/base/base_getx_controller.dart';
 import 'package:flutter_wan_android_getx/constant/constant.dart';
 import 'package:flutter_wan_android_getx/http/dio_method.dart';
 import 'package:flutter_wan_android_getx/http/dio_util.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
-import 'package:flutter_wan_android_getx/page/search/search_controller.dart';
+import 'package:flutter_wan_android_getx/model/article_data_model.dart';
+import 'package:flutter_wan_android_getx/routes/app_routes.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -31,8 +34,6 @@ class ArticleDetailController extends BaseGetXController {
   get unCollectAnimation => _unCollectAnimation.value;
 
   set unCollectAnimation(value) => _unCollectAnimation.value = value;
-
-  final searchController = Get.find<SearchController>();
 
   late WebViewController webViewController;
 
@@ -103,7 +104,8 @@ class ArticleDetailController extends BaseGetXController {
     unCollectAnimation = false;
     LoggerUtil.d('==========> onWebResourceError1 $url');
     LoggerUtil.d('==========> onWebResourceError2 $link');
-    LoggerUtil.d('==========> onWebResourceError3 ${error.description}  ${error.errorType}  ${error.failingUrl}');
+    LoggerUtil.d(
+        '==========> onWebResourceError3 ${error.description}  ${error.errorType}  ${error.failingUrl}');
   }
 
   Future<bool> onWillPop() async {
@@ -121,10 +123,10 @@ class ArticleDetailController extends BaseGetXController {
   }
 
   Future<void> webCanBack() async {
-    if(await webViewController.canGoBack()){
+    if (await webViewController.canGoBack()) {
       // Web页面可以返回，非首页
       isFirstInitWeb = false;
-    }else{
+    } else {
       // Web页面不可以返回，首页
       isFirstInitWeb = true;
     }
@@ -132,85 +134,95 @@ class ArticleDetailController extends BaseGetXController {
   }
 
   /// 收藏、取消收藏（站内文章）  collectInsideArticle
-  void collectInsideArticle(int articleId, int index) async {
+  // void collectInsideArticle(int articleId, bool isCollect, int index) async {
+  void collectInsideArticle(ArticleDataModelDatas model, int index) async {
     // 收藏站内文章
-    var collectUrl = sprintf(RequestApi.collectInsideArticle, [articleId]);
+    var collectUrl = sprintf(RequestApi.collectInsideArticle, [model.id]);
     // 取消收藏站内文章
-    var unCollectUrl = sprintf(RequestApi.unCollectInsideArticle, [articleId]);
+    var unCollectUrl = sprintf(RequestApi.unCollectInsideArticle, [model.id]);
 
     // 获取文章列表可观察变量 isCollect 是否收藏状态
-    var currentCollectState = searchController.searchResult[index].isCollect;
+    var currentCollectState = model.isCollect;
 
     /// 当前状态为未收藏时，点击发送收藏请求，反之，发送取消收藏请求
     String requestURL =
         currentCollectState == false ? collectUrl : unCollectUrl;
 
-    handleRequest(
-        loadingType: Constant.noLoading,
-        // 此接口使用sprintf插件进行String格式化操作  static const String collectInsideArticle = '/lg/collect/%s/json';
-        future: DioUtil().request(requestURL, method: DioMethod.post),
-        onStart: () {
-          /// 点击之前状态为 未收藏 时 假状态
-          if (currentCollectState == false) {
-            // 显示收藏动画
-            collectAnimation = true;
-            searchController.searchResult[index].isCollect = true;
-          } else {
-            /// 点击之前状态为 已收藏 时 假状态
-            // 显示加载动画
-            unCollectAnimation = true;
-            searchController.searchResult[index].isCollect = false;
-          }
-        },
-        onSuccess: (response) async {
-          await Future.delayed(const Duration(milliseconds: 1000));
+    //loginState
 
-          /// 点击之前状态为 未收藏 时
-          if (currentCollectState == false) {
-            // 收藏请求成功 隐藏收藏动画
-            collectAnimation = false;
-            searchController.searchResult[index].isCollect = true;
-            Fluttertoast.showToast(msg: '收藏成功');
-          } else {
-            /// 点击之前状态为 已收藏 时
-            // 取消收藏请求成功
-            // 隐藏显示加载动画
-            unCollectAnimation = false;
-            searchController.searchResult[index].isCollect = false;
-            Fluttertoast.showToast(msg: '取消收藏成功');
-          }
-        },
-        onFail: (value) async {
-          /// 点击之前状态为 未收藏 时 恢复状态
-          if (currentCollectState == false) {
-            // 收藏请求失败 隐藏收藏动画
-            collectAnimation = false;
-            searchController.searchResult[index].isCollect = false;
-            Fluttertoast.showToast(msg: '收藏失败');
-          } else {
-            /// 点击之前状态为 已收藏 时  恢复状态
-            // 取消收藏请求失败
-            // 隐藏显示加载动画
-            unCollectAnimation = false;
-            searchController.searchResult[index].isCollect = true;
-            Fluttertoast.showToast(msg: '取消收藏失败');
-          }
-        },
-        onError: (value) {
-          /// 点击之前状态为 未收藏 时 恢复状态
-          if (currentCollectState == false) {
-            //收藏请求失败  隐藏收藏动画
-            searchController.searchResult[index].isCollect = false;
-            collectAnimation = false;
-            Fluttertoast.showToast(msg: '收藏失败');
-          } else {
-            /// 点击之前状态为 已收藏 时  恢复状态
-            // 取消收藏请求失败
-            // 隐藏显示加载动画
-            unCollectAnimation = false;
-            searchController.searchResult[index].isCollect = true;
-            Fluttertoast.showToast(msg: '取消收藏失败');
-          }
-        });
+    if (!loginState) {
+      Get.toNamed(AppRoutes.loginRegisterPage);
+      return;
+    }
+
+    handleRequest(
+      loadingType: Constant.noLoading,
+      // 此接口使用sprintf插件进行String格式化操作  static const String collectInsideArticle = '/lg/collect/%s/json';
+      future: DioUtil().request(requestURL, method: DioMethod.post),
+      onStart: () {
+        /// 点击之前状态为 未收藏 时 假状态
+        if (currentCollectState == false) {
+          // 显示收藏动画
+          collectAnimation = true;
+          model.isCollect = true;
+        } else {
+          /// 点击之前状态为 已收藏 时 假状态
+          // 显示加载动画
+          unCollectAnimation = true;
+          model.isCollect = false;
+        }
+      },
+      onSuccess: (response) async {
+        await Future.delayed(const Duration(milliseconds: 1000));
+
+        /// 点击之前状态为 未收藏 时
+        if (currentCollectState == false) {
+          // 收藏请求成功 隐藏收藏动画
+          collectAnimation = false;
+          model.isCollect = true;
+          Fluttertoast.showToast(msg: '收藏成功');
+          LoggerUtil.d("=====> ${model.toJson()}");
+        } else {
+          /// 点击之前状态为 已收藏 时
+          // 取消收藏请求成功
+          // 隐藏显示加载动画
+          unCollectAnimation = false;
+          model.isCollect = false;
+          Fluttertoast.showToast(msg: '取消收藏成功');
+        }
+      },
+      onFail: (value) async {
+        /// 点击之前状态为 未收藏 时 恢复状态
+        if (currentCollectState == false) {
+          // 收藏请求失败 隐藏收藏动画
+          collectAnimation = false;
+          model.isCollect = false;
+          Fluttertoast.showToast(msg: '收藏失败');
+        } else {
+          /// 点击之前状态为 已收藏 时  恢复状态
+          // 取消收藏请求失败
+          // 隐藏显示加载动画
+          unCollectAnimation = false;
+          model.isCollect = true;
+          Fluttertoast.showToast(msg: '取消收藏失败');
+        }
+      },
+      onError: (value) {
+        /// 点击之前状态为 未收藏 时 恢复状态
+        if (currentCollectState == false) {
+          //收藏请求失败  隐藏收藏动画
+          model.isCollect = false;
+          collectAnimation = false;
+          Fluttertoast.showToast(msg: '收藏失败');
+        } else {
+          /// 点击之前状态为 已收藏 时  恢复状态
+          // 取消收藏请求失败
+          // 隐藏显示加载动画
+          unCollectAnimation = false;
+          model.isCollect = true;
+          Fluttertoast.showToast(msg: '取消收藏失败');
+        }
+      },
+    );
   }
 }
