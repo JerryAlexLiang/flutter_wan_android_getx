@@ -24,7 +24,7 @@ class ArticleDetailWebAppBar extends StatelessWidget
   ArticleDetailWebAppBar({
     Key? key,
     required this.model,
-    required this.index,
+    required this.showCollect,
     this.opacity = 1.0,
     this.appBarHeight = 56.0,
     this.backgroundColor,
@@ -34,7 +34,7 @@ class ArticleDetailWebAppBar extends StatelessWidget
   }) : super(key: key);
 
   final ArticleDataModelDatas model;
-  final int index;
+  final bool showCollect;
   final double opacity;
   final double appBarHeight;
   final Color? backgroundColor;
@@ -90,7 +90,7 @@ class ArticleDetailWebAppBar extends StatelessWidget
                   backWidget(context),
                   titleWidget(context),
                   const Spacer(),
-                  rightWidget(context, model, index),
+                  rightWidget(context, model),
                 ],
               ),
             ),
@@ -194,33 +194,35 @@ class ArticleDetailWebAppBar extends StatelessWidget
     );
   }
 
-  Widget rightWidget(
-      BuildContext context, ArticleDataModelDatas model, int index) {
+  Widget rightWidget(BuildContext context, ArticleDataModelDatas model) {
     return Container(
       margin: const EdgeInsets.only(right: 2),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          RippleView(
-            radius: 100,
-            onTap: () => detailController.collectInsideArticle(model, index),
-            child: Container(
-              padding: const EdgeInsets.all(5),
-              child: Obx(() {
-                return Icon(
-                  Icons.favorite,
-                  size: 24,
-                  color: model.isCollect
-                      ? Colors.red
-                      : Colors.grey.withOpacity(0.5),
-                );
-              }),
+          Visibility(
+            visible: showCollect,
+            child: RippleView(
+              radius: 100,
+              onTap: () => detailController.collectInsideArticle(model),
+              child: Container(
+                padding: const EdgeInsets.all(5),
+                child: Obx(() {
+                  return Icon(
+                    Icons.favorite,
+                    size: 24,
+                    color: model.isCollect
+                        ? Colors.red
+                        : Colors.grey.withOpacity(0.5),
+                  );
+                }),
+              ),
             ),
           ),
           RippleView(
             key: _addKey,
             radius: 100,
-            onTap: () => showAddMenu(context, model, index),
+            onTap: () => showAddMenu(context, model),
             child: Container(
               padding: const EdgeInsets.all(10),
               child: SvgPicture.asset(
@@ -235,8 +237,7 @@ class ArticleDetailWebAppBar extends StatelessWidget
     );
   }
 
-  void showAddMenu(
-      BuildContext context, ArticleDataModelDatas model, int index) {
+  void showAddMenu(BuildContext context, ArticleDataModelDatas model) {
     final RenderBox button =
         _addKey.currentContext!.findRenderObject()! as RenderBox;
 
@@ -245,7 +246,7 @@ class ArticleDetailWebAppBar extends StatelessWidget
       isShowBg: false,
       offset: Offset(button.size.width - 8.0, 0),
       anchor: button,
-      child: ArticleDetailAppBarAddMenu(model: model, index: index),
+      child: ArticleDetailAppBarAddMenu(model: model),
     );
   }
 }

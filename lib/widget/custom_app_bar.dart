@@ -140,7 +140,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   //   Get.back();
                   // }
                   Get.back(canPop: true);
-                  Fluttertoast.showToast(msg: 'msg');
                 },
             tooltip: 'Back',
             padding: const EdgeInsets.all(12.0),

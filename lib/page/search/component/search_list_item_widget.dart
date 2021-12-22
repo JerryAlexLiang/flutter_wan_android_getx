@@ -46,6 +46,7 @@ class SearchListItemWidget extends StatelessWidget {
         arguments: {
           "data": dataList[index],
           "index": index,
+          "showCollect": true,
         },
       ),
       child: Container(
@@ -333,7 +334,7 @@ class SearchListItemWidget extends StatelessWidget {
         const Spacer(),
         RippleView(
           onTap: () => {
-            controller.collectInsideArticle(dataList[index], index),
+            controller.collectInsideArticle(dataList[index]),
           },
           radius: 50,
           child: Container(

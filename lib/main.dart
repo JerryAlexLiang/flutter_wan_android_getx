@@ -42,55 +42,56 @@ class MyApp extends StatelessWidget {
           return OKToast(
             /// 导致弹出系统粘贴时红屏原因为FlutterEasyLoading在materialApp上层，
             /// 导致系统粘贴时的弹框找到顶层时widget不是material报错.修复方式为将FlutterEasyLoading改为build时引入
-            // child: FlutterEasyLoading(
-            child: GetMaterialApp(
-              debugShowCheckedModeBanner: false,
-              builder: (context, child) {
-                return FlutterEasyLoading(
-                  child: Scaffold(
-                    //Global GestureDetector that will dismiss the keyboard
-                    //关闭键盘的全局手势检测器
-                    body: GestureDetector(
-                      child: child,
-                      onTap: () => KeyboardUtils.hideKeyboard(context),
+            child: ScreenUtilInit(
+              designSize: const Size(360, 690),
+              builder: () => GetMaterialApp(
+                debugShowCheckedModeBanner: false,
+                builder: (context, child) {
+                  return FlutterEasyLoading(
+                    child: Scaffold(
+                      //Global GestureDetector that will dismiss the keyboard
+                      //关闭键盘的全局手势检测器
+                      body: GestureDetector(
+                        child: child,
+                        onTap: () => KeyboardUtils.hideKeyboard(context),
+                      ),
                     ),
-                  ),
-                );
-              },
-              enableLog: true,
-              smartManagement: SmartManagement.keepFactory,
+                  );
+                },
+                enableLog: true,
+                smartManagement: SmartManagement.keepFactory,
 
-              /// 主题颜色
-              theme: lightTheme,
-              darkTheme: darkTheme,
-              themeMode: ThemeMode.light,
+                /// 主题颜色
+                theme: lightTheme,
+                darkTheme: darkTheme,
+                themeMode: ThemeMode.light,
 
-              /// 国际化支持
-              //来源配置
-              translations: Messages(),
-              //默认语言
-              locale: LocaleUtil.getDefaultLocale(),
-              //备用语言
-              fallbackLocale: const Locale('en', 'US'),
-              // fallbackLocale: const Locale('zh', 'CN'),
-              localizationsDelegates: const [
-                // Refresh国际化 这行是关键
-                RefreshLocalizations.delegate,
-                // 解决TextFiled长按复制粘贴显示英文的问题
-                GlobalWidgetsLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              //国际化支持的语言包
-              supportedLocales: const [
-                Locale('zh', "CN"),
-                Locale('en', 'US'),
-              ],
-              defaultTransition: Transition.fade,
-              initialRoute: AppRoutes.splash,
-              getPages: AppPages.routes,
+                /// 国际化支持
+                //来源配置
+                translations: Messages(),
+                //默认语言
+                locale: LocaleUtil.getDefaultLocale(),
+                //备用语言
+                fallbackLocale: const Locale('en', 'US'),
+                // fallbackLocale: const Locale('zh', 'CN'),
+                localizationsDelegates: const [
+                  // Refresh国际化 这行是关键
+                  RefreshLocalizations.delegate,
+                  // 解决TextFiled长按复制粘贴显示英文的问题
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                //国际化支持的语言包
+                supportedLocales: const [
+                  Locale('zh', "CN"),
+                  Locale('en', 'US'),
+                ],
+                defaultTransition: Transition.fade,
+                initialRoute: AppRoutes.splash,
+                getPages: AppPages.routes,
+              ),
             ),
-            // ),
           );
         },
       ),

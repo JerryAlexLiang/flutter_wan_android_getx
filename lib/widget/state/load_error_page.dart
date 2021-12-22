@@ -5,6 +5,7 @@ import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/theme/app_color.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:lottie/lottie.dart';
 
@@ -19,12 +20,14 @@ class EmptyErrorStatePage extends StatelessWidget {
     required this.loadState,
     required this.onTap,
     required this.errMsg,
+    this.showErrMsg = true,
   }) : super(key: key);
 
   /// 页面类型
   final LoadState loadState;
   final VoidCallback onTap;
   final String? errMsg;
+  final bool? showErrMsg;
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +54,13 @@ class EmptyErrorStatePage extends StatelessWidget {
                   ),
                 ),
                 loadState == LoadState.empty ? Gaps.empty : Gaps.vGap26,
-                Text(
-                  '$errMsg，${StringsConstant.clickRetry.tr}',
-                  style: context.bodyText2Style!.copyWith(
-                    color: AppColors.colorB8C0D4,
+                Visibility(
+                  visible: showErrMsg??false,
+                  child: Text(
+                    '$errMsg，${StringsConstant.clickRetry.tr}',
+                    style: context.bodyText2Style!.copyWith(
+                      color: AppColors.colorB8C0D4,
+                    ),
                   ),
                 ),
               ],

@@ -4,18 +4,15 @@ import 'package:flutter_wan_android_getx/page/search/article_detail_controller.d
 import 'package:flutter_wan_android_getx/res/r.dart';
 import 'package:flutter_wan_android_getx/theme/app_color.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 class ArticleDetailAppBarAddMenu extends StatefulWidget {
   const ArticleDetailAppBarAddMenu({
     Key? key,
     required this.model,
-    required this.index,
   }) : super(key: key);
 
   final ArticleDataModelDatas model;
-  final int index;
 
   @override
   _ArticleDetailAppBarAddMenuState createState() =>
@@ -99,10 +96,7 @@ class _ArticleDetailAppBarAddMenuState extends State<ArticleDetailAppBarAddMenu>
           child: TextButton.icon(
             onPressed: () {
               // 收藏、取消收藏站内文章
-              detailController.collectInsideArticle(
-                widget.model,
-                widget.index,
-              );
+              detailController.collectInsideArticle(widget.model);
               Get.back();
             },
             icon: Obx(() {

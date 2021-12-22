@@ -47,4 +47,6 @@ class RequestApi {
   // static const String homeArticleList = "/article/list/%s/json";
   static const String homeArticleList = "/article/list/page/json";
 
+  // 导航 GET https://www.wanandroid.com/navi/json
+  static const String navigationList = "/navi/json";
 }

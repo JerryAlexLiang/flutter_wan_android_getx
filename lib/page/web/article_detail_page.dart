@@ -16,13 +16,13 @@ class ArticleDetailPage extends GetView<ArticleDetailController> {
   Widget build(BuildContext context) {
     var arguments = Get.arguments;
     final ArticleDataModelDatas model = arguments['data'];
-    final int index = arguments['index'];
+    final bool showCollect = arguments['showCollect'];
 
     return WillPopScope(
       child: Scaffold(
         appBar: ArticleDetailWebAppBar(
-          index: index,
           model: model,
+          showCollect: showCollect,
         ),
         body: webViewContainer(context, model),
       ),

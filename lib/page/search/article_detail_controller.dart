@@ -134,8 +134,7 @@ class ArticleDetailController extends BaseGetXController {
   }
 
   /// 收藏、取消收藏（站内文章）  collectInsideArticle
-  // void collectInsideArticle(int articleId, bool isCollect, int index) async {
-  void collectInsideArticle(ArticleDataModelDatas model, int index) async {
+  void collectInsideArticle(ArticleDataModelDatas model) async {
     // 收藏站内文章
     var collectUrl = sprintf(RequestApi.collectInsideArticle, [model.id]);
     // 取消收藏站内文章

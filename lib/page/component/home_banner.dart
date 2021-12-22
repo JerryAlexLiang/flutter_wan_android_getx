@@ -54,6 +54,7 @@ class HomeBannerWidget extends GetView<HomeController> {
             arguments: {
               "data": model,
               "index": index,
+              "showCollect":false,
             },
           );
         },
