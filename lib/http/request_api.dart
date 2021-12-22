@@ -49,4 +49,7 @@ class RequestApi {
 
   // 导航 GET https://www.wanandroid.com/navi/json
   static const String navigationList = "/navi/json";
+
+  // 体系数据 GET https://www.wanandroid.com/tree/json
+  static const String treeList = "/tree/json";
 }
