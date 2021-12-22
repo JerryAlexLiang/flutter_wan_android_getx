@@ -67,8 +67,8 @@ class SystemTreePage extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: context.backgroundColor,
-        border: Border(
-          bottom: BorderSide(width: 1.h),
+        border: const Border(
+          bottom: BorderSide(width: 0.1,color: Colors.grey),
         ),
       ),
       child: Text(
