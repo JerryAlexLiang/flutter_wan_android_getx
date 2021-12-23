@@ -79,7 +79,7 @@ class NavigationTreePage extends StatelessWidget {
           /// 给InkWell内部的组件设置颜色，会导致给InkWell的点击水波纹效果消失，需要在外面套一层Ink或者MMaterial组件
           return Ink(
             color: isSelectNavigation
-                ? Colors.white
+                ? context.backgroundColor
                 : Colors.grey.withOpacity(0.1),
             child: InkWell(
               /// 点击导航item切换当前导航item值currentNavigation
@@ -107,7 +107,7 @@ class NavigationTreePage extends StatelessWidget {
                           navigationGroupList[index]?.name ?? "",
                           style: TextStyle(
                             color: isSelectNavigation
-                                ? Colors.black
+                                ? context.bodyText1Color
                                 : context.bodyText2Color,
                             fontSize: isSelectNavigation ? 14 : 12,
                             fontWeight: isSelectNavigation

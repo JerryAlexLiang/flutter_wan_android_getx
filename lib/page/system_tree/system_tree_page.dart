@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan_android_getx/base/refresh_paging_state_page.dart';
+import 'package:flutter_wan_android_getx/model/tree_model.dart';
 import 'package:flutter_wan_android_getx/page/system_tree/component/tree_chip_wrap.dart';
+import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
+import 'package:flutter_wan_android_getx/routes/app_routes.dart';
 import 'package:flutter_wan_android_getx/widget/custom_app_bar.dart';
 import 'package:flutter_wan_android_getx/widget/ripple_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -26,6 +29,7 @@ class SystemTreePage extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         isBack: false,
+        showBottomLine: true,
         centerTitle: StringsConstant.accountTreePage.tr,
       ),
       body: SafeArea(
@@ -41,8 +45,13 @@ class SystemTreePage extends StatelessWidget {
               itemBuilder: (context, index) {
                 /// 列表悬浮头
                 return RippleView(
-                  onTap: () => Fluttertoast.showToast(
-                      msg: "${controller.treeList[index]!.name}"),
+                  onTap: () => Get.toNamed(
+                    AppRoutes.treeTabContainerPage,
+                    arguments: {
+                      "treeModel": controller.treeList[index],
+                      "treeModelIndex": 0,
+                    },
+                  ),
                   child: StickyHeader(
                     header: treeListItemHeader(context, controller, index),
                     content: treeListItemContent(context, controller, index),
@@ -68,7 +77,7 @@ class SystemTreePage extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.backgroundColor,
         border: const Border(
-          bottom: BorderSide(width: 0.1,color: Colors.grey),
+          bottom: BorderSide(width: 0.1, color: Colors.grey),
         ),
       ),
       child: Text(
@@ -85,15 +94,25 @@ class SystemTreePage extends StatelessWidget {
   Widget treeListItemContent(
       BuildContext context, SystemTreeController controller, int index) {
     return Container(
+      width: Get.width,
       padding: EdgeInsets.symmetric(
         horizontal: 5.w,
         vertical: 10.h,
       ),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(width: 0.2, color: Colors.grey),
+        ),
+      ),
       child: TreeChipWrap(
         chipList: controller.treeList[index]!.children,
-        onTap: (model) {
-          Fluttertoast.showToast(msg: "${model.name}");
-        },
+        onTap: (Children value, int treeModelIndex) => Get.toNamed(
+          AppRoutes.treeTabContainerPage,
+          arguments: {
+            "treeModel": controller.treeList[index],
+            "treeModelIndex": treeModelIndex,
+          },
+        ),
       ),
     );
   }

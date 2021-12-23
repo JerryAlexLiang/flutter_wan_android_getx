@@ -8,4 +8,5 @@ abstract class AppRoutes {
   static const searchPage = '/searchPage';
   static const articleDetailPage = '/articleDetailPage';
   static const loginRegisterPage = '/loginRegisterPage';
+  static const treeTabContainerPage = '/treeTabContainerPage';
 }

@@ -1,4 +1,6 @@
 import 'package:flutter_wan_android_getx/page/login_register/login_register_page.dart';
+import 'package:flutter_wan_android_getx/page/system_tree/system_content/system_content_binding.dart';
+import 'package:flutter_wan_android_getx/page/system_tree/system_content/system_content_page.dart';
 import 'package:flutter_wan_android_getx/page/web/article_detail_page.dart';
 import 'package:flutter_wan_android_getx/page/index/index_binding.dart';
 import 'package:flutter_wan_android_getx/page/index/index_page.dart';
@@ -58,6 +60,11 @@ class AppPages {
     GetPage(
       name: AppRoutes.loginRegisterPage,
       page: () => LoginRegisterPage(),
+    ),
+    GetPage(
+      name: AppRoutes.treeTabContainerPage,
+      page: () => const SystemContentPage(),
+      binding: SystemContentBinding(),
     ),
   ];
 }

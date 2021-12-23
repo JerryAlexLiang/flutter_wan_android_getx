@@ -52,4 +52,8 @@ class RequestApi {
 
   // 体系数据 GET https://www.wanandroid.com/tree/json
   static const String treeList = "/tree/json";
+
+  // 知识体系下的文章 GET https://www.wanandroid.com/article/list/0/json?cid=60
+  // cid 分类的id，上述二级目录的id  页码：拼接在链接上，从0开始。
+  static const String treeChildrenArticleList = "/article/list/%s/json";
 }

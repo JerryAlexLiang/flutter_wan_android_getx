@@ -13,6 +13,12 @@ class SystemTreeController extends BaseGetXWithPageRefreshController {
   final treeList = RxList<TreeModel?>();
 
   @override
+  void onInit() {
+    super.onInit();
+    refreshLoadState = LoadState.success;
+  }
+
+  @override
   void onReadyInitData() {
     super.onReadyInitData();
     initSystemTreeData();

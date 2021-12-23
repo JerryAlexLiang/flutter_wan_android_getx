@@ -15,6 +15,8 @@ class RippleView extends StatelessWidget {
     required this.child,
     this.splashColor,
     this.highlightColor,
+    this.color,
+    this.border,
   }) : super(key: key);
 
   final VoidCallback onTap;
@@ -22,6 +24,8 @@ class RippleView extends StatelessWidget {
   final double radius;
   final Color? splashColor;
   final Color? highlightColor;
+  final Color? color;
+  final BoxBorder? border;
   final Widget child;
 
   @override
@@ -30,8 +34,10 @@ class RippleView extends StatelessWidget {
       color: Colors.transparent,
       child: Ink(
         decoration: BoxDecoration(
-          color: Colors.transparent,
+          // color: Colors.white,
+          color: color ?? context.scaffoldBackgroundColor,
           borderRadius: BorderRadius.circular(radius),
+          border: border,
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(radius),
