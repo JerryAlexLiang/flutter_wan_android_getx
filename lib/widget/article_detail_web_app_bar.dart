@@ -7,6 +7,7 @@ import 'package:flutter_wan_android_getx/page/search/article_detail_controller.d
 import 'package:flutter_wan_android_getx/res/r.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
+import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/widget/article_detail_app_bar_add_menu.dart';
 import 'package:flutter_wan_android_getx/widget/cached_network_image_view.dart';
 import 'package:flutter_wan_android_getx/widget/popup_window_widget.dart';
@@ -65,6 +66,8 @@ class ArticleDetailWebAppBar extends StatelessWidget
                 Brightness.dark
             ? SystemUiOverlayStyle.light
             : SystemUiOverlayStyle.dark;
+
+    LoggerUtil.d("=======<>3  ${model.toJson()}");
 
     return Opacity(
       opacity: opacity,

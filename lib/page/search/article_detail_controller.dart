@@ -147,8 +147,6 @@ class ArticleDetailController extends BaseGetXController {
     String requestURL =
         currentCollectState == false ? collectUrl : unCollectUrl;
 
-    //loginState
-
     if (!loginState) {
       Get.toNamed(AppRoutes.loginRegisterPage);
       return;
@@ -180,7 +178,6 @@ class ArticleDetailController extends BaseGetXController {
           collectAnimation = false;
           model.isCollect = true;
           Fluttertoast.showToast(msg: '收藏成功');
-          LoggerUtil.d("=====> ${model.toJson()}");
         } else {
           /// 点击之前状态为 已收藏 时
           // 取消收藏请求成功

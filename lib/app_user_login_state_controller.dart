@@ -1,6 +1,7 @@
 import 'package:flutter_wan_android_getx/base/base_getx_controller.dart';
 import 'package:flutter_wan_android_getx/model/total_user_info_model.dart';
 import 'package:flutter_wan_android_getx/model/user_info_model.dart';
+import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/utils/sp_util.dart';
 import 'package:get/get.dart';
 
@@ -29,7 +30,7 @@ class AppUserLoginStateController extends BaseGetXController {
         userInfo.value.nickname = localUserInfo.nickname!;
       }
     } else {
-      userInfo.value.nickname = '登录';
+      userInfo.value.nickname = StringsConstant.loginContent.tr;
     }
   }
 }

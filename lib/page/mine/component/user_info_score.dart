@@ -1,6 +1,9 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_wan_android_getx/app_user_login_state_controller.dart';
 import 'package:flutter_wan_android_getx/page/mine/mine_controller.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
+import 'package:flutter_wan_android_getx/res/strings.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
@@ -29,16 +32,27 @@ class UserInfoScore extends GetView<MineController> {
               child: Ink(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: Colors.greenAccent,
+                  color: Colors.pinkAccent,
                 ),
                 child: InkWell(
+                  onTap: () => Fluttertoast.showToast(msg: "等级"),
                   borderRadius: BorderRadius.circular(20),
                   child: Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: 20.w,
                       vertical: 5.h,
                     ),
-                    child: Text("级别级别级别"),
+                    child: Obx(() {
+                      return Text(
+                        appStateController.isLogin.value
+                            ? "${StringsConstant.level.tr}：${appStateController.coinInfo.value.level ?? "-"}"
+                            : "${StringsConstant.level.tr}：-",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                        ),
+                      );
+                    }),
                   ),
                 ),
               ),
@@ -52,16 +66,27 @@ class UserInfoScore extends GetView<MineController> {
               child: Ink(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: Colors.lightGreenAccent,
+                  color: Colors.lightBlueAccent,
                 ),
                 child: InkWell(
+                  onTap: () => Fluttertoast.showToast(msg: "排名"),
                   borderRadius: BorderRadius.circular(20),
                   child: Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: 20.w,
                       vertical: 5.h,
                     ),
-                    child: Text("级别"),
+                    child: Obx(() {
+                      return Text(
+                        appStateController.isLogin.value
+                            ? "${StringsConstant.rank.tr}：${appStateController.coinInfo.value.rank ?? "-"}"
+                            : "${StringsConstant.rank.tr}：-",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                        ),
+                      );
+                    }),
                   ),
                 ),
               ),

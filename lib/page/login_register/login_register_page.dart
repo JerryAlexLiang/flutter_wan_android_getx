@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/res/r.dart';
+import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:flutter_wan_android_getx/utils/keyboard_util.dart';
 import 'package:flutter_wan_android_getx/widget/custom_app_bar.dart';
@@ -33,8 +34,9 @@ class LoginRegisterPage extends StatelessWidget {
           children: [
             Obx(() {
               return CustomAppBar(
-                centerTitle:
-                    controller.buttonType == ButtonType.login ? '登录' : "注册",
+                centerTitle: controller.buttonType == ButtonType.login
+                    ? StringsConstant.loginContent.tr
+                    : StringsConstant.registerContent.tr,
                 isBack: true,
                 backImageColor: Colors.white,
                 titleStyle:
@@ -74,7 +76,7 @@ class LoginRegisterPage extends StatelessWidget {
         Icons.person_outline,
         color: Colors.white,
       ),
-      hintText: '请输入用户名',
+      hintText: StringsConstant.editUserNameHint.tr,
       keyboardType: TextInputType.text,
       onChanged: (value) => controller.userName = value,
     );
@@ -88,7 +90,7 @@ class LoginRegisterPage extends StatelessWidget {
         Icons.lock_outline,
         color: Colors.white,
       ),
-      hintText: '请输入密码',
+      hintText: StringsConstant.editPasswordHint.tr,
       showPasswordType: true,
       onChanged: (value) => controller.password = value,
     );
@@ -106,7 +108,7 @@ class LoginRegisterPage extends StatelessWidget {
             Icons.lock_outline,
             color: Colors.white,
           ),
-          hintText: '请再次输入密码',
+          hintText: StringsConstant.editEnsurePasswordHint.tr,
           showPasswordType: true,
           onChanged: (value) => controller.ensurePassword = value,
         ),
@@ -149,6 +151,7 @@ class LoginRegisterPage extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       child: RippleView(
+        color: Colors.transparent,
         radius: 20,
         onTap: () => controller.switchLoginRegister(context),
         child: Container(
@@ -179,8 +182,8 @@ class LoginRegisterPage extends StatelessWidget {
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
           child: RichText(
-            text: const TextSpan(children: [
-              WidgetSpan(
+            text: TextSpan(children: [
+              const WidgetSpan(
                 alignment: PlaceholderAlignment.middle,
                 child: Icon(
                   Icons.info_outline,
@@ -188,15 +191,15 @@ class LoginRegisterPage extends StatelessWidget {
                   color: Colors.red,
                 ),
               ),
-              WidgetSpan(
+              const WidgetSpan(
                 alignment: PlaceholderAlignment.middle,
                 child: Gaps.hGap5,
               ),
               WidgetSpan(
                 alignment: PlaceholderAlignment.middle,
                 child: Text(
-                  '注册账号成功即登录',
-                  style: TextStyle(
+                  StringsConstant.loginRegisterInfo.tr,
+                  style: const TextStyle(
                     color: Colors.red,
                     fontSize: 12,
                   ),

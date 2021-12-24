@@ -39,7 +39,7 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
   set refreshLoadState(value) => _refreshLoadState.value = value;
 
   //滚动控制器
-  ScrollController scrollController = ScrollController();
+  late ScrollController scrollController;
 
   //标题栏透明比例
   final _percent = 0.0.obs;
@@ -51,12 +51,14 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
   @override
   void onInit() {
     super.onInit();
+    scrollController = ScrollController();
     _refreshController = RefreshController(initialRefresh: initialRefresh);
   }
 
   @override
   void dispose() {
     super.dispose();
+    scrollController.dispose();
     _refreshController.dispose();
   }
 
@@ -104,6 +106,7 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
           var data = response.data;
           if (data != null) {
             refreshLoadingSuccess(refreshState);
+            refreshLoadState = LoadState.success;
 
             /// 在onSuccess()中也要判断具体的业务数据是否为空
             onSuccess(data);

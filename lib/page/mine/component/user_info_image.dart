@@ -5,6 +5,7 @@ import 'package:flutter_wan_android_getx/page/auth_middle_page.dart';
 import 'package:flutter_wan_android_getx/page/mine/mine_controller.dart';
 import 'package:flutter_wan_android_getx/page/search/search_page.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
+import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/routes/app_routes.dart';
 import 'package:flutter_wan_android_getx/utils/decoration_style.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
@@ -57,7 +58,7 @@ class UserInfoImage extends GetView<MineController> {
             return Text(
               loginState
                   ? '${appStateController.userInfo.value.nickname}'
-                  : '登录',
+                  : StringsConstant.loginContent.tr,
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 23.sp,

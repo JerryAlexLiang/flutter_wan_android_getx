@@ -87,30 +87,39 @@ class MinePage extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              FunctionCardTextWidget(
-                                0,
-                                '收藏',
-                                onTap: () => Fluttertoast.showToast(msg: '收藏'),
+                              Expanded(
+                                child: FunctionCardTextWidget(
+                                  count: appStateController
+                                      .userInfo.value.collectIds?.length,
+                                  title: StringsConstant.collectCount.tr,
+                                  onTap: () =>
+                                      Fluttertoast.showToast(msg: '收藏'),
+                                ),
                               ),
-                              FunctionCardTextWidget(
-                                1,
-                                '分享',
-                                onTap: () => Fluttertoast.showToast(msg: '收藏'),
+                              Expanded(
+                                child: FunctionCardTextWidget(
+                                  count: appStateController
+                                      .coinInfo.value.coinCount,
+                                  title: StringsConstant.coinCount.tr,
+                                  onTap: () =>
+                                      Fluttertoast.showToast(msg: '积分'),
+                                ),
                               ),
-                              FunctionCardTextWidget(
-                                2,
-                                '关注',
-                                onTap: () => Fluttertoast.showToast(msg: '收藏'),
+                              Expanded(
+                                child: FunctionCardTextWidget(
+                                  count: 0,
+                                  title: StringsConstant.shareCount.tr,
+                                  onTap: () =>
+                                      Fluttertoast.showToast(msg: '分享'),
+                                ),
                               ),
-                              FunctionCardTextWidget(
-                                3,
-                                '积分',
-                                onTap: () => Fluttertoast.showToast(msg: '收藏'),
-                              ),
-                              FunctionCardTextWidget(
-                                0,
-                                '历史',
-                                onTap: () => Fluttertoast.showToast(msg: '收藏'),
+                              Expanded(
+                                child: FunctionCardTextWidget(
+                                  count: 0,
+                                  title: StringsConstant.browsingHistory.tr,
+                                  onTap: () =>
+                                      Fluttertoast.showToast(msg: '历史'),
+                                ),
                               ),
                             ],
                           ),

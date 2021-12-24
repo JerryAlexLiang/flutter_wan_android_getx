@@ -107,6 +107,7 @@ class SearchPage extends StatelessWidget {
                 keyword: controller.keyword);
           },
           child: ListView.builder(
+            controller: controller.scrollController,
             itemCount: controller.searchResult.length,
             itemBuilder: (context, index) {
               return SearchListItemWidget(

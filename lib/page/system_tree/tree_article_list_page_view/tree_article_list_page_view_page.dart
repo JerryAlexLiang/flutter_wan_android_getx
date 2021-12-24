@@ -40,6 +40,7 @@ class TreeArticleListPageViewPage extends StatelessWidget {
           onLoadMore: () => controller.onLoadMoreRequestData(),
           lottieRocketRefreshHeader: false,
           child: ListView.builder(
+            controller: controller.scrollController,
             itemCount: controller.treeArticleList.length,
             itemBuilder: (context, index) {
               return SearchListItemWidget(

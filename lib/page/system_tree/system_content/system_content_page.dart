@@ -75,8 +75,8 @@ class SystemContentPage extends StatelessWidget {
           color: Colors.red,
         ),
         insets: EdgeInsets.only(
-          left: 18,
-          right: 18,
+          left: 12,
+          right: 12,
           top: 10,
           // bottom: 3,
         ),

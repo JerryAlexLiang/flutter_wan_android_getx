@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/page/search/component/chip_search_wrap.dart';
 import 'package:flutter_wan_android_getx/page/search/search_controller.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
+import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/widget/ripple_view.dart';
 import 'package:get/get.dart';
@@ -30,7 +31,7 @@ class HotSearchList extends StatelessWidget {
         controller.showHotKeys == true
             ? widget = ChipSearchWrap(
                 isShow: controller.showHotKeys,
-                title: '热门搜索',
+                title: StringsConstant.hotSearch.tr,
                 searchChipType: SearchChipType.hot,
                 chipNameList: hotNameList,
                 onTap: (String value) {
@@ -55,13 +56,13 @@ class HotSearchList extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const [
-                        Icon(
+                      children: [
+                        const Icon(
                           Icons.visibility_rounded,
                           size: 18,
                         ),
                         Gaps.hGap5,
-                        Text('查看全部推荐词'),
+                        Text(StringsConstant.seeAllRecommends.tr),
                       ],
                     ),
                   ),

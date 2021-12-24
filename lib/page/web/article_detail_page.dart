@@ -9,6 +9,11 @@ import 'package:flutter_wan_android_getx/widget/state/loading_lottie_rocket_widg
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+/// 类名: article_detail_page.dart
+/// 创建日期: 12/24/21 on 2:07 PM
+/// 描述: 文章详情Web页面
+/// 作者: 杨亮
+
 class ArticleDetailPage extends GetView<ArticleDetailController> {
   const ArticleDetailPage({Key? key}) : super(key: key);
 

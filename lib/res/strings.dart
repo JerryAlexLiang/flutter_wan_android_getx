@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 class StringsConstant {
+  static const String jumpSplash = "跳过"; //首页
   static const String homePage = "首页"; //首页
   static const String accountTreePage = "体系"; //体系
   static const String navigationPage = "导航"; //导航
@@ -36,6 +37,33 @@ class StringsConstant {
   static const String logoutSuccess = "退出登录成功";
   static const String logoutFail = "退出登录失败";
   static const String myCompany = 'Flutter-玩Android';
+  static const String loginContent = '登录';
+  static const String registerContent = '注册';
+  static const String logoutContent = '退出登录';
+  static const String level = '等级';
+  static const String rank = '排名';
+  static const String collectCount = '收藏';
+  static const String coinCount = '积分';
+  static const String shareCount = '分享';
+  static const String browsingHistory = '浏览历史';
+  static const String editUserNameHint = '请输入用户名';
+  static const String editPasswordHint = '请输入密码';
+  static const String editEnsurePasswordHint = '请再次输入密码';
+  static const String switchButtonLoginDesc = '已有账号，去登录';
+  static const String switchButtonRegisterDesc = '没有账号，去注册';
+  static const String loginRegisterInfo = '注册账号成功即登录';
+  static const String userNameEmptyInfo = '用户名不能为空~';
+  static const String passwordEmptyInfo = '密码不能为空~';
+  static const String ensurePasswordEmptyInfo = '确认密码不能为空~';
+  static const String ensurePasswordFail = '两次输入的密码不一致!';
+  static const String searchHistory = '搜索历史';
+  static const String searchHistoryLimit = '最近20条搜索记录';
+  static const String alertContent = '提示';
+  static const String deleteSearchHistoryAlertContent = '是否删除全部历史记录?';
+  static const String cancel = '取消';
+  static const String confirm = '确定';
+  static const String hotSearch = '热门搜索';
+  static const String seeAllRecommends = '查看全部推荐词';
 }
 
 ///使用Get配置语言环境
@@ -45,6 +73,7 @@ class Messages extends Translations {
   Map<String, Map<String, String>> get keys => {
         //简体中文
         'zh_CN': {
+          StringsConstant.jumpSplash: '跳过',
           StringsConstant.homePage: '首页',
           StringsConstant.accountTreePage: '体系',
           StringsConstant.navigationPage: '导航',
@@ -80,9 +109,37 @@ class Messages extends Translations {
           StringsConstant.logoutSuccess: "退出登录成功",
           StringsConstant.logoutFail: "退出登录失败",
           StringsConstant.myCompany: "Flutter-玩Android",
+          StringsConstant.loginContent: "登录",
+          StringsConstant.registerContent: "注册",
+          StringsConstant.logoutContent: "退出登录",
+          StringsConstant.level: "等级",
+          StringsConstant.rank: "排名",
+          StringsConstant.collectCount: "收藏",
+          StringsConstant.coinCount: "积分",
+          StringsConstant.shareCount: "分享",
+          StringsConstant.browsingHistory: "浏览历史",
+          StringsConstant.editUserNameHint: "请输入用户名",
+          StringsConstant.editPasswordHint: "请输入密码",
+          StringsConstant.editEnsurePasswordHint: "请再次输入密码",
+          StringsConstant.switchButtonLoginDesc: "已有账号，去登录",
+          StringsConstant.switchButtonRegisterDesc: "没有账号，去注册",
+          StringsConstant.loginRegisterInfo: "注册账号成功即登录",
+          StringsConstant.userNameEmptyInfo: '用户名不能为空~',
+          StringsConstant.passwordEmptyInfo: "密码不能为空~",
+          StringsConstant.ensurePasswordEmptyInfo: "确认密码不能为空~",
+          StringsConstant.ensurePasswordFail: "两次输入的密码不一致!",
+          StringsConstant.searchHistory: "搜索历史",
+          StringsConstant.searchHistoryLimit: "最近20条搜索记录",
+          StringsConstant.alertContent: "提示",
+          StringsConstant.deleteSearchHistoryAlertContent: "是否删除全部历史记录?",
+          StringsConstant.cancel: "取消",
+          StringsConstant.confirm: "确定",
+          StringsConstant.hotSearch: "热门搜索",
+          StringsConstant.seeAllRecommends: "查看全部推荐词",
         },
         //繁体中文（香港）
         'zh_HK': {
+          StringsConstant.jumpSplash: '跳过',
           StringsConstant.homePage: '首頁',
           StringsConstant.accountTreePage: '體系',
           StringsConstant.navigationPage: '導航',
@@ -118,9 +175,37 @@ class Messages extends Translations {
           StringsConstant.logoutSuccess: "退出登录成功",
           StringsConstant.logoutFail: "退出登录失败",
           StringsConstant.myCompany: "Flutter-玩Android",
+          StringsConstant.loginContent: "登录",
+          StringsConstant.registerContent: "注册",
+          StringsConstant.logoutContent: "退出登录",
+          StringsConstant.level: "等级",
+          StringsConstant.rank: "排名",
+          StringsConstant.collectCount: "收藏",
+          StringsConstant.coinCount: "积分",
+          StringsConstant.shareCount: "分享",
+          StringsConstant.browsingHistory: "浏览历史",
+          StringsConstant.editUserNameHint: "请输入用户名",
+          StringsConstant.editPasswordHint: "请输入密码",
+          StringsConstant.editEnsurePasswordHint: "请再次输入密码",
+          StringsConstant.switchButtonLoginDesc: "已有账号，去登录",
+          StringsConstant.switchButtonRegisterDesc: "没有账号，去注册",
+          StringsConstant.loginRegisterInfo: "注册账号成功即登录",
+          StringsConstant.userNameEmptyInfo: '用户名不能为空~',
+          StringsConstant.passwordEmptyInfo: "密码不能为空~",
+          StringsConstant.ensurePasswordEmptyInfo: "确认密码不能为空~",
+          StringsConstant.ensurePasswordFail: "两次输入的密码不一致!",
+          StringsConstant.searchHistory: "搜索历史",
+          StringsConstant.searchHistoryLimit: "最近20条搜索记录",
+          StringsConstant.alertContent: "提示",
+          StringsConstant.deleteSearchHistoryAlertContent: "是否删除全部历史记录?",
+          StringsConstant.cancel: "取消",
+          StringsConstant.confirm: "确定",
+          StringsConstant.hotSearch: "热门搜索",
+          StringsConstant.seeAllRecommends: "查看全部推荐词",
         },
         //English
         'en_US': {
+          StringsConstant.jumpSplash: 'Skip',
           StringsConstant.homePage: 'Home',
           StringsConstant.accountTreePage: 'System',
           StringsConstant.navigationPage: 'Navigation',
@@ -139,24 +224,57 @@ class Messages extends Translations {
               'Traditional Chinese(HongKong)',
           StringsConstant.usEnglish: 'English(US)',
           StringsConstant.exitAppToast: 'Click Again ToExit The Program',
-          StringsConstant.search: 'search',
+          StringsConstant.search: 'Search',
           StringsConstant.noData: 'No data yet',
           StringsConstant.loading: 'Loading...',
           StringsConstant.noMoreData: "There's no more data~",
-          StringsConstant.pullToRefresh: "pull to refresh",
-          StringsConstant.refreshFailed: "refresh the failure~",
-          StringsConstant.refreshSuccess: "refresh the success~",
-          StringsConstant.releaseStartRefreshing: "release start refreshing",
-          StringsConstant.pullToLoading: "pull to loading",
-          StringsConstant.releaseStartLoading: "release start leading",
-          StringsConstant.loadFailed: 'load failed~',
-          StringsConstant.clickRetry: "click retry",
+          StringsConstant.pullToRefresh: "Pull to refresh",
+          StringsConstant.refreshFailed: "Refresh the failure~",
+          StringsConstant.refreshSuccess: "Refresh the success~",
+          StringsConstant.releaseStartRefreshing: "Release start refreshing",
+          StringsConstant.pullToLoading: "Pull to loading",
+          StringsConstant.releaseStartLoading: "Release start leading",
+          StringsConstant.loadFailed: 'Load failed~',
+          StringsConstant.clickRetry: "Click retry",
           StringsConstant.freshTag: "New",
-          StringsConstant.loginSuccess: "login success!",
-          StringsConstant.loginFail: "login fail !",
-          StringsConstant.logoutSuccess: "logout success",
-          StringsConstant.logoutFail: "logout fail",
+          StringsConstant.loginSuccess: "Login success!",
+          StringsConstant.loginFail: "Login fail !",
+          StringsConstant.logoutSuccess: "Logout success",
+          StringsConstant.logoutFail: "Logout fail",
           StringsConstant.myCompany: "Flutter-Wan Android",
+          StringsConstant.loginContent: "Login",
+          StringsConstant.registerContent: "Register",
+          StringsConstant.logoutContent: "Log out",
+          StringsConstant.level: "Level",
+          StringsConstant.rank: "Rank",
+          StringsConstant.collectCount: "Collect",
+          StringsConstant.coinCount: "Coin",
+          StringsConstant.shareCount: "Share",
+          StringsConstant.browsingHistory: "History",
+          StringsConstant.editUserNameHint: "Please enter user name",
+          StringsConstant.editPasswordHint: "Please enter your password",
+          StringsConstant.editEnsurePasswordHint:
+              "Please enter your password again",
+          StringsConstant.switchButtonLoginDesc: "Have an account, log in",
+          StringsConstant.switchButtonRegisterDesc:
+              "Not have an account, sign up",
+          StringsConstant.loginRegisterInfo:
+              "Log in once the account is successfully registered",
+          StringsConstant.userNameEmptyInfo: 'The user name cannot be empty~',
+          StringsConstant.passwordEmptyInfo: "The password cannot be empty~",
+          StringsConstant.ensurePasswordEmptyInfo:
+              "Confirm password cannot be empty~",
+          StringsConstant.ensurePasswordFail:
+              "The entered passwords are inconsistent!",
+          StringsConstant.searchHistory: "Search history",
+          StringsConstant.searchHistoryLimit: "The last 20 searches",
+          StringsConstant.alertContent: "Alert",
+          StringsConstant.deleteSearchHistoryAlertContent:
+              "Whether to delete all historical records?",
+          StringsConstant.cancel: "Cancel",
+          StringsConstant.confirm: "Confirm",
+          StringsConstant.hotSearch: "Hot search",
+          StringsConstant.seeAllRecommends: "See all the recommendations",
         },
       };
 }

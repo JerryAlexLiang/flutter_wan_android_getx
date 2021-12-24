@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_wan_android_getx/base/base_getx_with_page_refresh_controller.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/res/r.dart';
@@ -113,17 +114,37 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
                 errMsg: StringsConstant.noData.tr,
               );
         } else if (controller.refreshLoadState == LoadState.success) {
-          return SmartRefresher(
-            controller: refreshController,
-            enablePullDown: enableRefreshPullDown,
-            enablePullUp: enableRefreshPullUp,
-            onRefresh: onRefresh,
-            onLoading: onLoadMore,
-            physics: physics,
-            scrollController: scrollController,
-            header: header ?? customHeaderWidget(context),
-            footer: footer ?? customFooterWidget(context),
-            child: child,
+          // return SmartRefresher(
+          //   controller: refreshController,
+          //   enablePullDown: enableRefreshPullDown,
+          //   enablePullUp: enableRefreshPullUp,
+          //   onRefresh: onRefresh,
+          //   onLoading: onLoadMore,
+          //   physics: physics,
+          //   scrollController: scrollController,
+          //   header: header ?? customHeaderWidget(context),
+          //   footer: footer ?? customFooterWidget(context),
+          //   child: child,
+          // );
+
+          //AnnotatedRegion<SystemUiOverlayStyle>(
+          //       value: SystemUiOverlayStyle.light,
+
+          return RefreshConfiguration.copyAncestor(
+            maxOverScrollExtent: 90,
+            context: context,
+            child: SmartRefresher(
+              controller: refreshController,
+              enablePullDown: enableRefreshPullDown,
+              enablePullUp: enableRefreshPullUp,
+              onRefresh: onRefresh,
+              onLoading: onLoadMore,
+              physics: physics,
+              scrollController: scrollController,
+              header: header ?? customHeaderWidget(context),
+              footer: footer ?? customFooterWidget(context),
+              child: child,
+            ),
           );
         }
 
@@ -191,10 +212,13 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
         );
       }
 
-      return Container(
-        padding: const EdgeInsets.all(10),
-        alignment: Alignment.center,
-        child: customHeader,
+      return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark,
+        child: Container(
+          // padding: const EdgeInsets.all(10),
+          alignment: Alignment.center,
+          child: customHeader,
+        ),
       );
     });
   }
@@ -205,32 +229,32 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
 
       if (loadStatus == LoadStatus.idle) {
         /// 上滑时显示 pullToLoading
-        customFooter = refreshStatusWidget(
+        customFooter = refreshStatusBottomWidget(
           context: context,
           constant: StringsConstant.pullToLoading.tr,
           iconData: Icons.arrow_upward,
         );
       } else if (loadStatus == LoadStatus.canLoading) {
         /// 上滑要松手时显示
-        customFooter = refreshStatusWidget(
+        customFooter = refreshStatusBottomWidget(
           context: context,
           constant: StringsConstant.releaseStartLoading.tr,
           iconData: Icons.autorenew,
         );
       } else if (loadStatus == LoadStatus.loading) {
-        customFooter = refreshStatusWidget(
+        customFooter = refreshStatusBottomWidget(
           context: context,
           constant: StringsConstant.loading.tr,
           refreshWidget: const CupertinoActivityIndicator(),
         );
       } else if (loadStatus == LoadStatus.noMore) {
-        customFooter = refreshStatusWidget(
+        customFooter = refreshStatusBottomWidget(
           context: context,
           constant: StringsConstant.noMoreData.tr,
           iconData: Icons.error_outline,
         );
       } else if (loadStatus == LoadStatus.failed) {
-        customFooter = refreshStatusWidget(
+        customFooter = refreshStatusBottomWidget(
           context: context,
           constant: (controller.httpErrorMsg != null &&
                   controller.httpErrorMsg.toString().isNotEmpty)
@@ -248,7 +272,42 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
     });
   }
 
-  Row refreshStatusWidget({
+  refreshStatusWidget({
+    required BuildContext context,
+    required String constant,
+    IconData? iconData,
+    Widget? refreshWidget,
+  }) {
+    return Container(
+      alignment: Alignment.bottomCenter,
+      height: 150,
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              refreshWidget ??
+                  Icon(
+                    iconData,
+                    color: Colors.grey,
+                  ),
+              Gaps.hGap10,
+              Text(
+                constant,
+                style: context.bodyText2Style!.copyWith(color: Colors.grey),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  refreshStatusBottomWidget({
     required BuildContext context,
     required String constant,
     IconData? iconData,

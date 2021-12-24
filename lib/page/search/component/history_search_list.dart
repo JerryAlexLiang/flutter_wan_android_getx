@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/page/search/component/chip_search_wrap.dart';
 import 'package:flutter_wan_android_getx/page/search/search_controller.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
+import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:get/get.dart';
 
 /// 类名: history_search_list.dart
@@ -27,8 +28,8 @@ class HistorySearchList extends StatelessWidget {
       isShow: controller.showHistoryKeys,
       searchChipType: SearchChipType.history,
       chipNameList: controller.historyKeys,
-      title: '搜索历史',
-      subTitle: '最近20条搜索记录',
+      title: StringsConstant.searchHistory.tr,
+      subTitle: StringsConstant.searchHistoryLimit.tr,
       onTap: (value) {
         // 点击Chip热词或者搜索历史某一项词条进行搜索
         controller.tagSearchChipSearch(value);
@@ -38,10 +39,10 @@ class HistorySearchList extends StatelessWidget {
         // controller.clearSearchHistory();
 
         Get.defaultDialog(
-          title: '提示',
-          content: const Text('是否删除全部历史记录?'),
-          textCancel: '取消',
-          textConfirm: '确定',
+          title: StringsConstant.alertContent.tr,
+          content: Text(StringsConstant.deleteSearchHistoryAlertContent.tr),
+          textCancel: StringsConstant.cancel.tr,
+          textConfirm: StringsConstant.confirm.tr,
           onCancel: () {},
           onConfirm: () {
             controller.clearSearchHistory();

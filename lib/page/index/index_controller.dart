@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_wan_android_getx/app_user_login_state_controller.dart';
 import 'package:flutter_wan_android_getx/page/home/home_page.dart';
+import 'package:flutter_wan_android_getx/page/mine/mine_controller.dart';
 import 'package:flutter_wan_android_getx/page/mine/mine_page.dart';
 import 'package:flutter_wan_android_getx/page/navigation_tree/navigation_tree_page.dart';
 import 'package:flutter_wan_android_getx/page/project/project_page.dart';
@@ -26,15 +28,31 @@ class IndexController extends GetxController {
 
   late List<Widget> tabPageBodies;
 
+  final mineController = Get.find<MineController>();
+
   /// 底部Tab点击切换PageView
   void switchBottomTabBar(int index) {
     //点击底部BottomNavigationBarItem切换PageView页面
     pageController.jumpToPage(index);
+
+    if (loginState == true) {
+      if (index == 4) {
+        // 更新个人中心数据
+        mineController.getUserInfo();
+      }
+    }
   }
 
   /// PageView切换更新当前index
   void onPageChanged(int index) {
     currentPage = index;
+
+    if (loginState == true) {
+      if (index == 4) {
+        // 更新个人中心数据
+        mineController.getUserInfo();
+      }
+    }
   }
 
   /// 生命周期
@@ -121,7 +139,7 @@ class IndexController extends GetxController {
         keepAlive: true,
         child: HomePage(),
       ),
-      KeepAliveWrapper(
+      const KeepAliveWrapper(
         child: SystemTreePage(),
       ),
       KeepAliveWrapper(

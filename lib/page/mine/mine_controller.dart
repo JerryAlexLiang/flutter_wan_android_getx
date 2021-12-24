@@ -49,8 +49,10 @@ class MineController extends BaseGetXWithPageRefreshController {
   Future<void> getUserInfo() async {
     refreshLoadState = LoadState.success;
 
+    await Future.delayed(const Duration(seconds: 3));
+
     handleRequestWithRefreshPaging(
-      loadingType: Constant.showLoadingDialog,
+      loadingType: Constant.noLoading,
       future: DioUtil().request(RequestApi.getUserInfo, method: DioMethod.get),
       onSuccess: (response) {
         refreshLoadState = LoadState.success;
@@ -61,7 +63,7 @@ class MineController extends BaseGetXWithPageRefreshController {
 
           // 本地化存储
           SpUtil.saveUserInfo(model.userInfo!);
-          Fluttertoast.showToast(msg: StringsConstant.refreshSuccess.tr);
+          // Fluttertoast.showToast(msg: StringsConstant.refreshSuccess.tr);
         }
       },
       onFail: (value) {

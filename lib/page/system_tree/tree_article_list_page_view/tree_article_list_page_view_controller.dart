@@ -1,3 +1,4 @@
+import 'package:flutter_wan_android_getx/app_user_login_state_controller.dart';
 import 'package:flutter_wan_android_getx/base/base_getx_with_page_refresh_controller.dart';
 import 'package:flutter_wan_android_getx/constant/constant.dart';
 import 'package:flutter_wan_android_getx/http/dio_method.dart';
@@ -19,6 +20,19 @@ class TreeArticleListPageViewController
 
   void setCid(int? id) {
     cid.value = id;
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    /// 每次登陆状态发生变化后更新数据
+    ever(appStateController.isLogin, (callback){
+      onRefreshRequestData();
+      // 定位到顶部
+      if(scrollController.hasClients){
+        scrollController.jumpTo(0);
+      }
+    });
   }
 
   /// 第一次进入
@@ -97,7 +111,7 @@ class TreeArticleListPageViewController
             treeArticleList.assignAll(dataList);
           } else if (refreshState == RefreshState.refresh) {
             treeArticleList.assignAll(dataList);
-            Fluttertoast.showToast(msg: StringsConstant.refreshSuccess.tr);
+            // Fluttertoast.showToast(msg: StringsConstant.refreshSuccess.tr);
           } else if (refreshState == RefreshState.loadMore) {
             treeArticleList.addAll(dataList);
           }

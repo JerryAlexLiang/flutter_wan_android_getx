@@ -31,11 +31,13 @@ class HomeController extends BaseGetXWithPageRefreshController {
     /// 每次登陆状态发生变化后更新数据
     ever(appStateController.isLogin, (callback) {
       onRefreshHomeData();
-      // // 匀速滑动到顶部
-      // scrollController.animateTo(0,
-      //     duration: const Duration(milliseconds: 1000), curve: Curves.linear);
-      // 定位到顶部
-      scrollController.jumpTo(0);
+      if(scrollController.hasClients){
+        // // 匀速滑动到顶部
+        // scrollController.animateTo(0,
+        //     duration: const Duration(milliseconds: 1000), curve: Curves.linear);
+        // 定位到顶部
+        scrollController.jumpTo(0);
+      }
     });
   }
 

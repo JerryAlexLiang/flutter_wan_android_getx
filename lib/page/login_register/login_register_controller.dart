@@ -8,7 +8,6 @@ import 'package:flutter_wan_android_getx/http/dio_method.dart';
 import 'package:flutter_wan_android_getx/http/dio_util.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
 import 'package:flutter_wan_android_getx/model/user_info_model.dart';
-import 'package:flutter_wan_android_getx/page/mine/mine_controller.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/utils/keyboard_util.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
@@ -32,13 +31,13 @@ class LoginRegisterController extends BaseGetXController {
   set buttonType(value) => _buttonType.value = value;
 
   /// 登录注册按钮描述语
-  final _switchButtonTypeDesc = "没有账号，去注册".obs;
+  final _switchButtonTypeDesc = StringsConstant.switchButtonRegisterDesc.tr.obs;
 
   get switchButtonTypeDesc => _switchButtonTypeDesc.value;
 
   set switchButtonTypeDesc(value) => _switchButtonTypeDesc.value = value;
 
-  final _buttonTypeDesc = "登录".obs;
+  final _buttonTypeDesc = StringsConstant.loginContent.tr.obs;
 
   get buttonTypeDesc => _buttonTypeDesc.value;
 
@@ -82,13 +81,15 @@ class LoginRegisterController extends BaseGetXController {
     if (buttonType == ButtonType.login) {
       // 点击前是登陆类型，则切换为注册类型
       buttonType = ButtonType.register;
-      switchButtonTypeDesc = '已有账号，去登录';
-      buttonTypeDesc = '注册';
+      // switchButtonTypeDesc = '已有账号，去登录';
+      switchButtonTypeDesc = StringsConstant.switchButtonLoginDesc.tr;
+      buttonTypeDesc = StringsConstant.registerContent.tr;
     } else {
       // 点击前是注册类型，则切换为登录类型
       buttonType = ButtonType.login;
-      switchButtonTypeDesc = '没有账号，去注册';
-      buttonTypeDesc = '登录';
+      // switchButtonTypeDesc = '没有账号，去注册';
+      switchButtonTypeDesc = StringsConstant.switchButtonRegisterDesc.tr;
+      buttonTypeDesc = StringsConstant.loginContent.tr;
     }
     // 清空输入框
     userName = "";
@@ -103,18 +104,18 @@ class LoginRegisterController extends BaseGetXController {
   /// 登录
   void goToLoginRegister() {
     if (userName.toString().trim().isEmpty) {
-      Fluttertoast.showToast(msg: '用户名不能为空~');
+      Fluttertoast.showToast(msg: StringsConstant.userNameEmptyInfo.tr);
       return;
     }
 
     if (password.toString().trim().isEmpty) {
-      Fluttertoast.showToast(msg: '密码不能为空~');
+      Fluttertoast.showToast(msg: StringsConstant.passwordEmptyInfo.tr);
       return;
     }
 
     if (buttonType == ButtonType.register) {
       if (ensurePassword.toString().trim().isEmpty) {
-        Fluttertoast.showToast(msg: '确认密码不能为空~');
+        Fluttertoast.showToast(msg: StringsConstant.ensurePasswordEmptyInfo.tr);
         return;
       }
 
@@ -122,7 +123,7 @@ class LoginRegisterController extends BaseGetXController {
           password.toString().trim().isNotEmpty &&
           ensurePassword.toString().trim().isNotEmpty) {
         if (password.toString().trim() != ensurePassword.toString().trim()) {
-          Fluttertoast.showToast(msg: '两次输入的密码不一致!');
+          Fluttertoast.showToast(msg: StringsConstant.ensurePasswordFail.tr);
           return;
         }
       }
@@ -165,7 +166,6 @@ class LoginRegisterController extends BaseGetXController {
         // 保存登录状态true
         loginState = true;
         Get.back();
-
       },
       onFail: (response) {
         EasyLoading.showError(
@@ -177,6 +177,4 @@ class LoginRegisterController extends BaseGetXController {
       },
     );
   }
-
-
 }

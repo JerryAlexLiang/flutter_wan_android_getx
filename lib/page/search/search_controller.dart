@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wan_android_getx/app_user_login_state_controller.dart';
 import 'package:flutter_wan_android_getx/base/base_getx_with_page_refresh_controller.dart';
 import 'package:flutter_wan_android_getx/constant/constant.dart';
 import 'package:flutter_wan_android_getx/http/dio_method.dart';
@@ -19,8 +20,6 @@ import 'package:get/get.dart';
 /// 作者: 杨亮
 
 class SearchController extends BaseGetXWithPageRefreshController {
-  // final detailController = Get.find<ArticleDetailController>();
-
   /// 搜索输入框孔控制器
   late TextEditingController textEditingController;
 
@@ -97,6 +96,19 @@ class SearchController extends BaseGetXWithPageRefreshController {
     // 查找本地搜索记录
     notifySearchHistory(1);
     LoggerUtil.d('============> onInit()');
+
+    /// 每次登陆状态发生变化后更新数据
+    ever(appStateController.isLogin, (callback) {
+      if (showResult && scrollController.hasClients) {
+        searchByKeyword(
+          loadingType: Constant.noLoading,
+          refreshState: RefreshState.refresh,
+          keyword: keyword,
+        );
+        // 定位到顶部
+        scrollController.jumpTo(0);
+      }
+    });
     super.onInit();
   }
 
@@ -215,64 +227,62 @@ class SearchController extends BaseGetXWithPageRefreshController {
     }
 
     handleRequestWithRefreshPaging(
-      loadingType: loadingType,
-      refreshState: refreshState,
-      future: DioUtil().request(
-        RequestApi.articleSearch.replaceFirst(RegExp('page'), '$currentPage'),
-        method: DioMethod.post,
-        params: {
-          "k": keyword,
-        },
-      ),
-      onSuccess: (response) async {
-        var articleDataModel = ArticleDataModel().fromJson(response);
-        List<ArticleDataModelDatas>? dataList = articleDataModel.datas;
+        loadingType: loadingType,
+        refreshState: refreshState,
+        future: DioUtil().request(
+          RequestApi.articleSearch.replaceFirst(RegExp('page'), '$currentPage'),
+          method: DioMethod.post,
+          params: {
+            "k": keyword,
+          },
+        ),
+        onSuccess: (response) async {
+          var articleDataModel = ArticleDataModel().fromJson(response);
+          List<ArticleDataModelDatas>? dataList = articleDataModel.datas;
 
-        // 加载到底部判断
-        var over = articleDataModel.over;
-        if (over != null) {
-          if (over) {
-            loadNoData();
-          }
-        }
-
-
-        if (dataList != null && dataList.isNotEmpty) {
-          refreshLoadState = LoadState.success;
-
-          /// 循环遍历 装载 可观察变量 isCollect
-          for (var element in dataList) {
-            var collect = element.collect;
-            element.isCollect = collect;
+          // 加载到底部判断
+          var over = articleDataModel.over;
+          if (over != null) {
+            if (over) {
+              loadNoData();
+            }
           }
 
-          if (refreshState == RefreshState.first) {
-            searchResult.assignAll(dataList);
-          } else if (refreshState == RefreshState.refresh) {
-            searchResult.assignAll(dataList);
-            Fluttertoast.showToast(msg: StringsConstant.refreshSuccess.tr);
-          } else if (refreshState == RefreshState.loadMore) {
-            searchResult.addAll(dataList);
-          }
-        } else {
-          if (loadingType!=Constant.noLoading) {
-            refreshLoadState = LoadState.empty;
+          if (dataList != null && dataList.isNotEmpty) {
+            refreshLoadState = LoadState.success;
+
+            /// 循环遍历 装载 可观察变量 isCollect
+            for (var element in dataList) {
+              var collect = element.collect;
+              element.isCollect = collect;
+            }
+
+            if (refreshState == RefreshState.first) {
+              searchResult.assignAll(dataList);
+            } else if (refreshState == RefreshState.refresh) {
+              searchResult.assignAll(dataList);
+              // Fluttertoast.showToast(msg: StringsConstant.refreshSuccess.tr);
+            } else if (refreshState == RefreshState.loadMore) {
+              searchResult.addAll(dataList);
+            }
           } else {
-            loadNoData();
+            if (loadingType != Constant.noLoading) {
+              refreshLoadState = LoadState.empty;
+            } else {
+              loadNoData();
+            }
           }
-        }
-      },
-      onFail: (error) {
-        //显示搜索结果页面
-        showResult = true;
-        Fluttertoast.showToast(msg: '数据请求失败 ${error.code}  ${error.message}');
-      },
-      onError: (error){
-        //显示搜索结果页面
-        showResult = true;
-        Fluttertoast.showToast(msg: '数据请求失败 ${error.code}  ${error.message}');
-      }
-    );
+        },
+        onFail: (error) {
+          //显示搜索结果页面
+          showResult = true;
+          Fluttertoast.showToast(msg: '数据请求失败 ${error.code}  ${error.message}');
+        },
+        onError: (error) {
+          //显示搜索结果页面
+          showResult = true;
+          Fluttertoast.showToast(msg: '数据请求失败 ${error.code}  ${error.message}');
+        });
   }
 
   /// 请求热门关键词
@@ -280,44 +290,43 @@ class SearchController extends BaseGetXWithPageRefreshController {
     LoggerUtil.d('============> onReady*****()');
 
     handleRequest(
-      loadingType: Constant.simpleShimmerLoading,
-      future: DioUtil().request(RequestApi.hotSearch, method: DioMethod.get),
-      onSuccess: (response) {
-        ///列表转换的时候一定要加一下强转List<dynamic>，否则会报错
-        List<HotSearchModel> hotSearchList = (response as List<dynamic>)
-            .map((e) => HotSearchModel().fromJson(e))
-            .toList();
+        loadingType: Constant.simpleShimmerLoading,
+        future: DioUtil().request(RequestApi.hotSearch, method: DioMethod.get),
+        onSuccess: (response) {
+          ///列表转换的时候一定要加一下强转List<dynamic>，否则会报错
+          List<HotSearchModel> hotSearchList = (response as List<dynamic>)
+              .map((e) => HotSearchModel().fromJson(e))
+              .toList();
 
-        hotKeys = hotSearchList;
+          hotKeys = hotSearchList;
 
-        if (hotKeys.isNotEmpty) {
-          showHotKeys = true;
-          loadState = LoadState.success;
+          if (hotKeys.isNotEmpty) {
+            showHotKeys = true;
+            loadState = LoadState.success;
 
-          /// 热词hint
-          hotHint = '${hotKeys[0].name} | ${hotKeys[1].name}';
-        } else {
+            /// 热词hint
+            hotHint = '${hotKeys[0].name} | ${hotKeys[1].name}';
+          } else {
+            showHotKeys = false;
+            loadState = LoadState.empty;
+          }
+          LoggerUtil.d(
+              '=====> success1 : ${hotSearchList.map((e) => e.name).toList()}');
+
+          LoggerUtil.d(
+              '=====> success2 : ${hotKeys.map((e) => e.name).toList()}');
+
+          LoggerUtil.d('======> initHotKeysList : load success');
+        },
+        onFail: (value) {
           showHotKeys = false;
-          loadState = LoadState.empty;
-        }
-        LoggerUtil.d(
-            '=====> success1 : ${hotSearchList.map((e) => e.name).toList()}');
-
-        LoggerUtil.d(
-            '=====> success2 : ${hotKeys.map((e) => e.name).toList()}');
-
-        LoggerUtil.d('======> initHotKeysList : load success');
-      },
-      onFail: (value) {
-        showHotKeys = false;
-        LoggerUtil.d('======> initHotKeysList : load fail1');
-        LoggerUtil.d('=====> fail : ${hotKeys.map((e) => e.name).toList()}');
-      },
-      onError: (error){
-        showHotKeys = false;
-        LoggerUtil.d('======> initHotKeysList : load error');
-      }
-    );
+          LoggerUtil.d('======> initHotKeysList : load fail1');
+          LoggerUtil.d('=====> fail : ${hotKeys.map((e) => e.name).toList()}');
+        },
+        onError: (error) {
+          showHotKeys = false;
+          LoggerUtil.d('======> initHotKeysList : load error');
+        });
   }
 
   /// 历史搜索数据更新及业务逻辑

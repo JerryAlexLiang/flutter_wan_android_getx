@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:get/get.dart';
 import 'splash_controller.dart';
 
@@ -40,7 +41,7 @@ class SplashPage extends StatelessWidget {
                   child: Obx(() {
                     return Center(
                       child: Text(
-                        '${controller.timeCount}  跳过',
+                        '${controller.timeCount}  ${StringsConstant.jumpSplash.tr}',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 13.sp,
