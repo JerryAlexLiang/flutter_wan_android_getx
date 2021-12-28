@@ -6,6 +6,7 @@ import 'package:flutter_wan_android_getx/http/dio_method.dart';
 import 'package:flutter_wan_android_getx/http/dio_util.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
 import 'package:flutter_wan_android_getx/model/tree_model.dart';
+import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
 import 'package:get/get.dart';
 
@@ -16,24 +17,28 @@ class ProjectController extends BaseGetXWithPageRefreshController
   final projectTreeList = List<TreeModel?>.empty(growable: true).obs;
 
   /// TabBar索引
-  final projectChildrenIndex = 0.obs;
+  var projectChildrenIndex = 0;
 
   late TabController tabController;
 
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  //   if(projectTreeList.isNotEmpty){
-  //     tabController.addListener(() {
-  //       projectChildrenIndex.value = tabController.index;
-  //     });
-  //   }
-  // }
+  @override
+  void onInit() {
+    super.onInit();
+    initProjectTreeList();
+    LoggerUtil.d("-------222");
+  }
 
   @override
   void onReady() {
     super.onReady();
-    initProjectTreeList();
+    LoggerUtil.d("-------333");
+  }
+
+  void initTabController() {
+    tabController = TabController(
+        length: projectTreeList.length,
+        initialIndex: projectChildrenIndex,
+        vsync: this);
   }
 
   Future<void> initProjectTreeList() async {
@@ -61,12 +66,9 @@ class ProjectController extends BaseGetXWithPageRefreshController
         List<TreeModel> dataList = (response as List<dynamic>)
             .map((e) => TreeModel.fromJson(e))
             .toList();
-        if (dataList.isNotEmpty) {
-          projectTreeList.assignAll(dataList);
-          tabController = TabController(
-              length: projectTreeList.length,
-              initialIndex: projectChildrenIndex.value,
-              vsync: this);
+        projectTreeList.assignAll(dataList);
+        if (projectTreeList.isNotEmpty) {
+          initTabController();
           loadState = LoadState.success;
         } else {
           loadState = LoadState.empty;

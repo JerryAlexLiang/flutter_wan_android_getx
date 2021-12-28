@@ -4,6 +4,7 @@ import 'package:flutter_wan_android_getx/base/common_state_page.dart';
 import 'package:flutter_wan_android_getx/page/project/project_tree_children/project_tree_children_page.dart';
 import 'package:flutter_wan_android_getx/page/system_tree/tree_article_list_page_view/tree_article_list_page_view_page.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
+import 'package:flutter_wan_android_getx/routes/app_routes.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/widget/custom_app_bar.dart';
@@ -59,6 +60,16 @@ class ProjectPage extends StatelessWidget {
               StringsConstant.projectPage.tr,
               style: context.subtitle1Style,
             ),
+            actions: [
+              RippleView(
+                radius: 100,
+                onTap: () => Get.toNamed(AppRoutes.searchPage),
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  child: const Icon(Icons.search),
+                ),
+              ),
+            ],
             bottom: treeTabContainer(context, controller),
           ),
           body: sliverPageView(context, controller),
@@ -77,7 +88,12 @@ class ProjectPage extends StatelessWidget {
 
       /// TabBar监听
       controller.tabController.addListener(() {
-        controller.projectChildrenIndex.value = controller.tabController.index;
+        if (controller.tabController.index ==
+            controller.tabController.animation!.value) {
+          controller.projectChildrenIndex = controller.tabController.index;
+          LoggerUtil.d(
+              "-------111 ${controller.projectChildrenIndex}  ${controller.tabController.index}");
+        }
       });
 
       return TabBar(
@@ -120,23 +136,27 @@ class ProjectPage extends StatelessWidget {
   treeTabContainer(BuildContext context, ProjectController controller) {
     if (controller.projectTreeList.isNotEmpty) {
       List<Widget> warpList = controller.projectTreeList.map((element) {
-        return ChoiceChip(
-          label: Text(
-            element!.name ?? "",
-            style: context.bodyText2Style,
-          ),
-          selectedColor: Colors.lightBlueAccent.withOpacity(0.5),
-          selected: controller.projectChildrenIndex.value ==
-              controller.projectTreeList.indexOf(element),
-          onSelected: (bool newValue) {
-            controller.tabController.index =
-                controller.projectTreeList.indexOf(element);
-            //关闭弹框
-            if (Get.isBottomSheetOpen == true) {
-              Get.back();
-            }
-          },
-        );
+        return Obx(() {
+          return ChoiceChip(
+            label: Text(
+              element!.name ?? "",
+              style: context.bodyText2Style,
+            ),
+            selectedColor: Colors.lightBlueAccent.withOpacity(0.5),
+            selected: controller.tabController.index ==
+                controller.projectTreeList.indexOf(element),
+            onSelected: (bool newValue) {
+              controller.tabController.index =
+                  controller.projectTreeList.indexOf(element);
+              LoggerUtil.d(
+                  "-------555 ${controller.projectChildrenIndex}  ${controller.tabController.index}  ${controller.projectTreeList.indexOf(element)}");
+              //关闭弹框
+              if (Get.isBottomSheetOpen == true) {
+                Get.back();
+              }
+            },
+          );
+        });
       }).toList();
 
       return PreferredSize(
@@ -149,6 +169,8 @@ class ProjectPage extends StatelessWidget {
             RippleView(
               radius: 100,
               onTap: () {
+                LoggerUtil.d(
+                    "-------666 ${controller.projectChildrenIndex}  ${controller.tabController.index}");
                 // 地不弹出菜单
                 Get.bottomSheet(
                   Container(

@@ -10,7 +10,6 @@ import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/widget/custom_app_bar.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_error_page.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import 'navigation_tree_controller.dart';
@@ -34,6 +33,8 @@ class NavigationTreePage extends StatelessWidget {
         isBack: false,
         showBottomLine: true,
         centerTitle: StringsConstant.navigationPage.tr,
+        actionIcon: const Icon(Icons.search),
+        onRightPressed: () => Get.toNamed(AppRoutes.searchPage),
       ),
       body: SafeArea(
         child: CommonStatePage<NavigationTreeController>(

@@ -3,16 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan_android_getx/base/refresh_paging_state_page.dart';
 import 'package:flutter_wan_android_getx/model/tree_model.dart';
 import 'package:flutter_wan_android_getx/page/system_tree/component/tree_chip_wrap.dart';
-import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/routes/app_routes.dart';
+import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:flutter_wan_android_getx/widget/custom_app_bar.dart';
 import 'package:flutter_wan_android_getx/widget/ripple_view.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:sticky_headers/sticky_headers.dart';
+
 import 'system_tree_controller.dart';
-import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 
 /// 类名: system_tree_page.dart
 /// 创建日期: 12/22/21 on 6:01 PM
@@ -31,6 +30,8 @@ class SystemTreePage extends StatelessWidget {
         isBack: false,
         showBottomLine: true,
         centerTitle: StringsConstant.accountTreePage.tr,
+        actionIcon: const Icon(Icons.search),
+        onRightPressed: () => Get.toNamed(AppRoutes.searchPage),
       ),
       body: SafeArea(
         child: Obx(() {
