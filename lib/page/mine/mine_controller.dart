@@ -41,7 +41,7 @@ class MineController extends BaseGetXWithPageRefreshController {
   @override
   void onReadyInitData() {
     super.onReadyInitData();
-    if (loginState) {
+    if (appStateController.isLogin.value) {
       getUserInfo();
     }
   }
@@ -49,7 +49,7 @@ class MineController extends BaseGetXWithPageRefreshController {
   Future<void> getUserInfo() async {
     refreshLoadState = LoadState.success;
 
-    await Future.delayed(const Duration(seconds: 3));
+    // await Future.delayed(const Duration(seconds: 3));
 
     handleRequestWithRefreshPaging(
       loadingType: Constant.noLoading,

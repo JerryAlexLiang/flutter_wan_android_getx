@@ -131,7 +131,7 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
           //       value: SystemUiOverlayStyle.light,
 
           return RefreshConfiguration.copyAncestor(
-            maxOverScrollExtent: 90,
+            maxOverScrollExtent: 30,
             context: context,
             child: SmartRefresher(
               controller: refreshController,
@@ -215,8 +215,10 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
       return AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.dark,
         child: Container(
-          // padding: const EdgeInsets.all(10),
-          alignment: Alignment.center,
+          height: 90,
+          // color: Colors.red,
+          padding: const EdgeInsets.all(10),
+          alignment: Alignment.bottomCenter,
           child: customHeader,
         ),
       );
@@ -229,32 +231,32 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
 
       if (loadStatus == LoadStatus.idle) {
         /// 上滑时显示 pullToLoading
-        customFooter = refreshStatusBottomWidget(
+        customFooter = refreshStatusWidget(
           context: context,
           constant: StringsConstant.pullToLoading.tr,
           iconData: Icons.arrow_upward,
         );
       } else if (loadStatus == LoadStatus.canLoading) {
         /// 上滑要松手时显示
-        customFooter = refreshStatusBottomWidget(
+        customFooter = refreshStatusWidget(
           context: context,
           constant: StringsConstant.releaseStartLoading.tr,
           iconData: Icons.autorenew,
         );
       } else if (loadStatus == LoadStatus.loading) {
-        customFooter = refreshStatusBottomWidget(
+        customFooter = refreshStatusWidget(
           context: context,
           constant: StringsConstant.loading.tr,
           refreshWidget: const CupertinoActivityIndicator(),
         );
       } else if (loadStatus == LoadStatus.noMore) {
-        customFooter = refreshStatusBottomWidget(
+        customFooter = refreshStatusWidget(
           context: context,
           constant: StringsConstant.noMoreData.tr,
           iconData: Icons.error_outline,
         );
       } else if (loadStatus == LoadStatus.failed) {
-        customFooter = refreshStatusBottomWidget(
+        customFooter = refreshStatusWidget(
           context: context,
           constant: (controller.httpErrorMsg != null &&
                   controller.httpErrorMsg.toString().isNotEmpty)
@@ -271,43 +273,43 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
       );
     });
   }
+  //
+  // refreshStatusWidget({
+  //   required BuildContext context,
+  //   required String constant,
+  //   IconData? iconData,
+  //   Widget? refreshWidget,
+  // }) {
+  //   return Container(
+  //     alignment: Alignment.bottomCenter,
+  //     height: 150,
+  //     color: Colors.white,
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.end,
+  //       children: [
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.center,
+  //           crossAxisAlignment: CrossAxisAlignment.center,
+  //           children: [
+  //             refreshWidget ??
+  //                 Icon(
+  //                   iconData,
+  //                   color: Colors.grey,
+  //                 ),
+  //             Gaps.hGap10,
+  //             Text(
+  //               constant,
+  //               style: context.bodyText2Style!.copyWith(color: Colors.grey),
+  //               textAlign: TextAlign.center,
+  //             ),
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   refreshStatusWidget({
-    required BuildContext context,
-    required String constant,
-    IconData? iconData,
-    Widget? refreshWidget,
-  }) {
-    return Container(
-      alignment: Alignment.bottomCenter,
-      height: 150,
-      color: Colors.white,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              refreshWidget ??
-                  Icon(
-                    iconData,
-                    color: Colors.grey,
-                  ),
-              Gaps.hGap10,
-              Text(
-                constant,
-                style: context.bodyText2Style!.copyWith(color: Colors.grey),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  refreshStatusBottomWidget({
     required BuildContext context,
     required String constant,
     IconData? iconData,

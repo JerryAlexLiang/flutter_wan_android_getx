@@ -85,7 +85,7 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
     } else if (loadingType == Constant.lottieRocketLoading) {
       refreshLoadState = LoadState.lottieRocketLoading;
     } else if (loadingType == Constant.noLoading) {
-      loadState = LoadState.success;
+      refreshLoadState = LoadState.success;
       // return;
     }
 

@@ -56,4 +56,12 @@ class RequestApi {
   // 知识体系下的文章 GET https://www.wanandroid.com/article/list/0/json?cid=60
   // cid 分类的id，上述二级目录的id  页码：拼接在链接上，从0开始。
   static const String treeChildrenArticleList = "/article/list/%s/json";
+
+  // 项目分类 GET https://www.wanandroid.com/project/tree/json
+  static const String projectTree = "/project/tree/json";
+
+  // 项目列表数据 GET  https://www.wanandroid.com/project/list/1/json?cid=294
+  // cid 分类的id，上面项目分类接口
+  // 页码：拼接在链接中，从1开始。
+  static const String projectTreeChildrenList = "/project/list/%s/json";
 }
