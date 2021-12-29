@@ -212,8 +212,16 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
         );
       }
 
+      final Color _backgroundColor = context.appBarBackgroundColor!;
+
+      final SystemUiOverlayStyle _overlayStyle =
+          ThemeData.estimateBrightnessForColor(_backgroundColor) ==
+                  Brightness.dark
+              ? SystemUiOverlayStyle.light
+              : SystemUiOverlayStyle.dark;
+
       return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.dark,
+        value: _overlayStyle,
         child: Container(
           height: 90,
           // color: Colors.red,
@@ -273,41 +281,6 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
       );
     });
   }
-  //
-  // refreshStatusWidget({
-  //   required BuildContext context,
-  //   required String constant,
-  //   IconData? iconData,
-  //   Widget? refreshWidget,
-  // }) {
-  //   return Container(
-  //     alignment: Alignment.bottomCenter,
-  //     height: 150,
-  //     color: Colors.white,
-  //     child: Column(
-  //       mainAxisAlignment: MainAxisAlignment.end,
-  //       children: [
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           crossAxisAlignment: CrossAxisAlignment.center,
-  //           children: [
-  //             refreshWidget ??
-  //                 Icon(
-  //                   iconData,
-  //                   color: Colors.grey,
-  //                 ),
-  //             Gaps.hGap10,
-  //             Text(
-  //               constant,
-  //               style: context.bodyText2Style!.copyWith(color: Colors.grey),
-  //               textAlign: TextAlign.center,
-  //             ),
-  //           ],
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   refreshStatusWidget({
     required BuildContext context,

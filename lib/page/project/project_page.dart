@@ -66,7 +66,10 @@ class ProjectPage extends StatelessWidget {
                 onTap: () => Get.toNamed(AppRoutes.searchPage),
                 child: Container(
                   padding: const EdgeInsets.all(10),
-                  child: const Icon(Icons.search),
+                  child: Icon(
+                    Icons.search,
+                    color: context.theme.appBarTheme.iconTheme?.color,
+                  ),
                 ),
               ),
             ],
@@ -182,8 +185,11 @@ class ProjectPage extends StatelessWidget {
                     ),
                   ),
                   backgroundColor: context.scaffoldBackgroundColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    ),
                   ),
                 );
               },

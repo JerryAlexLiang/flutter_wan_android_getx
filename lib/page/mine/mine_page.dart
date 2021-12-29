@@ -14,6 +14,7 @@ import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/widget/custom_app_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'mine_controller.dart';
 
@@ -42,11 +43,12 @@ class MinePage extends StatelessWidget {
                   onPressed: () {},
                   refreshController: mineController.refreshController,
                   scrollController: mineController.scrollController,
-                  physics: const BouncingScrollPhysics(),
+                  physics: loginState ? const BouncingScrollPhysics() : const ClampingScrollPhysics(),
                   // 已登录时可以下拉刷新，未登录时不能下拉刷新
                   enableRefreshPullDown: loginState ? true : false,
                   enableRefreshPullUp: false,
                   onRefresh: () => mineController.getUserInfo(),
+                  header: const MaterialClassicHeader(color: Colors.red,),
                   child: SingleChildScrollView(
                     child: Column(
                       children: [

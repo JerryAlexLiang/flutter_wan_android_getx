@@ -30,7 +30,10 @@ class SystemTreePage extends StatelessWidget {
         isBack: false,
         showBottomLine: true,
         centerTitle: StringsConstant.accountTreePage.tr,
-        actionIcon: const Icon(Icons.search),
+        actionIcon: Icon(
+          Icons.search,
+          color: context.theme.appBarTheme.iconTheme?.color,
+        ),
         onRightPressed: () => Get.toNamed(AppRoutes.searchPage),
       ),
       body: SafeArea(
