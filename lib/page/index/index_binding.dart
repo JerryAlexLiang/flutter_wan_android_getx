@@ -1,5 +1,4 @@
 import 'package:flutter_wan_android_getx/page/home/home_controller.dart';
-import 'package:flutter_wan_android_getx/page/login_register/login_register_controller.dart';
 import 'package:flutter_wan_android_getx/page/mine/mine_controller.dart';
 import 'package:flutter_wan_android_getx/page/navigation_tree/navigation_tree_controller.dart';
 import 'package:flutter_wan_android_getx/page/project/project_controller.dart';

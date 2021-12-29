@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_wan_android_getx/http/base_response.dart';
-import 'package:flutter_wan_android_getx/http/handle_dio_error.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:get/get.dart' as get_x;

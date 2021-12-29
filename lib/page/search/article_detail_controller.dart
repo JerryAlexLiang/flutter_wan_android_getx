@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_wan_android_getx/app_user_login_state_controller.dart';
 import 'package:flutter_wan_android_getx/base/base_getx_controller.dart';
 import 'package:flutter_wan_android_getx/constant/constant.dart';

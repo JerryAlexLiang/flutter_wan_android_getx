@@ -14,7 +14,6 @@ import 'package:flutter_wan_android_getx/utils/html_utils.dart';
 import 'package:flutter_wan_android_getx/widget/cached_network_image_view.dart';
 import 'package:flutter_wan_android_getx/widget/custom_point_widget.dart';
 import 'package:flutter_wan_android_getx/widget/ripple_view.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 

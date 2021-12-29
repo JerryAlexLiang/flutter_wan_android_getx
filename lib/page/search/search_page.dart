@@ -12,7 +12,6 @@ import 'package:flutter_wan_android_getx/widget/state/favorite_lottie_widget.dar
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
 import 'package:flutter_wan_android_getx/widget/state/loading_lottie_rocket_widget.dart';
 import 'package:get/get.dart';
-
 import 'search_controller.dart';
 
 /// 搜索界面

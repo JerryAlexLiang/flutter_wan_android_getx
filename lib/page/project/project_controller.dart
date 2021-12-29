@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/base/base_getx_with_page_refresh_controller.dart';
 import 'package:flutter_wan_android_getx/constant/constant.dart';
-import 'package:flutter_wan_android_getx/http/base_response.dart';
 import 'package:flutter_wan_android_getx/http/dio_method.dart';
 import 'package:flutter_wan_android_getx/http/dio_util.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';

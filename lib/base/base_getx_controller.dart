@@ -2,11 +2,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_wan_android_getx/constant/constant.dart';
 import 'package:flutter_wan_android_getx/http/base_response.dart';
 import 'package:flutter_wan_android_getx/http/handle_dio_error.dart';
-import 'package:flutter_wan_android_getx/model/total_user_info_model.dart';
-import 'package:flutter_wan_android_getx/model/user_info_model.dart';
 import 'package:flutter_wan_android_getx/utils/connectivity_utils.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
-import 'package:flutter_wan_android_getx/utils/sp_util.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
 import 'package:get/get.dart';
 

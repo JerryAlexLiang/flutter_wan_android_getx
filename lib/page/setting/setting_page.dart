@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/app_user_login_state_controller.dart';
-import 'package:flutter_wan_android_getx/page/login_register/login_register_controller.dart';
 import 'package:flutter_wan_android_getx/page/setting/language/language_controller.dart';
 import 'package:flutter_wan_android_getx/page/setting/setting_controller.dart';
 import 'package:flutter_wan_android_getx/page/setting/theme/theme_setting_controller.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/routes/app_routes.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
-import 'package:flutter_wan_android_getx/utils/sp_util.dart';
 import 'package:flutter_wan_android_getx/widget/custom_app_bar.dart';
 import 'package:flutter_wan_android_getx/widget/custom_list_title.dart';
 import 'package:get/get.dart';

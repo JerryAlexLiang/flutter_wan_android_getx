@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/base/refresh_paging_state_page.dart';
-import 'package:flutter_wan_android_getx/page/project/project_controller.dart';
 import 'package:flutter_wan_android_getx/page/search/component/search_list_item_widget.dart';
 import 'package:get/get.dart';
+
 import 'project_tree_children_controller.dart';
 
 /// 类名: project_tree_children_page.dart

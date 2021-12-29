@@ -8,8 +8,6 @@ import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/routes/app_routes.dart';
 import 'package:flutter_wan_android_getx/utils/decoration_style.dart';
-import 'package:flutter_wan_android_getx/utils/logger_util.dart';
-import 'package:flutter_wan_android_getx/utils/sp_util.dart';
 import 'package:flutter_wan_android_getx/widget/ripple_view.dart';
 import 'package:get/get.dart';
 

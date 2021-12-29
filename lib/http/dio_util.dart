@@ -1,11 +1,11 @@
 import 'dart:io';
+
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter_wan_android_getx/config/config.dart';
 import 'package:flutter_wan_android_getx/http/base_url_reuqest_interceptors.dart';
-import 'package:flutter_wan_android_getx/http/dio_cache_interceptors.dart';
 import 'package:flutter_wan_android_getx/http/dio_interceptors.dart';
 import 'package:flutter_wan_android_getx/http/dio_method.dart';
 import 'package:flutter_wan_android_getx/http/handle_dio_error.dart';

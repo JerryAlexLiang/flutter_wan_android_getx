@@ -2,19 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan_android_getx/base/common_state_page.dart';
 import 'package:flutter_wan_android_getx/page/project/project_tree_children/project_tree_children_page.dart';
-import 'package:flutter_wan_android_getx/page/system_tree/tree_article_list_page_view/tree_article_list_page_view_page.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/routes/app_routes.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
-import 'package:flutter_wan_android_getx/widget/custom_app_bar.dart';
-import 'package:flutter_wan_android_getx/widget/custom_sticky_tabBar_delegate.dart';
 import 'package:flutter_wan_android_getx/widget/custom_underline_tabIndicator.dart';
 import 'package:flutter_wan_android_getx/widget/keep_alive_wrapper.dart';
 import 'package:flutter_wan_android_getx/widget/ripple_view.dart';
-import 'package:flutter_wan_android_getx/widget/sliver_appbar_delegate.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+
 import 'project_controller.dart';
 
 /// 类名: project_page.dart

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan_android_getx/base/refresh_paging_state_page.dart';
-import 'package:flutter_wan_android_getx/page/component/home_banner.dart';
+import 'package:flutter_wan_android_getx/page/home/component/home_banner.dart';
 import 'package:flutter_wan_android_getx/page/search/article_detail_controller.dart';
 import 'package:flutter_wan_android_getx/page/search/component/search_list_item_widget.dart';
 import 'package:flutter_wan_android_getx/page/search/search_controller.dart';

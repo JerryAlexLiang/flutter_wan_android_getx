@@ -4,8 +4,6 @@ import 'package:flutter_wan_android_getx/base/base_getx_controller.dart';
 import 'package:flutter_wan_android_getx/constant/constant.dart';
 import 'package:flutter_wan_android_getx/http/base_response.dart';
 import 'package:flutter_wan_android_getx/http/handle_dio_error.dart';
-import 'package:flutter_wan_android_getx/model/total_user_info_model.dart';
-import 'package:flutter_wan_android_getx/model/user_info_model.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
 import 'package:get/get.dart';

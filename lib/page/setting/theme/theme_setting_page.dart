@@ -6,7 +6,6 @@ import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/widget/custom_app_bar.dart';
 import 'package:flutter_wan_android_getx/widget/custom_list_title.dart';
 import 'package:get/get.dart';
-
 import 'theme_setting_controller.dart';
 
 class ThemeSettingPage extends StatelessWidget {

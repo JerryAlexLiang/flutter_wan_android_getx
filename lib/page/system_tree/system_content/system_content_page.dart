@@ -1,13 +1,13 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/model/tree_model.dart';
 import 'package:flutter_wan_android_getx/page/system_tree/tree_article_list_page_view/tree_article_list_page_view_page.dart';
+import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:flutter_wan_android_getx/widget/custom_underline_tabIndicator.dart';
 import 'package:flutter_wan_android_getx/widget/keep_alive_wrapper.dart';
 import 'package:flutter_wan_android_getx/widget/sliver_appbar_delegate.dart';
 import 'package:get/get.dart';
+
 import 'system_content_controller.dart';
-import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 
 /// 类名: system_content_page.dart
 /// 创建日期: 12/23/21 on 11:18 AM
