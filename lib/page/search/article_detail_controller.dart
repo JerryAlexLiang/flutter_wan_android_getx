@@ -150,7 +150,7 @@ class ArticleDetailController extends BaseGetXController {
       return;
     }
 
-    handleRequest(
+    httpManager(
       loadingType: Constant.noLoading,
       // 此接口使用sprintf插件进行String格式化操作  static const String collectInsideArticle = '/lg/collect/%s/json';
       future: DioUtil().request(requestURL, method: DioMethod.post),

@@ -82,7 +82,7 @@ class ProjectTreeChildrenController extends BaseGetXWithPageRefreshController {
     String requestUrl =
         sprintf(RequestApi.projectTreeChildrenList, [currentPage]);
 
-    handleRequestWithRefreshPaging(
+    httpManagerWithRefreshPaging(
       loadingType: loadingType,
       refreshState: refreshState,
       future: DioUtil()

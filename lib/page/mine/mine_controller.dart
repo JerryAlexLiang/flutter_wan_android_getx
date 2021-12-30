@@ -49,7 +49,7 @@ class MineController extends BaseGetXWithPageRefreshController {
 
     // await Future.delayed(const Duration(seconds: 3));
 
-    handleRequestWithRefreshPaging(
+    httpManagerWithRefreshPaging(
       loadingType: Constant.noLoading,
       future: DioUtil().request(RequestApi.getUserInfo, method: DioMethod.get),
       onSuccess: (response) {

@@ -26,7 +26,7 @@ class SystemTreeController extends BaseGetXWithPageRefreshController {
 
   /// 请求体系数据
   Future<void> initSystemTreeData() async {
-    handleRequestWithRefreshPaging(
+    httpManagerWithRefreshPaging(
       loadingType: Constant.showLoadingDialog,
       future: DioUtil().request(RequestApi.treeList, method: DioMethod.get),
       onSuccess: (response) {

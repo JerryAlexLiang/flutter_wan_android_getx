@@ -85,7 +85,7 @@ class HomeController extends BaseGetXWithPageRefreshController {
     LoggerUtil.d(
         '+++++++>>>>  loadingType: $loadingType refreshState:$refreshState');
 
-    handleRequestWithRefreshPaging(
+    httpManagerWithRefreshPaging(
       loadingType: loadingType,
       refreshState: refreshState,
       future: DioUtil().request(requestUrl, method: DioMethod.get),

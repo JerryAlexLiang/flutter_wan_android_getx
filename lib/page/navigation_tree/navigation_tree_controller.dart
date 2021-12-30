@@ -38,7 +38,7 @@ class NavigationTreeController extends BaseGetXController {
   }
 
   Future<void> initNavigationData() async {
-    handleRequest(
+    httpManager(
       loadingType: Constant.lottieRocketLoading,
       future:
           DioUtil().request(RequestApi.navigationList, method: DioMethod.get),

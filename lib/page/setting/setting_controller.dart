@@ -20,7 +20,7 @@ class SettingController extends BaseGetXController {
 
   /// 退出登录
   void gotoLogout() {
-    handleRequest(
+    httpManager(
       loadingType: Constant.showLoadingDialog,
       future: DioUtil().request(RequestApi.goToLogout, method: DioMethod.get),
       onSuccess: (response) {

@@ -79,7 +79,7 @@ class TreeArticleListPageViewController
     String requestUrl =
         sprintf(RequestApi.treeChildrenArticleList, [currentPage]);
 
-    handleRequestWithRefreshPaging(
+    httpManagerWithRefreshPaging(
       loadingType: loadingType,
       refreshState: refreshState,
       future: DioUtil()

@@ -225,7 +225,7 @@ class SearchController extends BaseGetXWithPageRefreshController {
       currentPage++;
     }
 
-    handleRequestWithRefreshPaging(
+    httpManagerWithRefreshPaging(
         loadingType: loadingType,
         refreshState: refreshState,
         future: DioUtil().request(
@@ -288,7 +288,7 @@ class SearchController extends BaseGetXWithPageRefreshController {
   void initHotKeysList() async {
     LoggerUtil.d('============> onReady*****()');
 
-    handleRequest(
+    httpManager(
         loadingType: Constant.simpleShimmerLoading,
         future: DioUtil().request(RequestApi.hotSearch, method: DioMethod.get),
         onSuccess: (response) {

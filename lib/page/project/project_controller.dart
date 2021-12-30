@@ -57,7 +57,7 @@ class ProjectController extends BaseGetXWithPageRefreshController
     //   }
     // }
 
-    handleRequest(
+    httpManager(
       loadingType: Constant.lottieRocketLoading,
       future: DioUtil().request(RequestApi.projectTree, method: DioMethod.get),
       onSuccess: (response) {

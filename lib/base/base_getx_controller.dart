@@ -54,7 +54,7 @@ class BaseGetXController extends GetxController {
   /// onReady() 时期请求数据
   void onReadyInitData() {}
 
-  void handleRequest({
+  void httpManager({
     required String loadingType,
     required Future<dynamic> future,
     Function()? onStart,

@@ -152,7 +152,7 @@ class LoginRegisterController extends BaseGetXController {
         ? RequestApi.goToLogin
         : RequestApi.gotoRegister;
 
-    handleRequest(
+    httpManager(
       loadingType: Constant.showLoadingDialog,
       future:
           DioUtil().request(requestUrl, method: DioMethod.post, data: formData),

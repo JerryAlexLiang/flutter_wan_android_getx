@@ -61,7 +61,7 @@ class BaseGetXWithPageRefreshController extends BaseGetXController {
   }
 
   /// 带分页加载下拉刷新的请求，适用于ListView等
-  void handleRequestWithRefreshPaging({
+  void httpManagerWithRefreshPaging({
     required String loadingType,
     RefreshState refreshState = RefreshState.refresh,
     required Future<dynamic> future,
