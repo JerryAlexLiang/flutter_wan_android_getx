@@ -35,18 +35,17 @@ class IndexController extends GetxController {
     //点击底部BottomNavigationBarItem切换PageView页面
     pageController.jumpToPage(index);
 
-    if (loginState == true) {
-      if (index == 4) {
-        // 更新个人中心数据
-        mineController.getUserInfo();
-      }
-    }
+    // if (loginState == true) {
+    //   if (index == 4) {
+    //     // 更新个人中心数据
+    //     mineController.getUserInfo();
+    //   }
+    // }
   }
 
   /// PageView切换更新当前index
   void onPageChanged(int index) {
     currentPage = index;
-
     if (loginState == true) {
       if (index == 4) {
         // 更新个人中心数据

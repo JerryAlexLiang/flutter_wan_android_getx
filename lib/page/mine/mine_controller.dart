@@ -9,6 +9,7 @@ import 'package:flutter_wan_android_getx/model/total_user_info_model.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/utils/sp_util.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 class MineController extends BaseGetXWithPageRefreshController {
@@ -32,16 +33,10 @@ class MineController extends BaseGetXWithPageRefreshController {
 
     /// 每次登录状态发生改变时更新数据
     ever(appStateController.isLogin, (callback) {
-      onReadyInitData();
+      if (appStateController.isLogin.value) {
+        getUserInfo();
+      }
     });
-  }
-
-  @override
-  void onReadyInitData() {
-    super.onReadyInitData();
-    if (appStateController.isLogin.value) {
-      getUserInfo();
-    }
   }
 
   Future<void> getUserInfo() async {
