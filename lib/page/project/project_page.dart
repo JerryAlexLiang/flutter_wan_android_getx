@@ -180,6 +180,7 @@ class ProjectPage extends StatelessWidget {
                       children: warpList,
                     ),
                   ),
+                  isScrollControlled: true,
                   backgroundColor: context.scaffoldBackgroundColor,
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
