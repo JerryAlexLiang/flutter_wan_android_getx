@@ -48,6 +48,7 @@ class SystemContentPage extends StatelessWidget {
                     children: warpList(context, treeModel, controller),
                   ),
                 ),
+                isScrollControlled: true,
                 backgroundColor: context.scaffoldBackgroundColor,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
