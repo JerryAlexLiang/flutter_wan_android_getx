@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wan_android_getx/model/tree_model.dart';
 import 'package:flutter_wan_android_getx/page/system_tree/tree_article_list_page_view/tree_article_list_page_view_page.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:flutter_wan_android_getx/widget/custom_underline_tabIndicator.dart';
 import 'package:flutter_wan_android_getx/widget/keep_alive_wrapper.dart';
-import 'package:flutter_wan_android_getx/widget/sliver_appbar_delegate.dart';
+import 'package:flutter_wan_android_getx/widget/ripple_view.dart';
 import 'package:get/get.dart';
 
 import 'system_content_controller.dart';
@@ -26,30 +27,45 @@ class SystemContentPage extends StatelessWidget {
     final TreeModel treeModel = Get.arguments['treeModel'];
     final int index = Get.arguments['treeModelIndex'];
 
-    return SafeArea(
-      child: Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            sliverAppBar(context, controller, treeModel),
-            persistentHeaderTabBar(context, controller, treeModel),
-            sliverTabBarView(context, controller, treeModel, index),
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          '${treeModel.name}',
+          style: context.bodyText1Style,
         ),
+        actions: [
+          RippleView(
+            radius: 100,
+            onTap: () {
+              // 地不弹出菜单
+              Get.bottomSheet(
+                Container(
+                  padding: EdgeInsets.all(10.w),
+                  child: Wrap(
+                    runSpacing: 1.w,
+                    spacing: 5.w,
+                    children: warpList(context, treeModel, controller),
+                  ),
+                ),
+                backgroundColor: context.scaffoldBackgroundColor,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              child: const Icon(Icons.menu),
+              padding: const EdgeInsets.all(5),
+            ),
+          ),
+        ],
+        bottom: treeTab(context, controller, treeModel),
       ),
-    );
-  }
-
-  Widget sliverAppBar(BuildContext context, SystemContentController controller,
-      TreeModel treeModel) {
-    return SliverAppBar(
-      pinned: false,
-      elevation: 0,
-      centerTitle: true,
-      title: Text(
-        '${treeModel.name}',
-        style: context.bodyText1Style,
-      ),
-      // bottom: treeTab(context, controller, treeModel),
+      body: tabBarView(context, controller, treeModel, index),
     );
   }
 
@@ -97,24 +113,6 @@ class SystemContentPage extends StatelessWidget {
     );
   }
 
-  persistentHeaderTabBar(BuildContext context,
-      SystemContentController controller, TreeModel treeModel) {
-    return SliverPersistentHeader(
-        pinned: true,
-        delegate: SliverAppBarDelegate(
-          minHeight: 50,
-          maxHeight: 50,
-          child: Container(
-            color: context.scaffoldBackgroundColor,
-            child: treeTab(
-              context,
-              controller,
-              treeModel,
-            ),
-          ),
-        ));
-  }
-
   //const KeepAliveWrapper(
   //         // keepAlive默认为true
   //         // keepAlive为 true 后会缓存所有的列表项，列表项将不会销毁。
@@ -123,7 +121,7 @@ class SystemContentPage extends StatelessWidget {
   //         keepAlive: true,
   //         child: HomePage(),
   //       ),
-  sliverTabBarView(BuildContext context, SystemContentController controller,
+  tabBarView(BuildContext context, SystemContentController controller,
       TreeModel treeModel, int index) {
     var pageViewList = treeModel.children!
         .map((e) => KeepAliveWrapper(
@@ -131,25 +129,34 @@ class SystemContentPage extends StatelessWidget {
             ))
         .toList();
 
-    /// SliverFillViewport 对应的可滚动组件 PageView
-    // return SliverFillViewport(
-    //   delegate: SliverChildBuilderDelegate(
-    //     (context, index) {
-    //       return TabBarView(
-    //         controller: controller.tabController,
-    //         children: pageViewList,
-    //       );
-    //     },
-    //     childCount: 1,
-    //   ),
-    // );
-
-    return SliverFillRemaining(
-      child: TabBarView(
-        controller: controller.tabController,
-        children: pageViewList,
-      ),
+    return TabBarView(
+      controller: controller.tabController,
+      children: pageViewList,
     );
+  }
 
+  warpList(BuildContext context, TreeModel treeModel,
+      SystemContentController controller) {
+    List<Widget> warpList = treeModel.children!.map((element) {
+        return ChoiceChip(
+          label: Text(
+            element.name ?? "",
+            style: context.bodyText2Style,
+          ),
+          selectedColor: Colors.lightBlueAccent.withOpacity(0.5),
+          selected: controller.tabController.index ==
+              controller.treeModel.children!.indexOf(element),
+          onSelected: (bool newValue) {
+            controller.tabController.index =
+                controller.treeModel.children!.indexOf(element);
+            //关闭弹框
+            if (Get.isBottomSheetOpen == true) {
+              Get.back();
+            }
+          },
+        );
+    }).toList();
+
+    return warpList;
   }
 }

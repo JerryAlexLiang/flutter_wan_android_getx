@@ -40,7 +40,8 @@ class TreeArticleListPageViewPage extends StatelessWidget {
           onLoadMore: () => controller.onLoadMoreRequestData(),
           lottieRocketRefreshHeader: false,
           child: ListView.builder(
-            controller: controller.scrollController,
+            /// 当ListView需要ScrollController的时候，NestedScrollView就会和ListView的滚动失去关联，此时我们只要把ScrollController换成NotificationListener
+            // controller: controller.scrollController,
             itemCount: controller.treeArticleList.length,
             itemBuilder: (context, index) {
               return SearchListItemWidget(
