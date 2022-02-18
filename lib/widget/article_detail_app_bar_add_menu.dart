@@ -132,7 +132,7 @@ class _ArticleDetailAppBarAddMenuState extends State<ArticleDetailAppBarAddMenu>
           child: TextButton.icon(
             onPressed: () {
               // 收藏、取消收藏网址
-              detailController.requestCollectArticle(widget.model);
+              detailController.requestCollectLink();
               Get.back();
             },
             icon: const Icon(Icons.collections),
