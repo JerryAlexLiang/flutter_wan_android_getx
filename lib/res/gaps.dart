@@ -19,6 +19,7 @@ class Gaps {
   static const Widget hGap16 = SizedBox(width: Dimens.gapDp16);
   static const Widget hGap32 = SizedBox(width: Dimens.gapDp32);
   static const Widget hGap50 = SizedBox(width: Dimens.gapDp50);
+  static const Widget hGap55 = SizedBox(width: Dimens.gapDp55);
 
   /// 垂直间隔
   static const Widget vGap1 = SizedBox(height: Dimens.gapDp1);
@@ -35,6 +36,7 @@ class Gaps {
   static const Widget vGap26 = SizedBox(height: Dimens.gapDp26);
   static const Widget vGap32 = SizedBox(height: Dimens.gapDp32);
   static const Widget vGap50 = SizedBox(height: Dimens.gapDp50);
+  static const Widget vGap55 = SizedBox(height: Dimens.gapDp55);
   static const Widget vGap100 = SizedBox(height: Dimens.gapDp100);
   static const Widget vGap150 = SizedBox(height: Dimens.gapDp150);
 

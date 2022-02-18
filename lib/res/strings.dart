@@ -42,7 +42,7 @@ class StringsConstant {
   static const String logoutContent = '退出登录';
   static const String level = '等级';
   static const String rank = '排名';
-  static const String collectCount = '收藏';
+  static const String collectCount = '站内收藏';
   static const String coinCount = '积分';
   static const String shareCount = '分享';
   static const String browsingHistory = '浏览历史';
@@ -114,7 +114,7 @@ class Messages extends Translations {
           StringsConstant.logoutContent: "退出登录",
           StringsConstant.level: "等级",
           StringsConstant.rank: "排名",
-          StringsConstant.collectCount: "收藏",
+          StringsConstant.collectCount: "站内收藏",
           StringsConstant.coinCount: "积分",
           StringsConstant.shareCount: "分享",
           StringsConstant.browsingHistory: "浏览历史",
@@ -180,7 +180,7 @@ class Messages extends Translations {
           StringsConstant.logoutContent: "退出登录",
           StringsConstant.level: "等级",
           StringsConstant.rank: "排名",
-          StringsConstant.collectCount: "收藏",
+          StringsConstant.collectCount: "站内收藏",
           StringsConstant.coinCount: "积分",
           StringsConstant.shareCount: "分享",
           StringsConstant.browsingHistory: "浏览历史",

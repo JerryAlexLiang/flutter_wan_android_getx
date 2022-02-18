@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/base/refresh_paging_state_page.dart';
+import 'package:flutter_wan_android_getx/page/search/article_detail_controller.dart';
 import 'package:flutter_wan_android_getx/page/search/component/search_list_item_widget.dart';
 import 'package:get/get.dart';
 
@@ -24,6 +25,8 @@ class ProjectTreeChildrenPage extends StatelessWidget {
     /// 解决办法
     final controller =
         Get.put(ProjectTreeChildrenController(), tag: id.toString());
+
+    final detailController = Get.find<ArticleDetailController>();
     //
     // /// 赋值cid
     controller.setCid(id);
@@ -47,6 +50,11 @@ class ProjectTreeChildrenPage extends StatelessWidget {
               return SearchListItemWidget(
                 dataList: controller.projectTreeArticleList,
                 index: index,
+                onCollectClick: (int index) {
+                  // 文章列表收藏、取消收藏
+                  detailController.requestCollectArticle(
+                      controller.projectTreeArticleList[index]);
+                },
               );
             },
           ),

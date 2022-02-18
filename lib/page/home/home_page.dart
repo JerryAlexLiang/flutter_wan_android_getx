@@ -84,7 +84,7 @@ class HomePage extends StatelessWidget {
                 controller: controller.scrollController,
                 slivers: [
                   _homeBanner(),
-                  _homeArticleList(controller),
+                  _homeArticleList(controller, detailController),
                 ],
               ),
             ),
@@ -133,7 +133,8 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _homeArticleList(HomeController controller) {
+  Widget _homeArticleList(
+      HomeController controller, ArticleDetailController detailController) {
     return Obx(() {
       return SliverList(
         delegate: SliverChildBuilderDelegate(
@@ -141,6 +142,11 @@ class HomePage extends StatelessWidget {
             return SearchListItemWidget(
               dataList: controller.homeArticleList,
               index: index,
+              onCollectClick: (int index) {
+                // 文章列表收藏、取消收藏
+                detailController
+                    .requestCollectArticle(controller.homeArticleList[index]);
+              },
             );
           },
           childCount: controller.homeArticleList.length,

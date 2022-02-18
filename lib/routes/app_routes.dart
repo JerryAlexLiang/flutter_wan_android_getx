@@ -9,4 +9,5 @@ abstract class AppRoutes {
   static const articleDetailPage = '/articleDetailPage';
   static const loginRegisterPage = '/loginRegisterPage';
   static const treeTabContainerPage = '/treeTabContainerPage';
+  static const collectListPage = '/collectListPage';
 }

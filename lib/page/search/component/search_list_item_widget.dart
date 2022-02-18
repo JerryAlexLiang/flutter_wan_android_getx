@@ -23,19 +23,23 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 /// 作者: 杨亮
 
 class SearchListItemWidget extends StatelessWidget {
-  SearchListItemWidget({
+  const SearchListItemWidget({
     Key? key,
     required this.dataList,
     required this.index,
+    required this.onCollectClick,
   }) : super(key: key);
 
-  final controller = Get.find<ArticleDetailController>();
+  // final controller = Get.find<ArticleDetailController>();
 
   /// 文章类表数据源
   final List<ArticleDataModelDatas> dataList;
 
   /// ListView item index
   final int index;
+
+  /// 红心收藏点击事件
+  final Function(int index) onCollectClick;
 
   @override
   Widget build(BuildContext context) {
@@ -291,7 +295,7 @@ class SearchListItemWidget extends StatelessWidget {
             borderRadius: 3,
           ),
           child: Text(
-            dataList[index].superChapterName!,
+            dataList[index].superChapterName ?? "",
             style: context.bodyText2Style?.copyWith(
               fontSize: 12,
               color: Colors.white,
@@ -333,7 +337,8 @@ class SearchListItemWidget extends StatelessWidget {
         const Spacer(),
         RippleView(
           onTap: () => {
-            controller.collectInsideArticle(dataList[index]),
+            // controller.requestCollectArticle(dataList[index]),
+            onCollectClick(index),
           },
           radius: 50,
           child: Container(

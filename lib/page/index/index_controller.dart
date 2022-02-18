@@ -141,10 +141,10 @@ class IndexController extends GetxController {
       const KeepAliveWrapper(
         child: SystemTreePage(),
       ),
-      KeepAliveWrapper(
+      const KeepAliveWrapper(
         child: NavigationTreePage(),
       ),
-      KeepAliveWrapper(
+      const KeepAliveWrapper(
         child: ProjectPage(),
       ),
       const KeepAliveWrapper(

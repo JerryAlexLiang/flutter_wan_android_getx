@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+
+import 'package:dio/dio.dart' as dio;
 import 'package:flutter_wan_android_getx/app_user_login_state_controller.dart';
 import 'package:flutter_wan_android_getx/base/base_getx_controller.dart';
 import 'package:flutter_wan_android_getx/constant/constant.dart';
@@ -49,6 +51,17 @@ class ArticleDetailController extends BaseGetXController {
 
   set isFirstInitWeb(value) => _isFirstInitWeb.value = value;
 
+  /// 当前网页Title
+  String? currentTitle;
+
+  // 当前页面链接
+  var currentPageUrl = "";
+
+  // 收藏、取消收藏接口路径
+  late String requestURL;
+
+  late Future future;
+
   @override
   void onInit() {
     super.onInit();
@@ -67,12 +80,12 @@ class ArticleDetailController extends BaseGetXController {
   Future<void> onWebViewCreated(WebViewController controller) async {
     //WebView控制器，通过WebViewController可以实现Web内的前进、后退等操作
     webViewController = controller;
-    LoggerUtil.d('currentUrl : ${webViewController.currentUrl().toString()}');
     // //加载一个url
     // controller.loadUrl(widget.item.link);
     // controller.canGoBack().then((value) => print('是否能后退: $value'));
     // controller.currentUrl().then((value) => print('当前Url: $value'));
     // controller.canGoForward().then((value) => print('是否能前进: $value'));
+    Fluttertoast.showToast(msg: "msg");
   }
 
   void reloadWebView() {
@@ -84,24 +97,26 @@ class ArticleDetailController extends BaseGetXController {
     webCanBack();
     // 显示加载动画页面
     unCollectAnimation = true;
-    LoggerUtil.d('==========> onPageStarted1 $url');
-    LoggerUtil.d('==========> onPageStarted2 $link');
+    LoggerUtil.d('==========> onPageStarted1 当前页面链接: $url');
+    LoggerUtil.d('==========> onPageStarted2 原文链接: $link');
   }
 
   void onPageFinished(String url, String link) {
     webCanBack();
     // 关闭加载动画页面
     unCollectAnimation = false;
-    LoggerUtil.d('==========> onPageFinished1 $url');
-    LoggerUtil.d('==========> onPageFinished2 $link');
+    LoggerUtil.d('==========> onPageFinished1 当前页面链接: $url');
+    LoggerUtil.d('==========> onPageFinished2 原文链接: $link');
+    // 当前页面链接
+    currentPageUrl = url;
   }
 
   void onWebResourceError(WebResourceError error, String url, String link) {
     webCanBack();
     // 关闭加载动画页面
     unCollectAnimation = false;
-    LoggerUtil.d('==========> onWebResourceError1 $url');
-    LoggerUtil.d('==========> onWebResourceError2 $link');
+    LoggerUtil.d('==========> onWebResourceError1 当前页面链接: $url');
+    LoggerUtil.d('==========> onWebResourceError2 原文链接: $link');
     LoggerUtil.d(
         '==========> onWebResourceError3 ${error.description}  ${error.errorType}  ${error.failingUrl}');
   }
@@ -121,6 +136,9 @@ class ArticleDetailController extends BaseGetXController {
   }
 
   Future<void> webCanBack() async {
+    currentTitle = await webViewController.getTitle();
+    LoggerUtil.d('==========> onPageFinished3 title: $currentTitle');
+
     if (await webViewController.canGoBack()) {
       // Web页面可以返回，非首页
       isFirstInitWeb = false;
@@ -131,19 +149,24 @@ class ArticleDetailController extends BaseGetXController {
     LoggerUtil.d('==========> isFirstInitWeb $isFirstInitWeb');
   }
 
-  /// 收藏、取消收藏（站内文章）  collectInsideArticle
-  void collectInsideArticle(ArticleDataModelDatas model) async {
-    // 收藏站内文章
-    var collectUrl = sprintf(RequestApi.collectInsideArticle, [model.id]);
-    // 取消收藏站内文章
-    var unCollectUrl = sprintf(RequestApi.unCollectInsideArticle, [model.id]);
-
-    // 获取文章列表可观察变量 isCollect 是否收藏状态
-    var currentCollectState = model.isCollect;
+  /// 删除收藏网站  unCollectLink
+  void requestUnCollectLink(ArticleDataModelDatas model) async {
+    // 删除收藏网址
+    var unCollectLinkUrl = RequestApi.unCollectLink;
 
     /// 当前状态为未收藏时，点击发送收藏请求，反之，发送取消收藏请求
-    String requestURL =
-        currentCollectState == false ? collectUrl : unCollectUrl;
+    requestURL = unCollectLinkUrl;
+
+    var postUnCollectLinkUrlParams = {
+      "id": model.id,
+    };
+
+    /// FormData参数
+    future = DioUtil().request(
+      requestURL,
+      method: DioMethod.post,
+      data: dio.FormData.fromMap(postUnCollectLinkUrlParams),
+    );
 
     if (!loginState) {
       Get.toNamed(AppRoutes.loginRegisterPage);
@@ -153,7 +176,127 @@ class ArticleDetailController extends BaseGetXController {
     httpManager(
       loadingType: Constant.noLoading,
       // 此接口使用sprintf插件进行String格式化操作  static const String collectInsideArticle = '/lg/collect/%s/json';
-      future: DioUtil().request(requestURL, method: DioMethod.post),
+      // future: DioUtil().request(requestURL, method: DioMethod.post),
+      future: future,
+      onStart: () {
+        // 显示收藏动画
+        collectAnimation = true;
+      },
+      onSuccess: (response) async {
+        await Future.delayed(const Duration(milliseconds: 1000));
+        // 收藏请求成功 隐藏收藏动画
+        collectAnimation = false;
+        Fluttertoast.showToast(msg: '删除收藏网址成功');
+      },
+      onFail: (value) async {
+        // 收藏请求失败 隐藏收藏动画
+        collectAnimation = false;
+        Fluttertoast.showToast(msg: '删除收藏网址失败');
+      },
+      onError: (value) {
+        collectAnimation = false;
+        Fluttertoast.showToast(msg: '删除收藏网址请求异常');
+      },
+    );
+  }
+
+  /// 收藏网站  collectLink
+  void requestCollectLink() async {
+    // 收藏网址(HTML页面内跳转链接后的页面进行收藏)
+    var collectLinkUrl = RequestApi.collectLink;
+
+    /// 当前状态为未收藏时，点击发送收藏请求，反之，发送取消收藏请求
+    requestURL = collectLinkUrl;
+
+    var postCollectLinkUrlParams = {
+      "name": currentTitle,
+      "link": currentPageUrl,
+    };
+
+    /// FormData参数
+    future = DioUtil().request(
+      requestURL,
+      method: DioMethod.post,
+      data: dio.FormData.fromMap(postCollectLinkUrlParams),
+    );
+
+    if (!loginState) {
+      Get.toNamed(AppRoutes.loginRegisterPage);
+      return;
+    }
+
+    httpManager(
+      loadingType: Constant.noLoading,
+      // 此接口使用sprintf插件进行String格式化操作  static const String collectInsideArticle = '/lg/collect/%s/json';
+      // future: DioUtil().request(requestURL, method: DioMethod.post),
+      future: future,
+      onStart: () {
+        // 显示收藏动画
+        collectAnimation = true;
+      },
+      onSuccess: (response) async {
+        await Future.delayed(const Duration(milliseconds: 1000));
+        // 收藏请求成功 隐藏收藏动画
+        collectAnimation = false;
+        Fluttertoast.showToast(msg: '收藏网址成功');
+      },
+      onFail: (value) async {
+        // 收藏请求失败 隐藏收藏动画
+        collectAnimation = false;
+        Fluttertoast.showToast(msg: '收藏网址失败');
+      },
+      onError: (value) {
+        collectAnimation = false;
+        Fluttertoast.showToast(msg: '收藏网址请求异常');
+      },
+    );
+  }
+
+  /// 收藏、取消收藏（站内文章）  collectInsideArticle
+  void requestCollectArticle(ArticleDataModelDatas model) async {
+    // 获取文章列表可观察变量 isCollect 是否收藏状态
+    var currentCollectState = model.isCollect;
+
+    // 收藏站内文章
+    var collectInsideArticleUrl =
+        sprintf(RequestApi.collectInsideArticle, [model.id]);
+
+    /// 当前状态为未收藏时，点击发送收藏请求，反之，发送取消收藏请求
+    if (currentCollectState == false) {
+      future =
+          DioUtil().request(collectInsideArticleUrl, method: DioMethod.post);
+    } else {
+      if (model.originId == null) {
+        // 文章列表取消收藏
+        future = DioUtil().request(
+          sprintf(RequestApi.unCollectInsideArticle, [model.id]),
+          method: DioMethod.post,
+        );
+      } else {
+        // 我的收藏页面取消收藏
+        var postUnCollectInsideArticle2Params = {
+          "originId": model.originId,
+        };
+
+        /// FormData参数
+        future = DioUtil().request(
+          sprintf(RequestApi.unCollectInsideArticle2, [model.id]),
+          method: DioMethod.post,
+          data: dio.FormData.fromMap(postUnCollectInsideArticle2Params),
+        );
+      }
+    }
+
+    if (!loginState) {
+      Get.toNamed(AppRoutes.loginRegisterPage);
+      return;
+    }
+
+    httpManager(
+      loadingType: Constant.noLoading,
+      // 此接口使用sprintf插件进行String格式化操作  static const String collectInsideArticle = '/lg/collect/%s/json';
+      // future: DioUtil().request(requestURL, method: DioMethod.post),
+      future: future,
       onStart: () {
         /// 点击之前状态为 未收藏 时 假状态
         if (currentCollectState == false) {

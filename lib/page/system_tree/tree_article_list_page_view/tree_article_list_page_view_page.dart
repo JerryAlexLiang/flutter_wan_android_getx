@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/base/refresh_paging_state_page.dart';
+import 'package:flutter_wan_android_getx/page/search/article_detail_controller.dart';
 import 'package:flutter_wan_android_getx/page/search/component/search_list_item_widget.dart';
 import 'package:get/get.dart';
 import 'tree_article_list_page_view_controller.dart';
@@ -24,6 +25,8 @@ class TreeArticleListPageViewPage extends StatelessWidget {
     final controller =
         Get.put(TreeArticleListPageViewController(), tag: id.toString());
 
+    final detailController = Get.find<ArticleDetailController>();
+
     /// 赋值cid
     controller.setCid(id);
 
@@ -47,6 +50,11 @@ class TreeArticleListPageViewPage extends StatelessWidget {
               return SearchListItemWidget(
                 dataList: controller.treeArticleList,
                 index: index,
+                onCollectClick: (int index) {
+                  // 文章列表收藏、取消收藏
+                  detailController
+                      .requestCollectArticle(controller.treeArticleList[index]);
+                },
               );
             },
           ),

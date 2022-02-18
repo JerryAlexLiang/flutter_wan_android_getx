@@ -96,7 +96,7 @@ class _ArticleDetailAppBarAddMenuState extends State<ArticleDetailAppBarAddMenu>
           child: TextButton.icon(
             onPressed: () {
               // 收藏、取消收藏站内文章
-              detailController.collectInsideArticle(widget.model);
+              detailController.requestCollectArticle(widget.model);
               Get.back();
             },
             icon: Obx(() {
@@ -109,6 +109,34 @@ class _ArticleDetailAppBarAddMenuState extends State<ArticleDetailAppBarAddMenu>
               );
             }),
             label: const Text('收藏文章'),
+            style: TextButton.styleFrom(
+              primary: Theme.of(context).textTheme.bodyText2?.color,
+              onSurface: Theme.of(context)
+                  .textTheme
+                  .bodyText2
+                  ?.color
+                  ?.withOpacity(0.12),
+              backgroundColor: backgroundColor,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(8.0),
+                  bottomRight: Radius.circular(8.0),
+                ),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          width: 120.0,
+          height: 40.0,
+          child: TextButton.icon(
+            onPressed: () {
+              // 收藏、取消收藏网址
+              detailController.requestCollectArticle(widget.model);
+              Get.back();
+            },
+            icon: const Icon(Icons.collections),
+            label: const Text('收藏网址'),
             style: TextButton.styleFrom(
               primary: Theme.of(context).textTheme.bodyText2?.color,
               onSurface: Theme.of(context)

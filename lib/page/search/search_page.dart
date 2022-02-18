@@ -112,6 +112,10 @@ class SearchPage extends StatelessWidget {
               return SearchListItemWidget(
                 dataList: controller.searchResult,
                 index: index,
+                onCollectClick: (int index) {
+                  detailController
+                      .requestCollectArticle(controller.searchResult[index]);
+                },
               );
             },
           ),

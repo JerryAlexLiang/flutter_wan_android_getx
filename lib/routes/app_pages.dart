@@ -1,3 +1,5 @@
+import 'package:flutter_wan_android_getx/page/collect/collect_binding.dart';
+import 'package:flutter_wan_android_getx/page/collect/collect_page.dart';
 import 'package:flutter_wan_android_getx/page/login_register/login_register_page.dart';
 import 'package:flutter_wan_android_getx/page/project/project_page.dart';
 import 'package:flutter_wan_android_getx/page/system_tree/system_content/system_content_binding.dart';
@@ -66,6 +68,11 @@ class AppPages {
       name: AppRoutes.treeTabContainerPage,
       page: () => const SystemContentPage(),
       binding: SystemContentBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.collectListPage,
+      page: () => CollectPage(),
+      binding: CollectBinding(),
     ),
   ];
 }

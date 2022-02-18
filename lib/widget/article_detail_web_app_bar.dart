@@ -67,8 +67,6 @@ class ArticleDetailWebAppBar extends StatelessWidget
             ? SystemUiOverlayStyle.light
             : SystemUiOverlayStyle.dark;
 
-    LoggerUtil.d("=======<>3  ${model.toJson()}");
-
     return Opacity(
       opacity: opacity,
       child: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -207,7 +205,7 @@ class ArticleDetailWebAppBar extends StatelessWidget
             visible: showCollect,
             child: RippleView(
               radius: 100,
-              onTap: () => detailController.collectInsideArticle(model),
+              onTap: () => detailController.requestCollectArticle(model),
               child: Container(
                 padding: const EdgeInsets.all(5),
                 child: Obx(() {

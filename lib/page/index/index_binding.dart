@@ -1,3 +1,4 @@
+import 'package:flutter_wan_android_getx/page/collect/collect_article_list/collect_article_list_controller.dart';
 import 'package:flutter_wan_android_getx/page/home/home_controller.dart';
 import 'package:flutter_wan_android_getx/page/mine/mine_controller.dart';
 import 'package:flutter_wan_android_getx/page/navigation_tree/navigation_tree_controller.dart';

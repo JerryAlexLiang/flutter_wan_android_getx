@@ -20,6 +20,7 @@ class Dimens {
   static const double gapDp26 = 26;
   static const double gapDp32 = 32;
   static const double gapDp50 = 50;
+  static const double gapDp55 = 55;
   static const double gapDp100 = 100;
   static const double gapDp150 = 150;
 }

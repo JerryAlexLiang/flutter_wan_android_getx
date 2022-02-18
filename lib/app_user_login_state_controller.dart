@@ -5,6 +5,8 @@ import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/utils/sp_util.dart';
 import 'package:get/get.dart';
 
+import 'model/article_data_model.dart';
+
 /// 类名: app_user_login_state_controller.dart
 /// 创建日期: 12/14/21 on 10:12 AM
 /// 描述: 用户登录状态
@@ -17,6 +19,9 @@ class AppUserLoginStateController extends BaseGetXController {
   /// 个人用户信息
   final userInfo = UserInfoModel().obs;
   final coinInfo = CoinInfo().obs;
+
+  // // 返回数据列表
+  // final collectArticleList = RxList<ArticleDataModelDatas>();
 
   setLoginState(bool value) {
     isLogin.value = value;

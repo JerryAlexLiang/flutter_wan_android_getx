@@ -43,12 +43,16 @@ class MinePage extends StatelessWidget {
                   onPressed: () {},
                   refreshController: mineController.refreshController,
                   scrollController: mineController.scrollController,
-                  physics: loginState ? const BouncingScrollPhysics() : const ClampingScrollPhysics(),
+                  physics: loginState
+                      ? const BouncingScrollPhysics()
+                      : const ClampingScrollPhysics(),
                   // 已登录时可以下拉刷新，未登录时不能下拉刷新
                   enableRefreshPullDown: loginState ? true : false,
                   enableRefreshPullUp: false,
                   onRefresh: () => mineController.getUserInfo(),
-                  header: const MaterialClassicHeader(color: Colors.red,),
+                  header: const MaterialClassicHeader(
+                    color: Colors.red,
+                  ),
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -95,7 +99,7 @@ class MinePage extends StatelessWidget {
                                       .userInfo.value.collectIds?.length,
                                   title: StringsConstant.collectCount.tr,
                                   onTap: () =>
-                                      Fluttertoast.showToast(msg: '收藏'),
+                                      Get.toNamed(AppRoutes.collectListPage),
                                 ),
                               ),
                               Expanded(

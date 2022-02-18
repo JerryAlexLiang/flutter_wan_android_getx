@@ -31,6 +31,7 @@ class ArticleDataModelDatas with JsonConvert<ArticleDataModelDatas> {
   bool? fresh; // 新条目
   String? host;
   int? id;
+  int? originId;
   String? link;
   String? niceDate; // 分享时间（格式化）
   String? niceShareDate;
@@ -52,7 +53,7 @@ class ArticleDataModelDatas with JsonConvert<ArticleDataModelDatas> {
   int? zan;
 
   /// 可观察变量 isCollect 是否收藏
-  final _isCollect = false.obs;
+  final Rx<bool>_isCollect = false.obs;
 
   get isCollect => _isCollect.value;
 
