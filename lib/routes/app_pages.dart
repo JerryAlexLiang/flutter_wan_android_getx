@@ -16,6 +16,7 @@ import 'package:flutter_wan_android_getx/page/setting/theme/theme_setting_page.d
 import 'package:flutter_wan_android_getx/page/splash/splash_binding.dart';
 import 'package:flutter_wan_android_getx/page/splash/splash_page.dart';
 import 'package:flutter_wan_android_getx/page/unknown_route_page.dart';
+import 'package:flutter_wan_android_getx/page/web/web_detail_common_page.dart';
 import 'package:flutter_wan_android_getx/routes/app_routes.dart';
 import 'package:get/get.dart';
 
@@ -59,6 +60,10 @@ class AppPages {
     GetPage(
       name: AppRoutes.articleDetailPage,
       page: () => const ArticleDetailPage(),
+    ),
+    GetPage(
+      name: AppRoutes.webDetailCommonPage,
+      page: () => const WebDetailCommonPage(),
     ),
     GetPage(
       name: AppRoutes.loginRegisterPage,

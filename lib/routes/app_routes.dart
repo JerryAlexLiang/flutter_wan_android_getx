@@ -7,6 +7,7 @@ abstract class AppRoutes {
   static const languageModePage = '/languageModePage';
   static const searchPage = '/searchPage';
   static const articleDetailPage = '/articleDetailPage';
+  static const webDetailCommonPage = '/webDetailCommonPage';
   static const loginRegisterPage = '/loginRegisterPage';
   static const treeTabContainerPage = '/treeTabContainerPage';
   static const collectListPage = '/collectListPage';

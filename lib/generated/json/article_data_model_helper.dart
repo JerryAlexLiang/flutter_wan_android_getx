@@ -182,9 +182,9 @@ articleDataModelDatasFromJson(
     data.zan =
         json['zan'] is String ? int.tryParse(json['zan']) : json['zan'].toInt();
   }
-  if (json['collect'] != null) {
-    data.isCollect = json['collect'];
-  }
+  // if (json['_isCollect'] != null) {
+  // 	data._isCollect = Rx<bool>().fromJson(json['_isCollect']);
+  // }
   return data;
 }
 
@@ -224,7 +224,7 @@ Map<String, dynamic> articleDataModelDatasToJson(ArticleDataModelDatas entity) {
   data['userId'] = entity.userId;
   data['visible'] = entity.visible;
   data['zan'] = entity.zan;
-  data['collect'] = entity.isCollect.toJson();
+  // data['_isCollect'] = entity._isCollect.toJson();
   return data;
 }
 

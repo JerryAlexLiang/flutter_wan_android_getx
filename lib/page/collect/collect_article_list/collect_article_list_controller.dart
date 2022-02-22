@@ -34,7 +34,7 @@ class CollectArticleListController extends BaseGetXWithPageRefreshController {
 
   set unCollectAnimation(value) => _unCollectAnimation.value = value;
 
-  // // 返回数据列表
+  // 返回数据列表
   final collectArticleList = RxList<ArticleDataModelDatas>();
 
   @override
@@ -43,12 +43,6 @@ class CollectArticleListController extends BaseGetXWithPageRefreshController {
     loadState = LoadState.lottieRocketLoading;
     // 项目列表数据 页码：拼接在链接中，从0开始
     currentPage = 0;
-    onFirstInRequestData();
-  }
-
-  @override
-  void onReadyInitData() {
-    super.onReadyInitData();
     onFirstInRequestData();
   }
 
@@ -145,52 +139,6 @@ class CollectArticleListController extends BaseGetXWithPageRefreshController {
       onError: (error) {
         Fluttertoast.showToast(msg: "请求异常:${error.message}");
         LoggerUtil.e(error.message, tag: "CollectArticleListController");
-      },
-    );
-  }
-
-  /// 删除收藏网站  unCollectLink
-  void requestUnCollectLink(ArticleDataModelDatas model) async {
-    // 删除收藏网址
-    var unCollectLinkUrl = RequestApi.unCollectLink;
-
-    var postUnCollectLinkUrlParams = {
-      "id": model.id,
-    };
-
-    /// FormData参数
-    if (!loginState) {
-      Get.toNamed(AppRoutes.loginRegisterPage);
-      return;
-    }
-
-    httpManager(
-      loadingType: Constant.noLoading,
-      // 此接口使用sprintf插件进行String格式化操作  static const String collectInsideArticle = '/lg/collect/%s/json';
-      // future: DioUtil().request(requestURL, method: DioMethod.post),
-      future: DioUtil().request(
-        unCollectLinkUrl,
-        method: DioMethod.post,
-        data: dio.FormData.fromMap(postUnCollectLinkUrlParams),
-      ),
-      onStart: () {
-        // 显示收藏动画
-        collectAnimation = true;
-      },
-      onSuccess: (response) async {
-        await Future.delayed(const Duration(milliseconds: 1000));
-        // 收藏请求成功 隐藏收藏动画
-        collectAnimation = false;
-        Fluttertoast.showToast(msg: '删除收藏网址成功');
-      },
-      onFail: (value) async {
-        // 收藏请求失败 隐藏收藏动画
-        collectAnimation = false;
-        Fluttertoast.showToast(msg: '删除收藏网址失败');
-      },
-      onError: (value) {
-        collectAnimation = false;
-        Fluttertoast.showToast(msg: '删除收藏网址请求异常');
       },
     );
   }

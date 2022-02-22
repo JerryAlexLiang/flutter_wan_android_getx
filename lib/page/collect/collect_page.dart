@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_wan_android_getx/page/collect/collect_article_list/collect_article_list_page.dart';
+import 'package:flutter_wan_android_getx/page/collect/collect_link_list/collect_link_list_page.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
 import 'package:flutter_wan_android_getx/widget/custom_underline_tabIndicator.dart';
@@ -131,14 +132,15 @@ class CollectPage extends StatelessWidget {
           ),
           preferredSize: const Size.fromHeight(48),
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
-            const KeepAliveWrapper(
+            KeepAliveWrapper(
+              // 收藏文章列表
               child: CollectArticleListPage(),
             ),
-            Container(
-              color: Colors.red,
-              child: Text(controller.collectTypeList[1]),
+            KeepAliveWrapper(
+              // 网址收藏列表
+              child: CollectLinkListPage(),
             ),
           ],
         ),

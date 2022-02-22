@@ -1,44 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/base/refresh_paging_state_page.dart';
-import 'package:flutter_wan_android_getx/page/search/component/search_list_item_widget.dart';
+import 'package:flutter_wan_android_getx/page/collect/collect_link_list_item_page.dart';
 import 'package:flutter_wan_android_getx/widget/state/favorite_lottie_widget.dart';
 import 'package:flutter_wan_android_getx/widget/state/loading_lottie_rocket_widget.dart';
 import 'package:get/get.dart';
 
-import 'collect_article_list_controller.dart';
+import 'collect_link_list_controller.dart';
 
-/// 类名: collect_article_list_page.dart
-/// 创建日期: 2/17/22 on 4:27 PM
-/// 描述: 收藏文章列表
+/// 类名: collect_link_list_page.dart
+/// 创建日期: 2/21/22 on 6:03 PM
+/// 描述:  我的收藏页 - 网址收藏列表
 /// 作者: 杨亮
 
-class CollectArticleListPage extends StatelessWidget {
-  const CollectArticleListPage({Key? key}) : super(key: key);
+class CollectLinkListPage extends StatelessWidget {
+  const CollectLinkListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<CollectArticleListController>();
+    final controller = Get.find<CollectLinkListController>();
 
     return Scaffold(
       body: Obx(() {
         return Stack(
           alignment: Alignment.center,
           children: [
-            RefreshPagingStatePage<CollectArticleListController>(
+            RefreshPagingStatePage<CollectLinkListController>(
               controller: controller,
+              enableRefreshPullDown: true,
+              enableRefreshPullUp: false,
               refreshController: controller.refreshController,
               onPressed: () => controller.onFirstInRequestData(),
               onRefresh: () => controller.onRefreshRequestData(),
-              onLoadMore: () => controller.onLoadMoreRequestData(),
               child: ListView.builder(
-                itemCount: controller.collectArticleList.length,
+                itemCount: controller.collectLinkList.length,
                 itemBuilder: (context, index) {
-                  return SearchListItemWidget(
-                    dataList: controller.collectArticleList,
+                  return CollectLinkListItemPage(
+                    dataList: controller.collectLinkList,
                     index: index,
-                    onCollectClick: (int index) {
-                      controller.requestUnCollectArticle(
-                          controller.collectArticleList[index]);
+                    onUnCollectLinkUrl: (int index) {
+                      controller.requestUnCollectLink(
+                          controller.collectLinkList[index]);
                     },
                   );
                 },

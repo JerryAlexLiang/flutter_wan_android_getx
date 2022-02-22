@@ -117,6 +117,9 @@ dependencies:
   # 22、列表悬浮头  https://github.com/fluttercommunity/flutter_sticky_headers sticky_headers: ^0.2.0
   sticky_headers: ^0.2.0
 
+  # 23、侧滑删除 flutter_slidable
+  flutter_slidable: ^1.2.0
+
   flutter_localizations:
     sdk: flutter
 

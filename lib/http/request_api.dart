@@ -81,4 +81,8 @@ class RequestApi {
   /// 收藏文章列表  GET   https://www.wanandroid.com/lg/collect/list/0/json
   //  页码：拼接在链接中，从0开始
   static const String collectArticleList = "/lg/collect/list/%s/json";
+
+  ///  收藏网站列表
+  // 方法： GET  https://www.wanandroid.com/lg/collect/usertools/json
+  static const String collectLinkList = "/lg/collect/usertools/json";
 }
