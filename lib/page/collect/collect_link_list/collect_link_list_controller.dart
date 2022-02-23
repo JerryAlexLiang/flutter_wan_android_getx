@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart' as dio;
 import 'package:flutter_wan_android_getx/app_user_login_state_controller.dart';
 import 'package:flutter_wan_android_getx/base/base_getx_with_page_refresh_controller.dart';
 import 'package:flutter_wan_android_getx/constant/constant.dart';
@@ -10,7 +11,6 @@ import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:dio/dio.dart' as dio;
 
 /// 类名: collect_link_list_controller.dart
 /// 创建日期: 2/21/22 on 5:45 PM
@@ -84,12 +84,11 @@ class CollectLinkListController extends BaseGetXWithPageRefreshController {
             .map((e) => CollectLinkModel().fromJson(e))
             .toList();
 
-        for (var element in collectLinkList) {
-          element.collect = true;
-          element.isCollect = true;
-        }
-
         if (dataList.isNotEmpty) {
+          for (var element in dataList) {
+            element.collect = true;
+            element.isCollect = true;
+          }
           if (refreshState == RefreshState.first) {
             collectLinkList.assignAll(dataList);
           } else if (refreshState == RefreshState.refresh) {
@@ -138,7 +137,8 @@ class CollectLinkListController extends BaseGetXWithPageRefreshController {
       future: DioUtil().request(
         unCollectLinkUrl,
         method: DioMethod.post,
-        data: dio.FormData.fromMap(postUnCollectLinkUrlParams),
+        // data: dio.FormData.fromMap(postUnCollectLinkUrlParams),
+        params: postUnCollectLinkUrlParams,
       ),
       onStart: () {
         // 显示收藏动画
@@ -150,6 +150,7 @@ class CollectLinkListController extends BaseGetXWithPageRefreshController {
         collectAnimation = false;
         model.collect = false;
         model.isCollect = false;
+        collectLinkList.remove(model);
         Fluttertoast.showToast(msg: '删除收藏网址成功');
       },
       onFail: (value) async {

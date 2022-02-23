@@ -9,6 +9,7 @@ import 'package:flutter_wan_android_getx/http/dio_method.dart';
 import 'package:flutter_wan_android_getx/http/dio_util.dart';
 import 'package:flutter_wan_android_getx/http/request_api.dart';
 import 'package:flutter_wan_android_getx/model/article_data_model.dart';
+import 'package:flutter_wan_android_getx/model/collect_link_model.dart';
 import 'package:flutter_wan_android_getx/routes/app_routes.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -21,19 +22,19 @@ import 'package:webview_flutter/webview_flutter.dart';
 /// 描述: 文章详情控制器
 /// 作者: 杨亮
 class ArticleDetailController extends BaseGetXController {
-  /// 收藏动画显示与否
-  final _collectAnimation = false.obs;
-
-  get collectAnimation => _collectAnimation.value;
-
-  set collectAnimation(value) => _collectAnimation.value = value;
-
-  /// 取消收藏动画显示与否
-  final _unCollectAnimation = false.obs;
-
-  get unCollectAnimation => _unCollectAnimation.value;
-
-  set unCollectAnimation(value) => _unCollectAnimation.value = value;
+  // /// 收藏动画显示与否
+  // final _collectAnimation = false.obs;
+  //
+  // get collectAnimation => _collectAnimation.value;
+  //
+  // set collectAnimation(value) => _collectAnimation.value = value;
+  //
+  // /// 取消收藏动画显示与否
+  // final _unCollectAnimation = false.obs;
+  //
+  // get unCollectAnimation => _unCollectAnimation.value;
+  //
+  // set unCollectAnimation(value) => _unCollectAnimation.value = value;
 
   late WebViewController webViewController;
 
@@ -85,7 +86,6 @@ class ArticleDetailController extends BaseGetXController {
     // controller.canGoBack().then((value) => print('是否能后退: $value'));
     // controller.currentUrl().then((value) => print('当前Url: $value'));
     // controller.canGoForward().then((value) => print('是否能前进: $value'));
-    Fluttertoast.showToast(msg: "msg");
   }
 
   void reloadWebView() {
@@ -308,6 +308,60 @@ class ArticleDetailController extends BaseGetXController {
           model.isCollect = true;
           Fluttertoast.showToast(msg: '取消收藏失败');
         }
+      },
+    );
+  }
+
+  /// 删除收藏网站  unCollectLink
+  void requestUnCollectLink(CollectLinkModel model) async {
+    // 删除收藏网址
+    var unCollectLinkUrl = RequestApi.unCollectLink;
+
+    var postUnCollectLinkUrlParams = {
+      "id": model.id,
+    };
+
+    /// FormData参数
+    if (!loginState) {
+      Get.toNamed(AppRoutes.loginRegisterPage);
+      return;
+    }
+
+    httpManager(
+      loadingType: Constant.noLoading,
+      // 此接口使用sprintf插件进行String格式化操作  static const String collectInsideArticle = '/lg/collect/%s/json';
+      // future: DioUtil().request(requestURL, method: DioMethod.post),
+      future: DioUtil().request(
+        unCollectLinkUrl,
+        method: DioMethod.post,
+        // data: dio.FormData.fromMap(postUnCollectLinkUrlParams),
+        params: postUnCollectLinkUrlParams,
+      ),
+      onStart: () {
+        // 显示收藏动画
+        collectAnimation = true;
+      },
+      onSuccess: (response) async {
+        await Future.delayed(const Duration(milliseconds: 1000));
+        // 收藏请求成功 隐藏收藏动画
+        collectAnimation = false;
+        model.collect = false;
+        model.isCollect = false;
+        // collectLinkList.remove(model);
+        Fluttertoast.showToast(msg: '删除收藏网址成功');
+      },
+      onFail: (value) async {
+        // 收藏请求失败 隐藏收藏动画
+        collectAnimation = false;
+        model.collect = true;
+        model.isCollect = true;
+        Fluttertoast.showToast(msg: '删除收藏网址失败');
+      },
+      onError: (value) {
+        collectAnimation = false;
+        model.collect = true;
+        model.isCollect = true;
+        Fluttertoast.showToast(msg: '删除收藏网址请求异常');
       },
     );
   }

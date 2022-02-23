@@ -23,9 +23,8 @@ class WebDetailCommonPage extends GetView<ArticleDetailController> {
 
   @override
   Widget build(BuildContext context) {
-
     final collectLinkController = Get.find<CollectLinkListController>();
-    
+
     var arguments = Get.arguments;
     final CollectLinkModel model = arguments['data'];
 
@@ -41,7 +40,8 @@ class WebDetailCommonPage extends GetView<ArticleDetailController> {
                   model.isCollect ? Colors.red : Colors.grey.withOpacity(0.5),
             );
           }),
-          onRightPressed: () => collectLinkController.requestUnCollectLink(model),
+          onRightPressed: () =>
+              collectLinkController.requestUnCollectLink(model),
         ),
         body: webViewContainer(context, model),
       ),

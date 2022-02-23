@@ -31,6 +31,20 @@ class BaseGetXController extends GetxController {
 
   set httpErrorMsg(value) => _httpErrorMsg.value = value;
 
+  /// 收藏动画显示与否
+  final _collectAnimation = false.obs;
+
+  get collectAnimation => _collectAnimation.value;
+
+  set collectAnimation(value) => _collectAnimation.value = value;
+
+  /// 取消收藏动画显示与否
+  final _unCollectAnimation = false.obs;
+
+  get unCollectAnimation => _unCollectAnimation.value;
+
+  set unCollectAnimation(value) => _unCollectAnimation.value = value;
+
   @override
   void onReady() async {
     super.onReady();
