@@ -6,7 +6,6 @@ import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/res/r.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/theme/app_theme.dart';
-import 'package:flutter_wan_android_getx/widget/state/favorite_lottie_widget.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_error_page.dart';
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
 import 'package:flutter_wan_android_getx/widget/state/loading_lottie_rocket_widget.dart';
@@ -131,54 +130,21 @@ class RefreshPagingStatePage<T extends BaseGetXWithPageRefreshController>
           //AnnotatedRegion<SystemUiOverlayStyle>(
           //       value: SystemUiOverlayStyle.light,
 
-          return Stack(
-            alignment: Alignment.center,
-            children: [
-              RefreshConfiguration.copyAncestor(
-                maxOverScrollExtent: 30,
-                context: context,
-                child: SmartRefresher(
-                  controller: refreshController,
-                  enablePullDown: enableRefreshPullDown,
-                  enablePullUp: enableRefreshPullUp,
-                  onRefresh: onRefresh,
-                  onLoading: onLoadMore,
-                  physics: physics,
-                  scrollController: scrollController,
-                  header: header ?? customHeaderWidget(context),
-                  footer: footer ?? customFooterWidget(context),
-                  child: child,
-                ),
-              ),
-
-              /// 收藏动画
-              Positioned(
-                top: Get.height / 5,
-                left: 0,
-                right: 0,
-                child: FavoriteLottieWidget(
-                  visible: controller.collectAnimation,
-                  animate: controller.collectAnimation,
-                  repeat: false,
-                  width: Get.width,
-                  height: Get.height / 3,
-                ),
-              ),
-
-              /// 取消收藏动画
-              Positioned(
-                top: Get.height / 5,
-                left: 0,
-                right: 0,
-                child: LoadingLottieRocketWidget(
-                  visible: controller.unCollectAnimation,
-                  animate: controller.unCollectAnimation,
-                  repeat: false,
-                  width: Get.width,
-                  height: Get.height / 3,
-                ),
-              ),
-            ],
+          return RefreshConfiguration.copyAncestor(
+            maxOverScrollExtent: 30,
+            context: context,
+            child: SmartRefresher(
+              controller: refreshController,
+              enablePullDown: enableRefreshPullDown,
+              enablePullUp: enableRefreshPullUp,
+              onRefresh: onRefresh,
+              onLoading: onLoadMore,
+              physics: physics,
+              scrollController: scrollController,
+              header: header ?? customHeaderWidget(context),
+              footer: footer ?? customFooterWidget(context),
+              child: child,
+            ),
           );
         }
 
