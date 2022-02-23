@@ -84,12 +84,11 @@ class CollectLinkListController extends BaseGetXWithPageRefreshController {
             .map((e) => CollectLinkModel().fromJson(e))
             .toList();
 
-        for (var element in collectLinkList) {
-          element.collect = true;
-          element.isCollect = true;
-        }
-
         if (dataList.isNotEmpty) {
+          for (var element in dataList) {
+            element.collect = true;
+            element.isCollect = true;
+          }
           if (refreshState == RefreshState.first) {
             collectLinkList.assignAll(dataList);
           } else if (refreshState == RefreshState.refresh) {
@@ -117,7 +116,12 @@ class CollectLinkListController extends BaseGetXWithPageRefreshController {
   }
 
   /// 删除收藏网站  unCollectLink
-  void requestUnCollectLink(CollectLinkModel model) async {
+  void requestUnCollectLink({
+    required CollectLinkModel model,
+    Function()? onStart,
+    Function(CollectLinkModel model)? onSuccess,
+    Function(CollectLinkModel model)? onFail,
+  }) async {
     // 删除收藏网址
     var unCollectLinkUrl = RequestApi.unCollectLink;
 
@@ -138,7 +142,8 @@ class CollectLinkListController extends BaseGetXWithPageRefreshController {
       future: DioUtil().request(
         unCollectLinkUrl,
         method: DioMethod.post,
-        data: dio.FormData.fromMap(postUnCollectLinkUrlParams),
+        // data: dio.FormData.fromMap(postUnCollectLinkUrlParams),
+        params: postUnCollectLinkUrlParams,
       ),
       onStart: () {
         // 显示收藏动画
@@ -150,6 +155,7 @@ class CollectLinkListController extends BaseGetXWithPageRefreshController {
         collectAnimation = false;
         model.collect = false;
         model.isCollect = false;
+        collectLinkList.remove(model);
         Fluttertoast.showToast(msg: '删除收藏网址成功');
       },
       onFail: (value) async {

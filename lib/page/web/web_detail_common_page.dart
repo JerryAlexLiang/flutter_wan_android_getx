@@ -10,6 +10,7 @@ import 'package:flutter_wan_android_getx/widget/article_detail_web_app_bar.dart'
 import 'package:flutter_wan_android_getx/widget/custom_app_bar.dart';
 import 'package:flutter_wan_android_getx/widget/state/favorite_lottie_widget.dart';
 import 'package:flutter_wan_android_getx/widget/state/loading_lottie_rocket_widget.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -23,9 +24,8 @@ class WebDetailCommonPage extends GetView<ArticleDetailController> {
 
   @override
   Widget build(BuildContext context) {
-
     final collectLinkController = Get.find<CollectLinkListController>();
-    
+
     var arguments = Get.arguments;
     final CollectLinkModel model = arguments['data'];
 
@@ -41,7 +41,46 @@ class WebDetailCommonPage extends GetView<ArticleDetailController> {
                   model.isCollect ? Colors.red : Colors.grey.withOpacity(0.5),
             );
           }),
-          onRightPressed: () => collectLinkController.requestUnCollectLink(model),
+          onRightPressed: () {
+            if (model.isCollect) {
+              // 已收藏状态，点击取消收藏
+              collectLinkController.requestUnCollectLink(
+                model: model,
+                onStart: () {
+                  // 显示取消收藏动画
+                  controller.unCollectAnimation = true;
+                },
+                onSuccess: (model) {
+                  // 隐藏取消收藏动画
+                  controller.unCollectAnimation = false;
+                  Fluttertoast.showToast(msg: '取消收藏成功');
+                },
+                onFail: (model) {
+                  // 隐藏取消收藏动画
+                  controller.unCollectAnimation = false;
+                  Fluttertoast.showToast(msg: '取消收藏失败');
+                },
+              );
+            } else {
+              // 未收藏状态，点击收藏
+              controller.requestCollectLink(
+                onStart: () {
+                  // 显示收藏动画
+                  controller.collectAnimation = true;
+                },
+                onSuccess: () {
+                  // 隐藏收藏动画
+                  controller.collectAnimation = false;
+                  Fluttertoast.showToast(msg: '收藏成功');
+                },
+                onFail: () {
+                  // 隐藏收藏动画
+                  controller.collectAnimation = false;
+                  Fluttertoast.showToast(msg: '收藏失败');
+                },
+              );
+            }
+          },
         ),
         body: webViewContainer(context, model),
       ),

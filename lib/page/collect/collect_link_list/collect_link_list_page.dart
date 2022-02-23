@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_wan_android_getx/base/refresh_paging_state_page.dart';
 import 'package:flutter_wan_android_getx/page/collect/collect_link_list_item_page.dart';
 import 'package:flutter_wan_android_getx/widget/state/favorite_lottie_widget.dart';
@@ -34,13 +35,47 @@ class CollectLinkListPage extends StatelessWidget {
               child: ListView.builder(
                 itemCount: controller.collectLinkList.length,
                 itemBuilder: (context, index) {
-                  return CollectLinkListItemPage(
-                    dataList: controller.collectLinkList,
-                    index: index,
-                    onUnCollectLinkUrl: (int index) {
-                      controller.requestUnCollectLink(
-                          controller.collectLinkList[index]);
-                    },
+                  // return CollectLinkListItemPage(
+                  //   dataList: controller.collectLinkList,
+                  //   index: index,
+                  //   onUnCollectLinkUrl: (int index) {
+                  //     controller.requestUnCollectLink(
+                  //         controller.collectLinkList[index]);
+                  //   },
+                  // );
+
+                  return Slidable(
+                    // Specify a key if the Slidable is dismissible. 如果可滑动的是可撤销的，请指定一个键。
+                    key: Key(index.toString()),
+                    closeOnScroll: true,
+                    // The start action pane is the one at the left or the top side. 开始操作窗格位于左侧或顶部。
+                    // startActionPane: ActionPane(
+                    endActionPane: ActionPane(
+                      // A motion is a widget used to control how the pane animates. 一个运动是一个小部件，用来控制面板如何动画
+                      motion: const ScrollMotion(),
+                      // A pane can dismiss the Slidable. 一个窗格可以解散可滑动
+                      // dismissible: DismissiblePane(onDismissed: () {}),
+                      // All actions are defined in the children parameter. 所有操作都在children参数中定义。
+                      children: [
+                        SlidableAction(
+                          onPressed: (context) =>
+                              controller.requestUnCollectLink(
+                                  model: controller.collectLinkList[index]),
+                          label: "取消收藏",
+                          icon: Icons.delete,
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                        ),
+                      ],
+                    ),
+                    child: CollectLinkListItemPage(
+                      dataList: controller.collectLinkList,
+                      index: index,
+                      onUnCollectLinkUrl: (int index) {
+                        controller.requestUnCollectLink(
+                            model: controller.collectLinkList[index]);
+                      },
+                    ),
                   );
                 },
               ),

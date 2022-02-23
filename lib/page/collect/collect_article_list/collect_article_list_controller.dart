@@ -180,7 +180,6 @@ class CollectArticleListController extends BaseGetXWithPageRefreshController {
         // 隐藏显示加载动画
         unCollectAnimation = false;
         model.isCollect = false;
-
         // 删除被取消收藏的item
         collectArticleList.remove(model);
 

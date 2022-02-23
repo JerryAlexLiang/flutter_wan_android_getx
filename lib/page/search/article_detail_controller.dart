@@ -150,7 +150,11 @@ class ArticleDetailController extends BaseGetXController {
   }
 
   /// 收藏网站  collectLink
-  void requestCollectLink() async {
+  void requestCollectLink({
+    Function()? onStart,
+    Function()? onSuccess,
+    Function()? onFail,
+  }) async {
     // 收藏网址(HTML页面内跳转链接后的页面进行收藏)
     var collectLinkUrl = RequestApi.collectLink;
 
