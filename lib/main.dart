@@ -37,13 +37,13 @@ class MyApp extends StatelessWidget {
       hideFooterWhenNotFull: false,
       child: ScreenUtilInit(
         designSize: const Size(360, 690),
-        builder: () {
+        builder: (context, child) {
           return OKToast(
             /// 导致弹出系统粘贴时红屏原因为FlutterEasyLoading在materialApp上层，
             /// 导致系统粘贴时的弹框找到顶层时widget不是material报错.修复方式为将FlutterEasyLoading改为build时引入
             child: ScreenUtilInit(
               designSize: const Size(360, 690),
-              builder: () => GetMaterialApp(
+              builder: (context, child) => GetMaterialApp(
                 debugShowCheckedModeBanner: false,
                 builder: (context, child) {
                   return FlutterEasyLoading(

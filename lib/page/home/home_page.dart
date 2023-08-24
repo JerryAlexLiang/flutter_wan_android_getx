@@ -4,7 +4,7 @@ import 'package:flutter_wan_android_getx/base/refresh_paging_state_page.dart';
 import 'package:flutter_wan_android_getx/page/home/component/home_banner.dart';
 import 'package:flutter_wan_android_getx/page/search/article_detail_controller.dart';
 import 'package:flutter_wan_android_getx/page/search/component/search_list_item_widget.dart';
-import 'package:flutter_wan_android_getx/page/search/search_controller.dart';
+import 'package:flutter_wan_android_getx/page/search/my_search_controller.dart';
 import 'package:flutter_wan_android_getx/routes/app_routes.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
 import 'package:flutter_wan_android_getx/widget/search_app_bar.dart';
@@ -26,7 +26,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<HomeController>();
-    final searchController = Get.find<SearchController>();
+    final searchController = Get.find<MySearchController>();
     final detailController = Get.find<ArticleDetailController>();
 
     LoggerUtil.d("=======> HomePage build");

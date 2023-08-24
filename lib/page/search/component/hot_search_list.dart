@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wan_android_getx/page/search/component/chip_search_wrap.dart';
-import 'package:flutter_wan_android_getx/page/search/search_controller.dart';
+import 'package:flutter_wan_android_getx/page/search/my_search_controller.dart';
 import 'package:flutter_wan_android_getx/res/gaps.dart';
 import 'package:flutter_wan_android_getx/res/strings.dart';
 import 'package:flutter_wan_android_getx/utils/logger_util.dart';
@@ -15,7 +15,7 @@ import 'package:get/get.dart';
 class HotSearchList extends StatelessWidget {
   HotSearchList({Key? key}) : super(key: key);
 
-  final controller = Get.find<SearchController>();
+  final controller = Get.find<MySearchController>();
 
   @override
   Widget build(BuildContext context) {

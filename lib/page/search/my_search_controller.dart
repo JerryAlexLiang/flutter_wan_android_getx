@@ -13,13 +13,13 @@ import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
-/// 类名: search_controller.dart
+/// 类名: my_search_controller.dart
 /// 创建日期: 11/15/21 on 4:58 PM
 /// 描述: 搜索界面
 /// 作者: 杨亮
 
-class SearchController extends BaseGetXWithPageRefreshController {
-  /// 搜索输入框孔控制器
+class MySearchController extends BaseGetXWithPageRefreshController {
+  /// 搜索输入框控制器
   late TextEditingController textEditingController;
 
   /// 关键词

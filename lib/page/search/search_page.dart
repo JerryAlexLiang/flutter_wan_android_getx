@@ -12,12 +12,12 @@ import 'package:flutter_wan_android_getx/widget/state/favorite_lottie_widget.dar
 import 'package:flutter_wan_android_getx/widget/state/load_state.dart';
 import 'package:flutter_wan_android_getx/widget/state/loading_lottie_rocket_widget.dart';
 import 'package:get/get.dart';
-import 'search_controller.dart';
+import 'my_search_controller.dart';
 
 /// 搜索界面
 
 class SearchPage extends StatelessWidget {
-  final controller = Get.find<SearchController>();
+  final controller = Get.find<MySearchController>();
 
   final detailController = Get.find<ArticleDetailController>();
 
@@ -73,7 +73,7 @@ class SearchPage extends StatelessWidget {
 
   /// 历史搜索和热词标签tag页面
   Widget hotHistoryView() {
-    return CommonStatePage<SearchController>(
+    return CommonStatePage<MySearchController>(
       controller: controller,
       onPressed: () => controller.initHotKeysList(),
       child: const NormalSearchPage(),
@@ -84,7 +84,7 @@ class SearchPage extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        RefreshPagingStatePage<SearchController>(
+        RefreshPagingStatePage<MySearchController>(
           controller: controller,
           onPressed: () {
             /// 错误页面 点击重新加载数据

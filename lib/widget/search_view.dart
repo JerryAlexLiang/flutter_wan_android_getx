@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_wan_android_getx/page/search/search_controller.dart';
+import 'package:flutter_wan_android_getx/page/search/my_search_controller.dart';
 import 'package:get/get.dart';
 
 /// 自定义搜索栏
@@ -101,7 +101,7 @@ class SearchView extends StatelessWidget {
     } else {
       //SearchView可用时启用SearchController
 
-      final controller = Get.find<SearchController>();
+      final controller = Get.find<MySearchController>();
 
       return enabled
           // ? GetX(
